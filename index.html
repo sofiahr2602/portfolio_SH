@@ -1,211 +1,700 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ratw — Hero Section</title>
+<title>Sofia — Multidisciplinary Designer · UX · UI · Motion · Brand</title>
+<meta name="description" content="Multidisciplinary designer specializing in UX/UI, motion design, brand identity, and social media. Available for freelance projects.">
+<meta property="og:title" content="Sofia — Designer Portfolio">
+<meta property="og:description" content="UX · UI · Motion · Brand · Social Media. Crafting purposeful visual experiences.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
 <script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          lilac: '#9B6FCC',
+          'lilac-light': '#C4A8E8',
+          'lilac-pale': '#F3EDFF',
+          'lilac-dark': '#7C4FA8',
+        }
+      }
+    }
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
-<style>
-  body { font-family: 'Inter', sans-serif; }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
 
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .stagger-item {
-    opacity: 0;
-    animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  .delay-bg  { animation-delay: 0.2s; }
-  .delay-nav { animation-delay: 1.0s; }
-  .delay-h1  { animation-delay: 1.8s; }
-  .delay-p   { animation-delay: 2.6s; }
-  .delay-btn { animation-delay: 3.4s; }
-
-  .nav-link {
-    position: relative;
-    color: rgba(255,255,255,0.85);
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 0; bottom: -2px;
-    width: 0; height: 1px;
-    background: white;
-    transition: width 0.25s ease;
-  }
-  .nav-link:hover { color: white; }
-  .nav-link:hover::after { width: 100%; }
-
-  .mobile-menu {
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
-  }
-
-  .serif-italic {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 600;
-  }
-
-  .cta-btn {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .cta-btn:hover {
-    transform: scale(1.04);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  }
-  .cta-btn:active { transform: scale(0.98); }
-
-  .get-template-btn {
-    transition: background 0.2s, color 0.2s;
-  }
-  .get-template-btn:hover {
-    background: white;
-    color: #111;
-  }
-</style>
 </head>
-<body class="bg-[#e5e7eb] min-h-screen flex items-center justify-center p-4">
+<body class="bg-white text-gray-900">
 
-  <!-- Main container -->
-  <div class="stagger-item delay-bg relative w-full max-w-[1400px] aspect-[4/3] md:aspect-[16/9] min-h-[600px] md:min-h-[800px] rounded-[2rem] overflow-hidden shadow-2xl bg-black">
+<!-- Toast -->
+<div id="toast" role="alert" aria-live="polite">
+  <span class="toast-dot"></span>
+  <span id="toast-msg">Message sent!</span>
+</div>
 
-    <!-- Background video -->
-    <div class="absolute inset-0 w-full h-full">
-      <video
-        autoplay loop muted playsinline
-        class="w-full h-full object-cover opacity-90"
-        src="https://cdn.sceneai.art/Hero%20Section%20Video/e988037c-bf57-4b3b-8ba9-b69167028de8.mp4"
-      ></video>
+
+<!-- ════════════════════════════════════════
+     STICKY SITE NAV (hidden at top, slides in on scroll)
+════════════════════════════════════════ -->
+<header id="site-nav" class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+    <a href="#hero" class="text-gray-900 font-bold text-lg tracking-widest uppercase select-none">
+      Sofia<span style="color:var(--lilac)">.</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#projects"     class="site-nav-link">Projects</a>
+      <a href="#services"     class="site-nav-link">Services</a>
+      <a href="#about"        class="site-nav-link">About</a>
+      <a href="#contact"      class="site-nav-link">Contact</a>
+      <a href="#contact" class="btn-lilac px-5 py-2 rounded-full text-sm font-semibold inline-block">Hire me</a>
+    </nav>
+    <button id="site-menu-toggle" aria-label="Open menu"
+      class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200">
+      <svg id="site-ham"   class="w-5 h-5 text-gray-700"        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <svg id="site-close" class="w-5 h-5 text-gray-700 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div id="site-mobile-menu" class="mobile-menu md:hidden absolute top-16 left-0 w-full bg-white shadow-lg py-4 opacity-0 invisible -translate-y-2">
+    <a href="#projects" class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">Projects</a>
+    <a href="#services"  class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">Services</a>
+    <a href="#about"     class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">About</a>
+    <a href="#contact"   class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">Contact</a>
+    <div class="px-6 pt-3">
+      <a href="#contact" class="btn-lilac block text-center px-5 py-2.5 rounded-full text-sm font-semibold">Hire me</a>
     </div>
+  </div>
+</header>
 
-    <!-- Dark overlay -->
-    <div class="absolute inset-0 bg-black/20"></div>
 
-    <!-- Navigation -->
-    <nav class="stagger-item delay-nav absolute top-0 left-0 w-full p-6 md:p-10 flex justify-between items-start md:items-center z-30">
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section id="hero">
+  <div class="stagger-item delay-0 relative w-full min-h-screen overflow-hidden bg-black">
 
-      <!-- Logo -->
-      <span class="text-white text-2xl font-bold tracking-[0.2em] uppercase select-none">Ratw</span>
+    <div id="hero-glow"></div>
 
-      <!-- Desktop nav -->
-      <div class="hidden md:flex items-center space-x-8">
-        <a href="#" class="nav-link">Home</a>
-        <a href="#" class="nav-link">Pricing</a>
-        <a href="#" class="nav-link">About</a>
-        <a href="#" class="nav-link">Insights</a>
-        <a href="#" class="nav-link">Contact</a>
-        <a href="#" class="get-template-btn ml-2 px-5 py-2 border border-white/70 text-white text-sm font-semibold rounded-full" style="letter-spacing:0.02em;">
-          Get template
-        </a>
+    <!-- Video bg -->
+    <video autoplay loop muted playsinline
+      class="absolute inset-0 w-full h-full object-cover opacity-75"
+      src="https://cdn.sceneai.art/Hero%20Section%20Video/e988037c-bf57-4b3b-8ba9-b69167028de8.mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/65"></div>
+
+    <!-- Hero nav (only visible in hero) -->
+    <nav class="stagger-item delay-1 absolute top-0 left-0 w-full px-6 md:px-10 py-6 flex justify-between items-center z-20">
+      <span class="text-white text-xl font-bold tracking-[0.2em] uppercase select-none">
+        Sofia<span style="color:var(--lilac-light)">.</span>
+      </span>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#projects"  class="nav-link">Projects</a>
+        <a href="#services"  class="nav-link">Services</a>
+        <a href="#about"     class="nav-link">About</a>
+        <a href="#contact"   class="nav-link">Contact</a>
+        <a href="#contact"
+          class="ml-2 px-5 py-2 rounded-full text-sm font-semibold border border-white/60 text-white transition-colors hover:bg-white/15"
+          style="letter-spacing:0.02em;">Hire me</a>
       </div>
-
-      <!-- Mobile nav toggle -->
+      <!-- mobile btn same as site-nav but white version -->
       <div class="relative md:hidden">
-        <button
-          id="menu-toggle"
-          aria-label="Toggle navigation"
-          class="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-xl transition-colors"
-        >
-          <!-- Hamburger icon -->
-          <svg id="icon-hamburger" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-          <!-- Close icon -->
-          <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
+        <button id="hero-menu-toggle" aria-label="Open menu"
+          class="w-11 h-11 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/25 rounded-xl transition-colors">
+          <svg id="hero-ham"   class="w-5 h-5 text-white"        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="hero-close" class="w-5 h-5 text-white hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
-
-        <!-- Mobile dropdown -->
-        <div
-          id="mobile-menu"
-          class="mobile-menu absolute top-16 right-0 w-64 bg-white rounded-2xl shadow-2xl py-2 opacity-0 invisible scale-95 translate-y-[-10px]"
-        >
-          <a href="#" class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 transition-colors">Home</a>
-          <a href="#" class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 transition-colors">Pricing</a>
-          <a href="#" class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 transition-colors">About</a>
-          <a href="#" class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 transition-colors">Insights</a>
-          <a href="#" class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50 transition-colors">Contact</a>
-          <div class="mx-4 my-2 pt-2 border-t border-gray-100">
-            <a href="#" class="block w-full text-center px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-full hover:bg-gray-700 transition-colors">
-              Get template
-            </a>
+        <div id="hero-mobile-menu"
+          class="mobile-menu absolute top-14 right-0 w-56 bg-white rounded-2xl shadow-2xl py-2 opacity-0 invisible scale-95 -translate-y-2">
+          <a href="#projects" class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50">Projects</a>
+          <a href="#services"  class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50">Services</a>
+          <a href="#about"     class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50">About</a>
+          <a href="#contact"   class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50">Contact</a>
+          <div class="mx-4 mt-2 pt-2 border-t border-gray-100">
+            <a href="#contact" class="btn-lilac block text-center px-5 py-2.5 rounded-full text-sm font-semibold">Hire me</a>
           </div>
         </div>
       </div>
     </nav>
 
     <!-- Hero content -->
-    <div class="absolute inset-0 flex flex-col items-center justify-end pb-12 md:pb-24 text-center px-4 z-20">
-
-      <!-- Headline -->
-      <h1 class="stagger-item delay-h1 text-[58px] leading-[1.08] font-semibold text-white mb-5 tracking-[-0.02em]">
-        Plan better,
-        <br class="hidden md:block">
-        start your day <span class="serif-italic">right</span>
+    <div class="relative z-10 min-h-screen flex flex-col items-center justify-end pb-20 md:pb-32 text-center px-6">
+      <div class="stagger-item delay-1 mb-4 inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/75 text-xs font-medium tracking-widest uppercase">
+        <span class="section-dot" style="background:var(--lilac-light)"></span>
+        Designer &amp; Creative Director
+      </div>
+      <h1 class="stagger-item delay-2 text-[50px] md:text-[74px] leading-[1.04] font-semibold text-white mb-5 tracking-[-0.025em]">
+        Design that<br><span class="serif-italic">moves</span> people
       </h1>
-
-      <!-- Subheadline -->
-      <p class="stagger-item delay-p text-white/90 text-[18px] md:text-[20px] font-normal leading-relaxed mb-10">
-        A smarter planner for tasks<br>
-        priorities and daily structure
+      <p class="stagger-item delay-3 text-white/75 text-lg md:text-xl leading-relaxed mb-10 max-w-md">
+        UX · UI · Motion · Brand · Social Media
       </p>
+      <div class="stagger-item delay-4 flex flex-col sm:flex-row gap-4 items-center">
+        <a href="#projects" class="btn-lilac inline-flex items-center gap-2 font-semibold text-[15px] px-8 py-4 rounded-full">
+          View my work
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        <a href="#contact" class="btn-ghost-white inline-flex items-center gap-2 font-semibold text-[15px] px-8 py-4 rounded-full">
+          Get in touch
+        </a>
+      </div>
+    </div>
 
-      <!-- CTA button -->
-      <a
-        href="#"
-        class="stagger-item delay-btn cta-btn inline-flex items-center gap-2 bg-white text-gray-900 font-semibold text-[15px] px-8 py-4 rounded-full"
-      >
-        Create your plan
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-        </svg>
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 stagger-item delay-4">
+      <span class="text-white/35 text-[10px] tracking-[0.2em] uppercase">Scroll</span>
+      <div class="w-px h-10 bg-gradient-to-b from-white/30 to-transparent"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     MARQUEE STRIP
+════════════════════════════════════════ -->
+<div class="overflow-hidden py-5 border-y border-gray-100 bg-white select-none" aria-hidden="true">
+  <div class="marquee-track" id="marquee-track">
+    <!-- JS duplicates for loop -->
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PROJECTS
+════════════════════════════════════════ -->
+<section id="projects" class="py-24 px-6 md:px-10 bg-white">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="reveal mb-14">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color:var(--lilac)">
+        <span class="lilac-line"></span>Selected Work
+      </p>
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <h2 class="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
+          Projects that<br><span class="serif-italic">speak for themselves</span>
+        </h2>
+        <p class="text-gray-400 text-sm max-w-xs md:text-right leading-relaxed">
+          Click any project to open it — links to Behance, live sites, or case study pages.
+        </p>
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="reveal mb-8 flex flex-wrap gap-2" id="filter-bar" role="group" aria-label="Filter projects by category">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="ux">UX</button>
+      <button class="filter-btn" data-filter="ui">UI</button>
+      <button class="filter-btn" data-filter="graphic">Graphic</button>
+      <button class="filter-btn" data-filter="social">Social Media</button>
+      <button class="filter-btn" data-filter="video">Video</button>
+      <button class="filter-btn" data-filter="motion">Motion</button>
+    </div>
+
+    <!-- Grid — all cards equal height, 3 cols desktop -->
+    <!--
+      HOW TO ADD A PROJECT:
+      1. Add a new <div class="project-item" data-category="ux ui"> block below
+      2. Set data-url to: an external URL (https://behance.net/...), or a local file (projects/my-project.html)
+      3. Set data-category to one or more of: ux, ui, graphic, social, video, motion
+      4. Replace the img src with your project image
+    -->
+    <div id="projects-grid">
+
+      <!-- ① Mobile Banking App — UX/UI -->
+      <div class="project-item" data-category="ux ui"
+           data-url="https://behance.net" data-title="App Redesign — Mobile Banking">
+        <div class="project-card bg-gray-100">
+          <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=700&q=80"
+               alt="Mobile Banking App Redesign">
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">App Redesign — Mobile Banking</h3>
+            <p class="text-white/65 text-sm mb-1">Full UX research + UI system</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">UX / UI</span>
+        </div>
+      </div>
+
+      <!-- ② Brand Identity — Graphic -->
+      <div class="project-item" data-category="graphic"
+           data-url="https://behance.net" data-title="Brand Identity — Studio">
+        <div class="project-card bg-gray-100">
+          <img src="https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=700&q=80"
+               alt="Brand Identity Studio">
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">Graphic</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">Brand Identity — Studio</h3>
+            <p class="text-white/65 text-sm mb-1">Logo · Typography · Color system</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">Graphic</span>
+        </div>
+      </div>
+
+      <!-- ③ Motion Reel — Video -->
+      <div class="project-item" data-category="video motion"
+           data-url="https://vimeo.com" data-title="Motion Reel 2024">
+        <div class="project-card bg-gray-900">
+          <video autoplay loop muted playsinline class="opacity-80"
+            src="https://cdn.sceneai.art/Hero%20Section%20Video/e988037c-bf57-4b3b-8ba9-b69167028de8.mp4">
+          </video>
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">Video · Motion</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">Reel — Motion Design 2024</h3>
+            <p class="text-white/65 text-sm mb-1">After Effects · Premiere Pro</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">Video</span>
+          <div class="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center" style="background:var(--lilac)">
+            <svg class="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ Social Campaign -->
+      <div class="project-item" data-category="social"
+           data-url="https://instagram.com" data-title="Social Campaign — Fashion Brand">
+        <div class="project-card bg-gray-100">
+          <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=700&q=80"
+               alt="Social Campaign Fashion Brand">
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">Social Media</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">Social Campaign — Fashion Brand</h3>
+            <p class="text-white/65 text-sm mb-1">Instagram · Reels · Stories</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">Social</span>
+        </div>
+      </div>
+
+      <!-- ⑤ Design System -->
+      <div class="project-item" data-category="ui graphic"
+           data-url="https://behance.net" data-title="Design System — SaaS Platform">
+        <div class="project-card bg-gray-100">
+          <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=700&q=80"
+               alt="Design System SaaS">
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UI · Graphic</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">Design System — SaaS Platform</h3>
+            <p class="text-white/65 text-sm mb-1">Component library · Figma tokens</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">UI / Graphic</span>
+        </div>
+      </div>
+
+      <!-- ⑥ UX Research -->
+      <div class="project-item" data-category="ux"
+           data-url="https://behance.net" data-title="UX Research — E-commerce Flow">
+        <div class="project-card bg-gray-100">
+          <img src="https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?w=700&q=80"
+               alt="UX Research Ecommerce">
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">UX Research — E-commerce Flow</h3>
+            <p class="text-white/65 text-sm mb-1">User interviews · Wireframes · Testing</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">UX</span>
+        </div>
+      </div>
+
+    </div><!-- /projects-grid -->
+
+    <div class="reveal mt-12 text-center">
+      <a href="https://behance.net" target="_blank" rel="noopener"
+         class="btn-outline inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold">
+        View all on Behance
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     SERVICES
+════════════════════════════════════════ -->
+<section id="services" class="py-24 px-6 md:px-10 bg-gray-50">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="reveal mb-14 text-center">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color:var(--lilac)">
+        <span class="lilac-line"></span>What I do
+      </p>
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
+        Services built to<br><span class="serif-italic">grow your brand</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="reveal service-card">
+        <div class="service-icon">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">UX / UI Design</h3>
+        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          Research-driven experiences that convert. From wireframes to pixel-perfect interfaces — for web, mobile, and SaaS products.
+        </p>
+        <ul class="space-y-1.5">
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>User research &amp; personas</li>
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Wireframing &amp; prototyping</li>
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Design systems in Figma</li>
+        </ul>
+      </div>
+
+      <div class="reveal service-card" style="transition-delay:0.1s">
+        <div class="service-icon">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Motion &amp; Video</h3>
+        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          Animations and videos that communicate, engage, and stop the scroll. For brands, apps, and social media.
+        </p>
+        <ul class="space-y-1.5">
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Motion graphics (After Effects)</li>
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Brand reels &amp; showreels</li>
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Video editing &amp; post-production</li>
+        </ul>
+      </div>
+
+      <div class="reveal service-card" style="transition-delay:0.2s">
+        <div class="service-icon">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Brand &amp; Social</h3>
+        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          Visual identities that are memorable and consistent across every platform — from logo to Instagram grid.
+        </p>
+        <ul class="space-y-1.5">
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Logo &amp; brand identity</li>
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Social media strategy &amp; content</li>
+          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Graphic design &amp; print</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     CTA BAND
+════════════════════════════════════════ -->
+<section class="cta-band py-20 px-6 md:px-10">
+  <div class="max-w-4xl mx-auto text-center reveal">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-widest uppercase mb-6">
+      <span class="section-dot" style="background:var(--lilac-light)"></span>
+      Available for new projects
+    </div>
+    <h2 class="text-4xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">
+      Ready to bring your<br><span class="serif-italic">vision to life?</span>
+    </h2>
+    <p class="text-white/55 text-lg mb-10 max-w-lg mx-auto leading-relaxed">
+      Whether you're a startup building your brand or a company refreshing its digital presence — let's create something great.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#contact" class="btn-lilac inline-flex items-center justify-center gap-2 font-semibold text-[15px] px-9 py-4 rounded-full">
+        Start a project
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+      <a href="#projects" class="btn-ghost-white inline-flex items-center justify-center gap-2 font-semibold text-[15px] px-9 py-4 rounded-full">
+        See my work first
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════ -->
+<section class="py-24 px-6 md:px-10 bg-white">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="reveal mb-14">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color:var(--lilac)">
+        <span class="lilac-line"></span>Testimonials
+      </p>
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
+        What clients<br><span class="serif-italic">say about the work</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="reveal testimonial-card">
+        <div class="flex gap-1 mb-4">
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5 italic">
+          "Sofia completely transformed our brand presence. The visual identity she created is exactly what we needed — modern, clean, and instantly recognizable."
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">AM</div>
+          <div>
+            <div class="text-sm font-semibold text-gray-900">Ana M.</div>
+            <div class="text-xs text-gray-400">Co-founder, Studio Noura</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal testimonial-card" style="transition-delay:0.1s">
+        <div class="flex gap-1 mb-4">
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5 italic">
+          "The UX redesign improved our onboarding completion rate by 40%. Sofia brings both strategic thinking and beautiful execution — a rare combination."
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">CR</div>
+          <div>
+            <div class="text-sm font-semibold text-gray-900">Carlos R.</div>
+            <div class="text-xs text-gray-400">Product Manager, FinTech Startup</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal testimonial-card" style="transition-delay:0.2s">
+        <div class="flex gap-1 mb-4">
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed mb-5 italic">
+          "Our social media engagement tripled after working with Sofia. Her content strategy and visual storytelling are world-class."
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">LT</div>
+          <div>
+            <div class="text-sm font-semibold text-gray-900">Laura T.</div>
+            <div class="text-xs text-gray-400">Marketing Director, Fashion Brand</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════ -->
+<section id="about" class="py-24 px-6 md:px-10 bg-gray-50">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+
+    <div class="reveal-left">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-4" style="color:var(--lilac)">
+        <span class="lilac-line"></span>About me
+      </p>
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-tight leading-tight mb-6">
+        Design is how I<br><span class="serif-italic">think out loud</span>
+      </h2>
+      <p class="text-gray-500 text-lg leading-relaxed mb-5">
+        I'm a multidisciplinary designer specializing in UX/UI, motion design, brand identity, and visual communication. I create experiences that are both beautiful and purposeful.
+      </p>
+      <p class="text-gray-400 leading-relaxed mb-8">
+        With a strong foundation in design thinking and a passion for animation, I bridge the gap between strategy and aesthetics — helping brands connect with their audience in meaningful ways.
+      </p>
+      <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="text-center p-4 bg-white rounded-2xl shadow-sm">
+          <div class="text-3xl font-bold text-gray-900 mb-1">50<span style="color:var(--lilac)">+</span></div>
+          <div class="text-xs text-gray-400 font-medium uppercase tracking-wider">Projects</div>
+        </div>
+        <div class="text-center p-4 bg-white rounded-2xl shadow-sm">
+          <div class="text-3xl font-bold text-gray-900 mb-1">3<span style="color:var(--lilac)">+</span></div>
+          <div class="text-xs text-gray-400 font-medium uppercase tracking-wider">Years exp.</div>
+        </div>
+        <div class="text-center p-4 bg-white rounded-2xl shadow-sm">
+          <div class="text-3xl font-bold text-gray-900 mb-1">20<span style="color:var(--lilac)">+</span></div>
+          <div class="text-xs text-gray-400 font-medium uppercase tracking-wider">Clients</div>
+        </div>
+      </div>
+      <a href="#contact" class="btn-lilac inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-sm">
+        Work with me
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </a>
     </div>
 
+    <div class="reveal">
+      <div class="relative">
+        <div class="rounded-3xl overflow-hidden aspect-[4/5] bg-gray-200">
+          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=700&q=80"
+               alt="Sofia — designer" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl px-5 py-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--lilac-pale)">
+            <svg class="w-5 h-5" style="color:var(--lilac)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="text-xs text-gray-400">Available for</div>
+            <div class="text-sm font-semibold text-gray-900">Freelance work</div>
+          </div>
+        </div>
+        <div class="absolute -top-4 -right-4 w-24 h-24 opacity-25"
+          style="background-image: radial-gradient(var(--lilac) 1.5px, transparent 1.5px); background-size: 8px 8px;">
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <script>
-    const toggle = document.getElementById('menu-toggle');
-    const menu   = document.getElementById('mobile-menu');
-    const ham    = document.getElementById('icon-hamburger');
-    const close  = document.getElementById('icon-close');
-    let open = false;
 
-    toggle.addEventListener('click', () => {
-      open = !open;
-      ham.classList.toggle('hidden', open);
-      close.classList.toggle('hidden', !open);
+<!-- ════════════════════════════════════════
+     CONTACT
+════════════════════════════════════════ -->
+<section id="contact" class="py-24 px-6 md:px-10 bg-white">
+  <div class="max-w-4xl mx-auto">
 
-      if (open) {
-        menu.classList.remove('opacity-0', 'invisible', 'scale-95', 'translate-y-[-10px]');
-        menu.classList.add('opacity-100', 'visible', 'scale-100', 'translate-y-0');
-      } else {
-        menu.classList.add('opacity-0', 'invisible', 'scale-95', 'translate-y-[-10px]');
-        menu.classList.remove('opacity-100', 'visible', 'scale-100', 'translate-y-0');
-      }
-    });
+    <div class="reveal text-center mb-14">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color:var(--lilac)">
+        <span class="lilac-line"></span>Contact
+      </p>
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-tight leading-tight mb-4">
+        Let's create something<br><span class="serif-italic">great together</span>
+      </h2>
+      <p class="text-gray-400 text-lg max-w-md mx-auto leading-relaxed">
+        Have a project in mind? I'd love to hear about it.
+      </p>
+    </div>
 
-    document.addEventListener('click', (e) => {
-      if (open && !toggle.contains(e.target) && !menu.contains(e.target)) {
-        open = false;
-        ham.classList.remove('hidden');
-        close.classList.add('hidden');
-        menu.classList.add('opacity-0', 'invisible', 'scale-95', 'translate-y-[-10px]');
-        menu.classList.remove('opacity-100', 'visible', 'scale-100', 'translate-y-0');
-      }
-    });
-  </script>
+    <div class="reveal bg-gray-50 rounded-3xl p-8 md:p-12">
+      <form id="contact-form" class="space-y-5" novalidate>
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1.5">Name <span class="text-red-400">*</span></label>
+            <input id="name" name="name" type="text" required class="form-input" placeholder="Your name" autocomplete="name">
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">Email <span class="text-red-400">*</span></label>
+            <input id="email" name="email" type="email" required class="form-input" placeholder="your@email.com" autocomplete="email">
+          </div>
+        </div>
+        <div>
+          <label for="project-type" class="block text-sm font-medium text-gray-700 mb-1.5">Project type</label>
+          <select id="project-type" name="project_type" class="form-input">
+            <option value="" disabled selected>Select a category…</option>
+            <option value="ux">UX Design</option>
+            <option value="ui">UI Design</option>
+            <option value="motion">Motion / Video</option>
+            <option value="brand">Brand Identity</option>
+            <option value="social">Social Media</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="message" class="block text-sm font-medium text-gray-700 mb-1.5">Message <span class="text-red-400">*</span></label>
+          <textarea id="message" name="message" required class="form-input resize-none" rows="5"
+            placeholder="Tell me about your project…"></textarea>
+        </div>
+        <button type="submit" id="submit-btn"
+          class="btn-lilac w-full py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-2">
+          Send message
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </button>
+      </form>
+
+      <div class="mt-8 pt-8 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4">
+        <span class="text-sm text-gray-400">Or find me on</span>
+        <div class="flex gap-3">
+          <a href="#" class="social-icon" aria-label="Behance">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7.443 5.35c.639 0 1.23.05 1.77.198.541.099.984.297 1.377.544.394.247.689.594.886 1.039.198.445.297.98.297 1.583 0 .693-.148 1.287-.493 1.731-.297.445-.74.79-1.328 1.088.791.247 1.385.693 1.779 1.336.394.643.591 1.386.591 2.227 0 .692-.148 1.286-.395 1.78-.246.494-.591.939-1.03 1.286-.445.347-.935.594-1.525.742-.59.148-1.18.247-1.82.247H1V5.35h6.443zm-.346 5.448c.542 0 .984-.148 1.328-.395.345-.297.493-.742.493-1.336 0-.297-.05-.594-.148-.791-.099-.247-.247-.444-.444-.593-.198-.148-.395-.248-.643-.297a3.37 3.37 0 00-.788-.1H3.744v3.512h3.353zm.148 5.745c.296 0 .591-.049.887-.099.295-.099.541-.198.787-.396.198-.148.395-.395.493-.643.099-.247.198-.593.198-.989 0-.791-.197-1.385-.64-1.78-.444-.396-1.033-.544-1.773-.544H3.744v4.45h3.501zm9.728-7.177c.74 0 1.377.148 1.968.395.59.247 1.08.593 1.475 1.039.394.444.69.988.886 1.582.198.593.296 1.285.296 2.028v.593H14.6v.099c0 .692.197 1.237.591 1.632.395.395.935.593 1.574.593.494 0 .935-.099 1.28-.346.346-.247.591-.544.74-.89h2.707c-.395 1.039-1.032 1.83-1.87 2.374-.838.544-1.87.84-3.055.84-.887 0-1.674-.148-2.412-.395a5.38 5.38 0 01-1.82-1.14c-.493-.494-.886-1.088-1.131-1.83-.247-.741-.395-1.582-.395-2.52 0-.89.148-1.731.395-2.473.296-.742.64-1.385 1.13-1.88.494-.494 1.082-.89 1.77-1.138.69-.247 1.426-.363 2.265-.363zm-.05 2.027c-.59 0-1.08.198-1.427.544-.345.346-.59.84-.69 1.484h4.209c-.05-.593-.247-1.088-.59-1.434-.345-.397-.84-.594-1.502-.594zm-1.475-4.845h4.7v1.335h-4.7V6.548z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="LinkedIn">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Instagram">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="bg-gray-900 text-white">
+  <div class="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-8">
+    <div class="grid md:grid-cols-4 gap-10 pb-12 border-b border-gray-800">
+
+      <div class="md:col-span-2">
+        <div class="text-2xl font-bold tracking-widest uppercase mb-4">Sofia<span style="color:var(--lilac)">.</span></div>
+        <p class="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
+          Multidisciplinary designer crafting thoughtful experiences through UX, UI, motion, and brand design.
+        </p>
+        <div class="flex gap-3">
+          <a href="#" class="social-icon social-icon-dark" aria-label="Behance">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7.443 5.35c.639 0 1.23.05 1.77.198.541.099.984.297 1.377.544.394.247.689.594.886 1.039.198.445.297.98.297 1.583 0 .693-.148 1.287-.493 1.731-.297.445-.74.79-1.328 1.088.791.247 1.385.693 1.779 1.336.394.643.591 1.386.591 2.227 0 .692-.148 1.286-.395 1.78-.246.494-.591.939-1.03 1.286-.445.347-.935.594-1.525.742-.59.148-1.18.247-1.82.247H1V5.35h6.443zm-.346 5.448c.542 0 .984-.148 1.328-.395.345-.297.493-.742.493-1.336 0-.297-.05-.594-.148-.791-.099-.247-.247-.444-.444-.593-.198-.148-.395-.248-.643-.297a3.37 3.37 0 00-.788-.1H3.744v3.512h3.353zm.148 5.745c.296 0 .591-.049.887-.099.295-.099.541-.198.787-.396.198-.148.395-.395.493-.643.099-.247.198-.593.198-.989 0-.791-.197-1.385-.64-1.78-.444-.396-1.033-.544-1.773-.544H3.744v4.45h3.501zm9.728-7.177c.74 0 1.377.148 1.968.395.59.247 1.08.593 1.475 1.039.394.444.69.988.886 1.582.198.593.296 1.285.296 2.028v.593H14.6v.099c0 .692.197 1.237.591 1.632.395.395.935.593 1.574.593.494 0 .935-.099 1.28-.346.346-.247.591-.544.74-.89h2.707c-.395 1.039-1.032 1.83-1.87 2.374-.838.544-1.87.84-3.055.84-.887 0-1.674-.148-2.412-.395a5.38 5.38 0 01-1.82-1.14c-.493-.494-.886-1.088-1.131-1.83-.247-.741-.395-1.582-.395-2.52 0-.89.148-1.731.395-2.473.296-.742.64-1.385 1.13-1.88.494-.494 1.082-.89 1.77-1.138.69-.247 1.426-.363 2.265-.363zm-.05 2.027c-.59 0-1.08.198-1.427.544-.345.346-.59.84-.69 1.484h4.209c-.05-.593-.247-1.088-.59-1.434-.345-.397-.84-.594-1.502-.594zm-1.475-4.845h4.7v1.335h-4.7V6.548z"/></svg>
+          </a>
+          <a href="#" class="social-icon social-icon-dark" aria-label="LinkedIn">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="#" class="social-icon social-icon-dark" aria-label="Instagram">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-gray-500 mb-4">Navigate</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#hero"     class="footer-link">Home</a></li>
+          <li><a href="#projects" class="footer-link">Projects</a></li>
+          <li><a href="#services" class="footer-link">Services</a></li>
+          <li><a href="#about"    class="footer-link">About</a></li>
+          <li><a href="#contact"  class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-gray-500 mb-4">Services</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#services" class="footer-link">UX Design</a></li>
+          <li><a href="#services" class="footer-link">UI Design</a></li>
+          <li><a href="#services" class="footer-link">Motion &amp; Video</a></li>
+          <li><a href="#services" class="footer-link">Brand Identity</a></li>
+          <li><a href="#services" class="footer-link">Social Media</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-gray-500 text-sm">© 2026 Sofia. All rights reserved.</p>
+      <p class="text-gray-600 text-xs">Designed &amp; built with <span style="color:var(--lilac)">♥</span></p>
+    </div>
+  </div>
+</footer>
+
+
+<script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -99,6 +99,19 @@ body { font-family: 'Inter', sans-serif; }
 
 .mobile-menu { transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s; }
 
+/* ── Hero content safety net for short viewports ──
+   .hero-content is bottom-anchored on desktop (justify-end) and centered on
+   mobile. On short viewports (small phones, or any phone with the browser's
+   address bar reducing visible height) the stacked badge/heading/paragraph/
+   buttons could still be taller than the space below the top nav, pushing
+   the "Multidisciplinary Designer" badge up into the logo/hamburger. This
+   shrinks the stack further so it always clears the nav's ~92px height. */
+@media (max-height: 700px) and (max-width: 767px) {
+  .hero-content { padding-top: 5.5rem !important; padding-bottom: 2rem !important; }
+  .hero-content h1 { font-size: clamp(30px, 9vw, 42px) !important; margin-bottom: 0.75rem !important; }
+  .hero-content p { margin-bottom: 1.5rem !important; }
+}
+
 /* ── Typography ── */
 .serif-italic {
   font-family: 'Playfair Display', serif;
@@ -195,6 +208,17 @@ body { font-family: 'Inter', sans-serif; }
 .project-item { display: block; }
 .project-item.hidden-item { display: none; }
 
+/* ── Tool icons ── always-visible pill (mirrors the category tag on the
+   opposite corner) showing which software was used on a project. Icons
+   only, no labels — see index.html comment above the grid for the legend. */
+.tool-icons {
+  position: absolute; bottom: 1rem; right: 1rem; z-index: 1;
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 9px; background: rgba(255,255,255,0.92);
+  border-radius: 9999px;
+}
+.tool-icons svg { width: 13px; height: 13px; color: #4b5563; flex-shrink: 0; }
+
 .project-card {
   position: relative;
   height: 300px;
@@ -235,6 +259,33 @@ body { font-family: 'Inter', sans-serif; }
   transition: background 0.2s;
 }
 .card-open-btn:hover { background: var(--lilac-dark); }
+
+/* ── Multi-link project card (UX/UI case studies with sub-pages) ──
+   Standard for UX/UI projects: omit data-url on .project-item and add
+   a .project-links block with up to 3 anchors (Design System / Brand
+   Book / Página Web). The whole-card click is automatically disabled
+   (see main.js) since there is no single data-url to open. ── */
+.project-item:not([data-url]) .project-card { cursor: default; }
+.project-links {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+.project-link-btn {
+  flex: 1 1 auto;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.55rem 0.75rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--lilac);
+  color: var(--lilac);
+  background: transparent;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+.project-link-btn:hover { background: var(--lilac); color: white; }
 
 /* ── Services ── */
 .service-card {
@@ -315,6 +366,36 @@ body { font-family: 'Inter', sans-serif; }
   border-color: var(--lilac);
   color: var(--lilac);
   background: rgba(155,111,204,0.15);
+}
+.social-icon-sm { width: 34px; height: 34px; }
+.social-icon-nav-light {
+  border-color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.85);
+}
+.social-icon-nav-light:hover {
+  border-color: var(--lilac-light);
+  color: white;
+  background: rgba(255,255,255,0.12);
+}
+
+/* ── WhatsApp floating button ── */
+.whatsapp-float {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 40;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--lilac);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 20px rgba(155,111,204,0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.whatsapp-float:hover {
+  background: var(--lilac-dark);
+  transform: scale(1.06);
+  box-shadow: 0 10px 28px rgba(155,111,204,0.45);
 }
 
 /* ── Footer ── */

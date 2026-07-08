@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Redesign — Brand Book</title>
+<meta name="description" content="Lineamientos de marca del rediseño conceptual del home de Amazon: logo, paleta, tipografía, tono de voz e imaginería. Case study de UX/UI por Sofia Hualpa.">
+<meta name="robots" content="noindex, nofollow">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+<!-- Colors are NOT redeclared here — every swatch below reads live from
+     amazon-redesign-tokens.css via Tailwind arbitrary values (bg-[var(--az-blue)]).
+     This is the single source of truth shared with the website and the Design System;
+     a previous version of this file hardcoded its own values here and drifted out of
+     sync with a token update (price color) — see Gobernanza in the Design System. -->
+<link rel="stylesheet" href="amazon-redesign-tokens.css">
+</head>
+<body class="bg-white text-gray-900" style="font-family:'Plus Jakarta Sans',sans-serif;">
+
+<div class="max-w-5xl mx-auto px-6 py-10">
+
+  <a href="../index.html#projects" class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--az-blue)]">
+    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+    Volver al portafolio
+  </a>
+
+  <header class="mt-8 mb-16">
+    <span class="text-xs font-semibold tracking-widest uppercase text-[var(--az-blue)]">UX · UI · Brand Book</span>
+    <h1 class="text-4xl font-bold mt-2">Amazon — Home Redesign</h1>
+    <p class="text-gray-500 mt-3 max-w-2xl">Lineamientos visuales y de tono para el rediseño conceptual del home de Amazon: una versión simplificada de uno de los e-commerce más cargados del mercado.</p>
+  </header>
+
+  <!-- CONCEPTO -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold mb-3">El concepto</h2>
+    <p class="text-gray-600 max-w-2xl leading-relaxed">El home actual de Amazon acumula banners, carruseles y bloques de texto compitiendo por atención. Este rediseño parte de una idea simple: <strong class="text-gray-900">menos elementos, jerarquía más clara</strong>. Se reduce la paleta a un solo azul de confianza sobre navy neutra, se ordena la tipografía en 3 niveles y cada sección tiene un único propósito (buscar, filtrar, comprar, confiar).</p>
+  </section>
+
+  <!-- LOGO -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold mb-6">Logo &amp; uso</h2>
+    <div class="flex flex-wrap gap-6 items-center">
+      <div class="bg-[var(--az-navy)] rounded-2xl p-10 flex items-center justify-center" style="width:280px;">
+        <img src="images/amazon-redesign/logo.png" alt="Logo Amazon" class="h-10">
+      </div>
+      <div class="border border-gray-200 rounded-2xl p-10 flex items-center justify-center" style="width:280px;">
+        <img src="images/amazon-redesign/logo.png" alt="Logo Amazon" class="h-10">
+      </div>
+    </div>
+    <ul class="text-sm text-gray-600 mt-5 space-y-1.5 list-disc pl-5">
+      <li>Funciona sobre fondo navy (header/footer) y sobre blanco (cards, documentos).</li>
+      <li>Mantener un margen de seguridad mínimo equivalente a la altura de la "A" del isotipo.</li>
+      <li>Nunca recolorear, rotar ni aplicar sombras al logo.</li>
+    </ul>
+  </section>
+
+  <!-- PALETA -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold mb-6">Paleta reducida</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div><div class="h-20 rounded-xl bg-[var(--az-blue)]"></div><p class="text-sm font-semibold mt-2">Blue</p><p class="text-xs text-gray-400 font-mono">#0B75FB</p></div>
+      <div><div class="h-20 rounded-xl bg-[var(--az-navy)]"></div><p class="text-sm font-semibold mt-2">Navy</p><p class="text-xs text-gray-400 font-mono">#131921</p></div>
+      <div><div class="h-20 rounded-xl bg-[var(--az-price)]"></div><p class="text-sm font-semibold mt-2">Price</p><p class="text-xs text-gray-400 font-mono">#3560BD</p></div>
+      <div><div class="h-20 rounded-xl bg-gray-50 border border-gray-200"></div><p class="text-sm font-semibold mt-2">Background</p><p class="text-xs text-gray-400 font-mono">#FAFBFD</p></div>
+    </div>
+    <p class="text-sm text-gray-500 mt-5 max-w-2xl">Un solo azul reemplaza la mezcla naranja/amarillo/negro del original: reduce ruido y refuerza la sensación de marketplace confiable. Ver la <a href="amazon-redesign-design-system.html" class="text-[var(--az-blue)] font-semibold underline">paleta completa en el Design System</a>.</p>
+  </section>
+
+  <!-- TIPOGRAFÍA -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold mb-6">Tipografía</h2>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div>
+        <p class="text-3xl font-bold">Plus Jakarta Sans</p>
+        <p class="text-sm text-gray-500 mt-2">Headings, navegación, botones y precios. Geométrica y directa — sostiene la jerarquía sin decoración de más.</p>
+      </div>
+      <div>
+        <p class="text-3xl" style="font-family:'Rubik',sans-serif;">Rubik</p>
+        <p class="text-sm text-gray-500 mt-2">Rating y testimonios. Más redonda y cercana, para la voz de los clientes reales.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TONO DE VOZ -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold mb-6">Tono de voz</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="border border-gray-200 rounded-2xl p-6">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[var(--az-blue)] mb-3">Usamos</p>
+        <ul class="text-sm text-gray-600 space-y-2">
+          <li>"Todo lo que necesitas en un solo lugar" — directo, en segunda persona.</li>
+          <li>"Completa los datos" / "Filtrar" — instrucciones cortas, un verbo por acción.</li>
+          <li>"¡Pide ya!" — urgencia puntual, solo en promos, nunca en navegación.</li>
+        </ul>
+      </div>
+      <div class="border border-gray-200 rounded-2xl p-6">
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Evitamos</p>
+        <ul class="text-sm text-gray-600 space-y-2">
+          <li>Mayúsculas sostenidas o múltiples signos de exclamación.</li>
+          <li>Más de un CTA compitiendo por atención en la misma sección.</li>
+          <li>Tecnicismos de e-commerce (SKU, checkout) en cara al usuario.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMAGINERÍA -->
+  <section class="mb-16">
+    <h2 class="text-xl font-bold mb-6">Imaginería</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+      <img src="images/amazon-redesign/producto-1-crop.jpg" class="rounded-xl aspect-square object-cover" alt="Producto">
+      <img src="images/amazon-redesign/producto-5-crop.jpg" class="rounded-xl aspect-square object-cover" alt="Producto">
+      <img src="images/amazon-redesign/producto-6.jpg" class="rounded-xl aspect-square object-cover" alt="Producto">
+      <img src="images/amazon-redesign/hero-banner.jpg" class="rounded-xl aspect-square object-cover" alt="Banner">
+    </div>
+    <p class="text-sm text-gray-500 max-w-2xl">Fotografía de producto sobre fondo neutro, mismo encuadre y proporción 1:1 en todo el grid. Fotografía de personas siempre en contexto real de uso (nunca stock genérico posando a cámara).</p>
+  </section>
+
+  <!-- DO / DON'T -->
+  <section>
+    <h2 class="text-xl font-bold mb-6">Antes / Después</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="border border-gray-200 rounded-2xl p-6">
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Amazon original</p>
+        <p class="text-sm text-gray-600">Decenas de carruseles apilados sin jerarquía clara, mezcla de tipografías y colores compitiendo por atención, CTAs repetidos por toda la página.</p>
+      </div>
+      <div class="border border-[var(--az-blue)] rounded-2xl p-6">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[var(--az-blue)] mb-3">Este rediseño</p>
+        <p class="text-sm text-gray-600">Una acción principal por sección, un solo acento de color, tipografía consistente en 3 niveles y espacio en blanco real entre bloques.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

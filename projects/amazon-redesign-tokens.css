@@ -1,0 +1,140 @@
+/* Amazon Redesign case study — shared design tokens.
+   Used by amazon-redesign-website.html and amazon-redesign-design-system.html
+   so the palette, radii and shadows only live in one place. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --az-blue: #0b75fb;
+  --az-blue-dark: #085dc7;
+  --az-blue-darker: #074a9e;
+  --az-blue-pale: #e8f1ff;
+  /* Lighter tint of the brand blue — reserved for text/accents placed over dark
+     photography, where the saturated --az-blue doesn't hold enough contrast. */
+  --az-blue-tint: #4fa2ff;
+  --az-navy: #131921;
+  --az-navy-border: #486284;
+  /* Precio: oscurecido de #4875ce a #3560bd para alcanzar 5.9:1 sobre blanco (WCAG AA) */
+  --az-price: #3560bd;
+  /* Oferta: de #e0393e a #cf2f34 -> 5.1:1 con texto blanco (WCAG AA) */
+  --az-deal: #cf2f34;
+  /* Éxito: de #1c9d5f a #17864f -> 4.6:1 con texto blanco (WCAG AA) */
+  --az-success: #17864f;
+  --az-text: #1a202c;
+  /* rgba(26,32,44,.68) on white = ~5.6:1 contrast (WCAG AA requires 4.5:1) */
+  --az-text-mid: rgba(26,32,44,0.68);
+  --az-bg: #ffffff;
+  --az-bg-light: #fafbfd;
+  --az-white: #ffffff;
+  --az-star: #ffb020;
+  --az-gray-50: #f4f6f9;
+  --az-gray-100: #eef0f3;
+  --az-gray-200: #e5e8ee;
+  --az-gray-300: #dfe3e9;
+  --az-gray-400: #b9c2cf;
+  --az-border-subtle: rgba(19,25,33,.05);
+  --az-shadow-navy: rgba(11,20,32,.16);
+  --az-radius-sm: 8px;
+  --az-radius-md: 10px;
+  --az-radius-lg: 20px;
+  --az-radius-xl: 28px;
+  --az-radius-full: 999px;
+  --az-shadow-card: 0 2.5px 1.75px rgba(0,0,0,0.25);
+  --az-shadow-cart: 0 4px 2px rgba(0,0,0,0.25);
+  --az-shadow-testimonial: 0 4px 20px rgba(63,62,62,0.25);
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Rubik', sans-serif;
+
+  /* ---------- Spacing scale (4px base grid) ----------
+     Use these instead of ad-hoc px values for new padding/margin/gap.
+     Existing components keep their original values to avoid regressions;
+     this scale is the reference for anything built from here on. */
+  --az-space-1: 4px;
+  --az-space-2: 8px;
+  --az-space-3: 12px;
+  --az-space-4: 16px;
+  --az-space-5: 20px;
+  --az-space-6: 24px;
+  --az-space-7: 32px;
+  --az-space-8: 40px;
+  --az-space-9: 48px;
+  --az-space-10: 64px;
+
+  /* ---------- Type scale ----------
+     Pair a size with the matching line-height token below. */
+  --az-fs-xs: 12px;
+  --az-fs-sm: 13px;
+  --az-fs-base: 15px;
+  --az-fs-md: 16px;
+  --az-fs-lg: 18px;
+  --az-fs-xl: 22px;
+  --az-fs-2xl: 28px;
+  --az-fs-3xl: 36px;
+  --az-fs-display: clamp(28px, 5vw, 52px);
+
+  --az-lh-tight: 1.15;
+  --az-lh-snug: 1.3;
+  --az-lh-normal: 1.5;
+  --az-lh-relaxed: 1.6;
+
+  --az-fw-regular: 400;
+  --az-fw-medium: 500;
+  --az-fw-semibold: 600;
+  --az-fw-bold: 700;
+  --az-fw-extrabold: 800;
+
+  /* ---------- Breakpoints (reference only) ----------
+     CSS custom properties can't be read inside @media conditions —
+     these exist so every @media rule in the project uses the SAME three
+     numbers instead of drifting (e.g. 767px vs 768px vs 770px). */
+  --az-bp-sm: 480px;
+  --az-bp-md: 768px;
+  --az-bp-lg: 1024px;
+  --az-bp-xl: 1440px;
+  --az-container-max: 1440px;
+
+  /* ---------- Z-index scale ----------
+     Pick the layer, not a number. Prevents future overlays (modals,
+     toasts, tooltips) from guessing z-index and landing behind something. */
+  --az-z-base: 1;
+  --az-z-dropdown: 10;
+  --az-z-sticky: 20;
+  --az-z-overlay: 30;
+  --az-z-modal: 40;
+  --az-z-toast: 50;
+
+  /* ---------- Motion ---------- */
+  --az-duration-fast: 150ms;
+  --az-duration-base: 200ms;
+  --az-duration-slow: 300ms;
+  --az-duration-slower: 400ms;
+  --az-ease-standard: cubic-bezier(.4, 0, .2, 1);
+  --az-ease-out: cubic-bezier(0, 0, .2, 1);
+
+  /* ---------- Elevation ----------
+     Generic levels for new components. Existing named shadows above
+     (--az-shadow-card, --az-shadow-cart, --az-shadow-testimonial) stay as
+     they are — documented, component-specific exceptions to this scale. */
+  --az-elevation-1: 0 1px 3px rgba(19,25,33,.08);
+  --az-elevation-2: 0 4px 12px rgba(19,25,33,.10);
+  --az-elevation-3: 0 12px 32px rgba(19,25,33,.14);
+  --az-elevation-4: 0 24px 56px rgba(19,25,33,.18);
+
+  /* ---------- Icon sizing ---------- */
+  --az-icon-sm: 14px;
+  --az-icon-md: 18px;
+  --az-icon-lg: 22px;
+  --az-icon-xl: 28px;
+}
+
+body {
+  font-family: var(--font-heading);
+  background: var(--az-bg);
+  color: var(--az-text);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }

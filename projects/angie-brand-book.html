@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angie Hamasaki — Brand Book</title>
+<meta name="description" content="Identidad de marca de Angie Hamasaki, nutricionista clínica. Colores, tipografía, voz y aplicaciones. Case study de branding por Sofia Hualpa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="angie-tokens.css">
+<style>
+  .bb-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 48px 96px;
+  }
+
+  /* ── NAV ── */
+  .bb-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-mid);
+    text-decoration: none;
+    margin-bottom: 48px;
+    transition: color 180ms;
+  }
+  .bb-back:hover { color: var(--coral); }
+
+  /* ── HEADER ── */
+  .bb-header {
+    margin-bottom: 80px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bb-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+  .bb-header h1 {
+    font-family: var(--font-heading);
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1.02;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .bb-header h1 span { color: var(--coral); }
+  .bb-header p {
+    font-size: 17px;
+    color: var(--text-mid);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ── SECTIONS ── */
+  .bb-section {
+    margin-bottom: 88px;
+  }
+  .bb-section-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .bb-section-title {
+    font-family: var(--font-heading);
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -.5px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .bb-section-desc {
+    font-size: 14px;
+    color: var(--text-mid);
+    margin-bottom: 32px;
+    max-width: 620px;
+    line-height: 1.7;
+  }
+  hr.bb-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 80px 0;
+  }
+
+  /* ── PALETA ── */
+  .bb-palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .bb-swatch {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .bb-swatch-color {
+    height: 80px;
+  }
+  .bb-swatch-info {
+    padding: 12px 14px;
+    background: var(--white);
+  }
+  .bb-swatch-name {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .bb-swatch-hex {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .bb-swatch-role {
+    font-size: 11px;
+    color: var(--text-mid);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* ── TIPOGRAFÍA ── */
+  .bb-type-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 40px 48px;
+    margin-bottom: 16px;
+  }
+  .bb-type-meta {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 16px;
+  }
+
+  /* ── VOZ Y TONO ── */
+  .bb-voice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .bb-voice-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+  }
+  .bb-voice-card h4 {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .bb-voice-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .bb-voice-card ul li {
+    font-size: 14px;
+    color: var(--text-mid);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .bb-voice-card ul li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--coral);
+    font-weight: 700;
+  }
+  .bb-voice-card.do { border-top: 3px solid var(--green-dark); }
+  .bb-voice-card.dont { border-top: 3px solid var(--coral); }
+
+  /* ── CONTRASTE / DECISIONES ── */
+  .bb-decision {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .bb-decision-num {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--coral);
+    letter-spacing: -1px;
+    line-height: 1;
+    min-width: 36px;
+  }
+  .bb-decision h4 {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .bb-decision p {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.65;
+  }
+
+  /* ── LOGO AREA ── */
+  .bb-logo-area {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 56px 48px;
+    text-align: center;
+  }
+  .bb-logo-lockup {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .bb-logo-wordmark {
+    font-family: var(--font-heading);
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    color: var(--text);
+    line-height: 1;
+  }
+  .bb-logo-wordmark span { color: var(--coral); }
+  .bb-logo-tagline {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    letter-spacing: .04em;
+  }
+  .bb-logo-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 6px;
+  }
+
+  /* ── FONDO / TEXTURA ── */
+  .bb-bg-demo {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .bb-bg-demo-inner {
+    padding: 48px;
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 900px 700px at 8% 8%, rgba(194,236,154,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 700px 500px at 92% 92%, rgba(248,106,67,0.08) 0%, transparent 60%);
+    text-align: center;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .bb-wrapper { padding: 40px 24px 64px; }
+    .bb-header h1 { font-size: 36px; }
+    .bb-voice-grid { grid-template-columns: 1fr; }
+    .bb-decision { grid-template-columns: 1fr; }
+    .bb-type-block { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bb-wrapper">
+
+  <a href="../index.html#projects" class="bb-back">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M10 4L6 8l4 4"/></svg>
+    Volver al portafolio
+  </a>
+
+  <!-- HEADER -->
+  <header class="bb-header">
+    <p class="bb-eyebrow">Brand Book · v1.1</p>
+    <h1>Angie <span>Hamasaki</span><br>Nutricionista Clínica</h1>
+    <p>Identidad de marca, decisiones de diseño, voz y tono. Documento de referencia para todo material visual y comunicacional del proyecto.</p>
+  </header>
+
+  <!-- 01 ESENCIA DE MARCA -->
+  <div class="bb-section">
+    <div class="bb-section-num">01</div>
+    <h2 class="bb-section-title">Esencia de marca</h2>
+    <p class="bb-section-desc">El eje conceptual que guía cada decisión visual y comunicacional.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;">
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:28px; border-top:3px solid var(--coral);">
+        <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--coral); margin-bottom:10px;">Propósito</div>
+        <p style="font-size:15px; font-weight:600; color:var(--text); line-height:1.5;">Ayudar a las personas a construir una relación sana con la comida, sin culpa, desde el conocimiento.</p>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:28px; border-top:3px solid var(--green-dark);">
+        <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--green-dark); margin-bottom:10px;">Posicionamiento</div>
+        <p style="font-size:15px; font-weight:600; color:var(--text); line-height:1.5;">La nutricionista que escucha antes de aconsejar. Cercana, científica, sin juicios.</p>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:28px; border-top:3px solid #d4a500;">
+        <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#8a6a00; margin-bottom:10px;">Promesa</div>
+        <p style="font-size:15px; font-weight:600; color:var(--text); line-height:1.5;">Un plan 100% personalizado basado en evidencia, que se adapta a tu realidad y que puedes mantener.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="bb-divider">
+
+  <!-- 02 IDENTIDAD VISUAL -->
+  <div class="bb-section">
+    <div class="bb-section-num">02</div>
+    <h2 class="bb-section-title">Identidad visual — logo y wordmark</h2>
+    <p class="bb-section-desc">El nombre como marca. Tipografía DM Sans 700 con el apellido en coral para destacar la identidad profesional.</p>
+
+    <div class="bb-logo-area">
+      <div class="bb-logo-lockup">
+        <div class="bb-logo-wordmark">Angie <span>Hamasaki</span></div>
+        <div class="bb-logo-tagline">Nutricionista Clínica <span class="bb-logo-dot"></span> Lima, Perú</div>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
+      <div style="background:var(--text); border-radius:var(--radius-md); padding:32px; text-align:center;">
+        <div style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-1px; color:var(--white);">Angie <span style="color:var(--coral);">Hamasaki</span></div>
+        <div style="font-size:12px; color:rgba(250,250,247,0.5); margin-top:8px;">Sobre fondo oscuro</div>
+      </div>
+      <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-md); padding:32px; text-align:center;">
+        <div style="font-family:var(--font-heading); font-size:32px; font-weight:700; letter-spacing:-1px; color:var(--text);">Angie <span style="color:var(--coral);">Hamasaki</span></div>
+        <div style="font-size:12px; color:var(--text-light); margin-top:8px;">Sobre fondo claro</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="bb-divider">
+
+  <!-- 03 PALETA DE COLORES -->
+  <div class="bb-section">
+    <div class="bb-section-num">03</div>
+    <h2 class="bb-section-title">Paleta de colores</h2>
+    <p class="bb-section-desc">Tres ejes cromáticos: verde natural (confianza, salud), coral vibrante (energía, acción) y neutros cálidos (legibilidad, calidez).</p>
+
+    <div class="bb-palette">
+      <div class="bb-swatch">
+        <div class="bb-swatch-color" style="background:#F86A43;"></div>
+        <div class="bb-swatch-info">
+          <div class="bb-swatch-name">Coral</div>
+          <div class="bb-swatch-hex">#F86A43</div>
+          <div class="bb-swatch-role">Color de acción. Botones principales, acentos, CTA, hover.</div>
+        </div>
+      </div>
+      <div class="bb-swatch">
+        <div class="bb-swatch-color" style="background:#C2EC9A;"></div>
+        <div class="bb-swatch-info">
+          <div class="bb-swatch-name">Verde</div>
+          <div class="bb-swatch-hex">#C2EC9A</div>
+          <div class="bb-swatch-role">Color identitario. Números en stats bar oscura, íconos, acentos suaves.</div>
+        </div>
+      </div>
+      <div class="bb-swatch">
+        <div class="bb-swatch-color" style="background:#5a9e2f;"></div>
+        <div class="bb-swatch-info">
+          <div class="bb-swatch-name">Verde oscuro</div>
+          <div class="bb-swatch-hex">#5A9E2F</div>
+          <div class="bb-swatch-role">Texto sobre fondos verdes. Links de acción, bordes de hover.</div>
+        </div>
+      </div>
+      <div class="bb-swatch">
+        <div class="bb-swatch-color" style="background:#e8f8d4;"></div>
+        <div class="bb-swatch-info">
+          <div class="bb-swatch-name">Verde claro</div>
+          <div class="bb-swatch-hex">#E8F8D4</div>
+          <div class="bb-swatch-role">Fondo sección testimonios, chips de color, hover cards suave.</div>
+        </div>
+      </div>
+      <div class="bb-swatch">
+        <div class="bb-swatch-color" style="background:#FAFAF7; border-bottom:1px solid #e8e8e4;"></div>
+        <div class="bb-swatch-info">
+          <div class="bb-swatch-name">Fondo</div>
+          <div class="bb-swatch-hex">#FAFAF7</div>
+          <div class="bb-swatch-role">Fondo general del sitio. Tono crema muy sutil que da calidez.</div>
+        </div>
+      </div>
+      <div class="bb-swatch">
+        <div class="bb-swatch-color" style="background:#2C2C2C;"></div>
+        <div class="bb-swatch-info">
+          <div class="bb-swatch-name">Texto / Dark</div>
+          <div class="bb-swatch-hex">#2C2C2C</div>
+          <div class="bb-swatch-role">Texto principal. También fondo de la stats bar para máximo contraste.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px 28px;">
+      <h4 style="font-family:var(--font-heading); font-size:14px; font-weight:700; margin-bottom:8px;">Textura de fondo</h4>
+      <p style="font-size:14px; color:var(--text-mid); line-height:1.65; margin-bottom:16px;">El fondo no es plano. Dos gradientes radiales muy sutiles aportan profundidad sin distraer: verde en esquina superior-izquierda (22% opacidad) y coral en inferior-derecha (8% opacidad).</p>
+      <div class="bb-bg-demo">
+        <div class="bb-bg-demo-inner">
+          <span style="font-size:13px; color:var(--text-mid);">Así se ve el fondo de la página con los gradientes activos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="bb-divider">
+
+  <!-- 04 TIPOGRAFÍA -->
+  <div class="bb-section">
+    <div class="bb-section-num">04</div>
+    <h2 class="bb-section-title">Tipografía</h2>
+    <p class="bb-section-desc">Sistema de dos familias: DM Sans para headings y UI de alto impacto, Inter para cuerpo de texto y formularios donde la lectura continua importa.</p>
+
+    <div class="bb-type-block">
+      <div class="bb-type-meta">DM Sans — Headings &amp; UI</div>
+      <div style="font-family:'DM Sans',sans-serif; font-size:52px; font-weight:700; letter-spacing:-2px; color:var(--text); line-height:1.05; margin-bottom:8px;">Nutrición que<br>transforma vidas.</div>
+      <div style="font-family:'DM Sans',sans-serif; font-size:18px; font-weight:500; color:var(--text-mid);">Subheadings, labels, botones, métricas</div>
+    </div>
+
+    <div class="bb-type-block">
+      <div class="bb-type-meta">Inter — Body text</div>
+      <div style="font-family:'Inter',sans-serif; font-size:17px; line-height:1.75; color:var(--text-mid); max-width:560px;">Con más de 10 años de experiencia en nutrición clínica, acompaño a personas en todas las etapas de la vida. Creo que una buena alimentación no se construye desde la culpa, sino desde el conocimiento y el acompañamiento.</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-top:8px;">
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 18px;">
+        <div style="font-size:11px; color:var(--text-light); margin-bottom:6px;">H1 — Hero</div>
+        <div style="font-family:var(--font-heading); font-size:22px; font-weight:700; letter-spacing:-1px;">64px / 700 / DM Sans</div>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 18px;">
+        <div style="font-size:11px; color:var(--text-light); margin-bottom:6px;">H2 — Secciones</div>
+        <div style="font-family:var(--font-heading); font-size:20px; font-weight:700; letter-spacing:-.5px;">40px / 700 / DM Sans</div>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 18px;">
+        <div style="font-size:11px; color:var(--text-light); margin-bottom:6px;">Body</div>
+        <div style="font-family:var(--font-body); font-size:14px;">16px / 400 / Inter / 1.7 lh</div>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 18px;">
+        <div style="font-size:11px; color:var(--text-light); margin-bottom:6px;">Eyebrow</div>
+        <div style="font-family:var(--font-body); font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase;">11px / 600 / 0.1em</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="bb-divider">
+
+  <!-- 05 VOZ Y TONO -->
+  <div class="bb-section">
+    <div class="bb-section-num">05</div>
+    <h2 class="bb-section-title">Voz y tono</h2>
+    <p class="bb-section-desc">El lenguaje refleja la personalidad de Angie: cálida pero profesional, directa pero nunca fría, científica pero siempre humana.</p>
+
+    <div class="bb-voice-grid">
+      <div class="bb-voice-card do">
+        <h4>✓ La voz SÍ es…</h4>
+        <ul>
+          <li>Cercana: habla de tú a tú, no desde un pedestal</li>
+          <li>Clara: explica sin tecnicismos innecesarios</li>
+          <li>Empática: valida antes de aconsejar</li>
+          <li>Directa: va al punto, sin texto de relleno</li>
+          <li>Motivadora: enfocada en el potencial, no en la carencia</li>
+          <li>Basada en evidencia: científica pero comprensible</li>
+        </ul>
+      </div>
+      <div class="bb-voice-card dont">
+        <h4>✗ La voz NO es…</h4>
+        <ul>
+          <li>Alarmista: no usa lenguajes de urgencia artificial</li>
+          <li>Prescriptiva sin contexto: no da listas de prohibidos</li>
+          <li>Perfecta: no pretende que el cambio es fácil</li>
+          <li>Corporativa: no usa frases vacías o de marketing genérico</li>
+          <li>Culpabilizadora: nunca cuestiona los hábitos anteriores</li>
+          <li>Exagerada: no promete resultados milagrosos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px 28px;">
+      <h4 style="font-family:var(--font-heading); font-size:14px; font-weight:700; margin-bottom:16px;">Ejemplos de tono en contexto</h4>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="display:grid; grid-template-columns:80px 1fr 1fr; gap:16px; align-items:start;">
+          <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--text-light); padding-top:4px;">CTA</div>
+          <div style="background:var(--coral-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:14px; color:var(--text);">❌ "¡No esperes más! ¡Contáctame ahora!"</div>
+          <div style="background:var(--green-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:14px; color:var(--text);">✓ "Dé el primer paso. En menos de 24h me pongo en contacto."</div>
+        </div>
+        <div style="display:grid; grid-template-columns:80px 1fr 1fr; gap:16px; align-items:start;">
+          <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--text-light); padding-top:4px;">Intro</div>
+          <div style="background:var(--coral-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:14px; color:var(--text);">❌ "Nutricionista experta con resultados comprobados."</div>
+          <div style="background:var(--green-light); border-radius:var(--radius-sm); padding:12px 16px; font-size:14px; color:var(--text);">✓ "Una nutricionista que escucha antes de aconsejar."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="bb-divider">
+
+  <!-- 06 DECISIONES DE DISEÑO -->
+  <div class="bb-section">
+    <div class="bb-section-num">06</div>
+    <h2 class="bb-section-title">Decisiones de diseño — v1.1</h2>
+    <p class="bb-section-desc">Los cambios más significativos aplicados en la segunda iteración del sitio y el razonamiento detrás de cada uno.</p>
+
+    <div class="bb-decision">
+      <div class="bb-decision-num">A</div>
+      <div>
+        <h4>Fondo con gradientes radiales sutiles</h4>
+        <p>El fondo <code>#FAFAF7</code> era demasiado plano y sin personalidad. Se agregaron dos gradientes radiales muy suaves: verde en la esquina superior izquierda (vitalidad, naturaleza) y coral en la inferior derecha (energía, acción). La opacidad baja (22% / 8%) evita distracción pero aporta profundidad y calidez únicas.</p>
+      </div>
+    </div>
+
+    <div class="bb-decision">
+      <div class="bb-decision-num">B</div>
+      <div>
+        <h4>Stats bar: de blanco a oscuro</h4>
+        <p>La barra de credenciales con fondo blanco era invisible contra el fondo casi blanco de la página. El cambio a fondo <code>--text (#2C2C2C)</code> con números en <code>--green</code> resuelve el contraste y convierte la barra en un elemento de anclaje visual. Los textos de apoyo en blanco 60% mantienen jerarquía sin competir.</p>
+      </div>
+    </div>
+
+    <div class="bb-decision">
+      <div class="bb-decision-num">C</div>
+      <div>
+        <h4>Tarjetas de servicio: tres capas de interacción</h4>
+        <p>Las tarjetas eran estáticas en hover. Se añadieron: (1) elevación + borde verde al hover de la card; (2) el icono escala 1.12× y rota -6° para dar sensación de respuesta física; (3) una barra de acento inferior crece de izquierda a derecha (<code>scaleX(0→1)</code>); (4) un link "Consultar →" aparece con slide desde la izquierda. El resultado es una card que se "despierta" al tocarse sin resultar excesiva.</p>
+      </div>
+    </div>
+
+    <div class="bb-decision">
+      <div class="bb-decision-num">D</div>
+      <div>
+        <h4>Testimonios: grid igual + sección diferenciada + auto-ciclo</h4>
+        <p>Tres problemas resueltos: (1) El grid asimétrico (una card grande + dos pequeñas) eliminó — ahora <code>repeat(3,1fr)</code> da igual peso visual a cada testimonio. (2) La sección no tenía contraste con el fondo: se envuelve en un gradiente verde suave que la delimita visualmente. (3) Se eliminó la card destacada en oscuro y se reemplazó por un borde superior de color único por posición (coral / verde / dorado) que se revela al hover o auto-ciclo JS.</p>
+      </div>
+    </div>
+
+    <div class="bb-decision">
+      <div class="bb-decision-num">E</div>
+      <div>
+        <h4>CTA: texto largo → tres números impactantes</h4>
+        <p>El bloque de texto introductorio + tres badges con ícono resultaba denso y poco escaneable. Se reemplazó por una sola frase directa + tres estadísticas en DM Sans 700 / 38px: <strong>+10</strong> (experiencia), <strong>+200</strong> (pacientes), <strong>24h</strong> (respuesta). El usuario procesa el valor propuesto en menos de un segundo antes de completar el formulario.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center; padding:40px 0 0; border-top:1px solid var(--border);">
+    <div style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--text); margin-bottom:4px;">Angie <span style="color:var(--coral);">Hamasaki</span></div>
+    <div style="font-size:13px; color:var(--text-light);">Brand Book v1.1 · Nutricionista Clínica · Lima, Perú</div>
+  </div>
+
+</div>
+</body>
+</html>

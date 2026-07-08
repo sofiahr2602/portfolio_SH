@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Amazon Redesign</title>
+<meta name="description" content="Documento de referencia visual del design system creado para el rediseño del home de Amazon: colores, tipografía, espaciado, componentes y tokens CSS. Case study de UX/UI por Sofia Hualpa.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="amazon-redesign-tokens.css">
+<style>
+  /* Shared reset, :root tokens and base body styles live in amazon-redesign-tokens.css */
+
+  .ds-wrapper { max-width: 1100px; margin: 0 auto; padding: 64px 48px; }
+
+  .ds-back {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;
+    color: var(--az-blue); text-decoration: none; margin-bottom: 32px;
+  }
+  .ds-back svg { width: 16px; height: 16px; }
+
+  .ds-header { margin-bottom: 64px; padding-bottom: 40px; border-bottom: 1px solid #e5e8ee; }
+  .ds-header-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--az-blue); margin-bottom: 12px; }
+  .ds-header h1 { font-size: 52px; font-weight: 700; letter-spacing: -1.5px; color: var(--az-text); margin-bottom: 8px; line-height: 1.05; }
+  .ds-header p { font-size: 17px; color: var(--az-text-mid); }
+
+  .ds-section { margin-bottom: 80px; scroll-margin-top: 80px; }
+  .ds-section-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #a0a8b4; margin-bottom: 6px; }
+  .ds-section-title { font-size: 24px; font-weight: 700; letter-spacing: -.5px; color: var(--az-text); margin-bottom: 4px; }
+  .ds-section-desc { font-size: 14px; color: var(--az-text-mid); margin-bottom: 32px; }
+  .ds-divider { border: none; border-top: 1px solid #e5e8ee; margin: 72px 0; }
+
+  .ds-nav { position: fixed; top: 48px; left: 32px; display: flex; flex-direction: column; gap: 6px; z-index: var(--az-z-sticky); max-height: calc(100vh - 96px); overflow-y: auto; }
+  .ds-nav a { font-size: 12px; color: #a0a8b4; text-decoration: none; transition: color 180ms; padding: 2px 0; }
+  .ds-nav a:hover { color: var(--az-blue); }
+  @media (max-width: 1180px) { .ds-nav { display: none; } }
+
+  .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+
+  /* ── 01 COLORES ── */
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+  .swatch-card { display: flex; flex-direction: column; gap: 8px; }
+  .swatch { height: 72px; border-radius: var(--az-radius-md); border: 1px solid rgba(0,0,0,.06); }
+  .swatch-name { font-size: 13px; font-weight: 600; color: var(--az-text); }
+  .swatch-hex { font-size: 12px; color: #a0a8b4; font-family: monospace; }
+  .swatch-use { font-size: 11px; color: #a0a8b4; }
+  .color-group-title { font-size: 13px; font-weight: 600; color: var(--az-text-mid); margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e8ee; }
+
+  /* ── 02 TIPOGRAFÍA ── */
+  .type-table { width: 100%; border-collapse: collapse; }
+  .type-table tr { border-bottom: 1px solid #e5e8ee; }
+  .type-table td { padding: 20px 16px; vertical-align: middle; }
+  .type-meta { font-size: 12px; color: #a0a8b4; line-height: 1.6; min-width: 190px; font-family: monospace; }
+  .type-meta strong { display: block; font-family: var(--font-heading); font-size: 13px; color: var(--az-text-mid); font-weight: 600; margin-bottom: 2px; }
+
+  /* ── 03 ESPACIADO / RADIUS ── */
+  .radius-grid { display: flex; gap: 32px; flex-wrap: wrap; }
+  .radius-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .radius-box { background: #fff; border: 1.5px solid #dfe3e9; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #a0a8b4; }
+  .radius-label { text-align: center; }
+  .radius-label strong { display: block; font-size: 14px; font-weight: 600; color: var(--az-text); }
+  .radius-label span { font-size: 12px; color: #a0a8b4; font-family: monospace; }
+
+  /* ── 04 SOMBRAS ── */
+  .shadow-grid { display: flex; gap: 32px; flex-wrap: wrap; }
+  .shadow-item { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .shadow-card { background: #fff; border-radius: var(--az-radius-md); width: 160px; height: 90px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--az-text-mid); }
+  .shadow-label { text-align: center; }
+  .shadow-label strong { display: block; font-size: 13px; font-weight: 600; color: var(--az-text); }
+  .shadow-label code { font-size: 11px; color: #a0a8b4; }
+
+  /* ── 05 BOTONES ── */
+  .btn-grid { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; }
+  .btn-item { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .btn-item-label { font-size: 12px; color: #a0a8b4; }
+  .b-primary { background: var(--az-blue); color: #fff; padding: 12px 28px; border-radius: var(--az-radius-sm); font-size: 15px; font-weight: 700; border: none; cursor: pointer; }
+  .b-primary:hover { background: var(--az-blue-dark); }
+  .b-secondary { background: #fff; color: var(--az-text); padding: 12px 28px; border-radius: var(--az-radius-sm); font-size: 15px; font-weight: 600; border: 1px solid #dfe3e9; cursor: pointer; }
+  .b-fab { width: 44px; height: 44px; border-radius: var(--az-radius-md); background: var(--az-blue); color: #fff; border: none; display: flex; align-items: center; justify-content: center; box-shadow: var(--az-shadow-cart); }
+  .b-fab svg { width: 20px; height: 20px; }
+
+  /* ── 06 TAGS / RATING ── */
+  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--az-radius-full); font-size: 13px; font-weight: 600; }
+  .tag-blue { background: var(--az-blue-pale); color: var(--az-blue); }
+  .tag-navy { background: var(--az-navy); color: #fff; }
+  .ds-rating { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-body); font-size: 14px; }
+  .ds-rating svg { width: 14px; height: 14px; color: var(--az-star); }
+
+  /* ── 07 PRODUCT CARD ── */
+  .demo-card { max-width: 260px; border-radius: var(--az-radius-lg); overflow: hidden; background: #fff; box-shadow: 0 2px 14px rgba(0,0,0,.06); }
+  .demo-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+  .demo-card-body { padding: 16px 18px 20px; }
+  .demo-card-body h3 { font-size: 17px; font-weight: 600; margin: 6px 0; }
+  .demo-cat { font-size: 12px; color: var(--az-text-mid); }
+  .demo-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .demo-price { color: var(--az-price); font-weight: 700; }
+
+  /* ── 08 FILTER FIELD ── */
+  .demo-pickup { background: linear-gradient(90deg, rgba(19,25,33,.96), rgba(59,130,217,.96)); border-radius: var(--az-radius-md); padding: 20px 28px; color: #fff; display: flex; gap: 28px; max-width: 640px; flex-wrap: wrap; }
+  .demo-field { display: flex; flex-direction: column; gap: 6px; }
+  .demo-field strong { font-size: 14px; }
+  .demo-field span { font-size: 12px; opacity: .85; }
+
+  /* ── 09 TOKENS ── */
+  .tokens-code { background: var(--az-navy); color: #d7e6ff; font-family: monospace; font-size: 13px; line-height: 1.8; padding: 28px; border-radius: var(--az-radius-md); overflow-x: auto; }
+  .tokens-code .tk-c { color: #7fb8ff; }
+  .tokens-code .tk-group { color: #5c6b82; display: block; margin: 14px 0 2px; }
+
+  /* ── 03 ESPACIADO ── */
+  .space-grid { display: flex; flex-direction: column; gap: 14px; }
+  .space-row { display: flex; align-items: center; gap: 16px; }
+  .space-row .space-bar { background: var(--az-blue); height: 16px; border-radius: 4px; }
+  .space-row .space-label { width: 190px; font-size: 13px; font-family: monospace; color: var(--az-text-mid); flex-shrink: 0; }
+  .space-row .space-label strong { font-family: var(--font-heading); color: var(--az-text); font-weight: 600; }
+
+  /* ── 06 LAYOUT / BREAKPOINTS ── */
+  .bp-table { width: 100%; border-collapse: collapse; }
+  .bp-table th, .bp-table td { text-align: left; padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #e5e8ee; }
+  .bp-table th { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #a0a8b4; font-weight: 700; }
+  .bp-table td:first-child { font-family: monospace; color: var(--az-text); font-weight: 600; }
+  .bp-table td:nth-child(2) { font-family: monospace; color: var(--az-text-mid); }
+
+  /* ── 07 MOVIMIENTO / Z-INDEX ── */
+  .motion-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+  .motion-card { width: 130px; padding: 16px; border: 1px solid #e5e8ee; border-radius: var(--az-radius-md); cursor: default; }
+  .motion-card .swatch { width: 28px; height: 28px; border-radius: 8px; background: var(--az-blue); margin-bottom: 12px; transition: transform var(--az-duration-base) var(--az-ease-standard); }
+  .motion-card:hover .swatch { transform: translateX(20px); }
+  .motion-card strong { display: block; font-size: 13px; }
+  .motion-card span { font-size: 11px; color: #a0a8b4; font-family: monospace; }
+  .zindex-list { display: flex; flex-direction: column; gap: 6px; max-width: 420px; }
+  .zindex-row { display: flex; justify-content: space-between; font-size: 13px; padding: 8px 14px; background: var(--az-gray-50); border-radius: 6px; }
+  .zindex-row code { font-family: monospace; color: var(--az-blue); font-weight: 600; }
+
+  /* ── 08 BOTONES ampliado ── */
+  .b-ghost { background: none; color: var(--az-text-mid); padding: 12px 20px; border-radius: var(--az-radius-sm); font-size: 14px; font-weight: 600; border: none; text-decoration: underline; cursor: pointer; }
+  .b-ghost:hover { color: var(--az-text); }
+  .b-icon { width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid #e5e8ee; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--az-text); }
+  .b-icon svg { width: 18px; height: 18px; }
+  .b-icon.is-active { color: var(--az-deal); border-color: transparent; }
+  .b-icon.is-active svg { fill: var(--az-deal); }
+  .state-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .state-row span { font-size: 12px; color: #a0a8b4; margin-right: 4px; }
+  button:disabled, .is-disabled { opacity: .4; cursor: not-allowed; }
+  .b-primary.size-sm, .b-secondary.size-sm { padding: 8px 16px; font-size: 13px; }
+  .b-primary.size-lg, .b-secondary.size-lg { padding: 15px 34px; font-size: 16px; }
+
+  /* ── 09 INPUTS ── */
+  .input-grid { display: flex; gap: 24px; flex-wrap: wrap; }
+  .field-demo { display: flex; flex-direction: column; gap: 6px; width: 240px; }
+  .field-demo label { font-size: 12px; font-weight: 700; color: var(--az-text-mid); text-transform: uppercase; letter-spacing: .03em; }
+  .field-demo input, .field-demo select {
+    font-family: var(--font-heading); font-size: 14px; padding: 11px 14px; border-radius: var(--az-radius-sm);
+    border: 1.5px solid var(--az-gray-300); color: var(--az-text); background: #fff; transition: border-color var(--az-duration-fast) var(--az-ease-standard);
+  }
+  .field-demo input:hover, .field-demo select:hover { border-color: var(--az-gray-400); }
+  .field-demo input:focus-visible, .field-demo select:focus-visible { outline: none; border-color: var(--az-blue); box-shadow: 0 0 0 3px var(--az-blue-pale); }
+  .field-demo input.has-error { border-color: var(--az-deal); }
+  .field-demo .field-help { font-size: 12px; color: #a0a8b4; }
+  .field-demo .field-error { font-size: 12px; color: var(--az-deal); }
+
+  /* ── 10 BADGES / CHIPS ── */
+  .badge-demo-wrap { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+  .badge-demo { position: relative; width: 44px; height: 44px; border-radius: 50%; background: var(--az-gray-50); border: 1px solid #e5e8ee; display: flex; align-items: center; justify-content: center; }
+  .badge-demo svg { width: 20px; height: 20px; color: var(--az-text); }
+  .badge-count { position: absolute; top: -4px; right: -4px; background: var(--az-blue); color: #fff; font-size: 10px; font-weight: 700; min-width: 17px; height: 17px; border-radius: var(--az-radius-full); display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid #fff; }
+  .chip-demo { display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px 7px 14px; border-radius: var(--az-radius-full); background: var(--az-gray-100); font-size: 13px; font-weight: 600; color: var(--az-text); }
+  .chip-demo span { width: 16px; height: 16px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+
+  /* ── 14 ESTADOS ── */
+  .empty-demo { text-align: center; padding: 48px 24px; border: 1.5px dashed var(--az-gray-300); border-radius: var(--az-radius-lg); max-width: 380px; }
+  .empty-demo svg { width: 36px; height: 36px; color: var(--az-gray-400); margin: 0 auto 14px; }
+  .empty-demo strong { display: block; font-size: 15px; margin-bottom: 4px; }
+  .empty-demo p { font-size: 13px; color: var(--az-text-mid); margin-bottom: 16px; }
+
+  /* ── 16 GOBERNANZA ── */
+  .gov-list { display: flex; flex-direction: column; gap: 20px; }
+  .gov-item { display: flex; gap: 16px; padding: 18px 20px; border: 1px solid #e5e8ee; border-radius: var(--az-radius-md); }
+  .gov-item .gov-num { font-family: monospace; font-size: 13px; font-weight: 700; color: var(--az-blue); flex-shrink: 0; }
+  .gov-item strong { display: block; font-size: 14px; margin-bottom: 4px; }
+  .gov-item p { font-size: 13px; color: var(--az-text-mid); line-height: 1.6; }
+  .gov-item code { font-family: monospace; background: var(--az-blue-pale); color: var(--az-blue); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <a href="#colores">01 · Colores</a>
+  <a href="#tipografia">02 · Tipografía</a>
+  <a href="#espaciado">03 · Espaciado</a>
+  <a href="#radius">04 · Radius</a>
+  <a href="#sombras">05 · Sombras &amp; Elevación</a>
+  <a href="#layout">06 · Breakpoints &amp; Layout</a>
+  <a href="#movimiento">07 · Movimiento &amp; Z-index</a>
+  <a href="#botones">08 · Botones</a>
+  <a href="#inputs">09 · Inputs &amp; Selects</a>
+  <a href="#badges">10 · Badges &amp; Chips</a>
+  <a href="#tags">11 · Tags &amp; Rating</a>
+  <a href="#cards">12 · Product Card</a>
+  <a href="#filtros">13 · Filtros</a>
+  <a href="#estados">14 · Estados</a>
+  <a href="#tokens">15 · Tokens CSS</a>
+  <a href="#gobernanza">16 · Gobernanza</a>
+</nav>
+
+<div class="ds-wrapper">
+
+  <a href="../index.html#projects" class="ds-back">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+    Volver al portafolio
+  </a>
+
+  <div class="ds-header">
+    <div class="ds-header-eyebrow">Design System · v2.0</div>
+    <h1>Amazon Redesign</h1>
+    <p>Home simplificado de un e-commerce sobrecargado · Documento de referencia visual</p>
+  </div>
+
+  <!-- 01 COLORES -->
+  <div class="ds-section" id="colores">
+    <div class="ds-section-label">01</div>
+    <h2 class="ds-section-title">Paleta de colores</h2>
+    <p class="ds-section-desc">El original de Amazon usa naranja/negro con decenas de acentos. Esta paleta se reduce a un azul de confianza y una navy neutra para bajar el ruido visual.</p>
+
+    <div class="color-group-title">Colores primarios</div>
+    <div class="color-grid">
+      <div class="swatch-card"><div class="swatch" style="background:#0b75fb;"></div><div class="swatch-name">Blue</div><div class="swatch-hex">#0B75FB</div><div class="swatch-use">Botones · CTAs · Links activos</div></div>
+      <div class="swatch-card"><div class="swatch" style="background:#085dc7;"></div><div class="swatch-name">Blue Dark</div><div class="swatch-hex">#085DC7</div><div class="swatch-use">Hover de botones</div></div>
+      <div class="swatch-card"><div class="swatch" style="background:#e8f1ff;"></div><div class="swatch-name">Blue Pale</div><div class="swatch-hex">#E8F1FF</div><div class="swatch-use">Fondos de tags · Estados suaves</div></div>
+      <div class="swatch-card"><div class="swatch" style="background:#3560bd;"></div><div class="swatch-name">Price</div><div class="swatch-hex">#3560BD</div><div class="swatch-use">Precios de producto · AA 5.9:1</div></div>
+    </div>
+
+    <div class="color-group-title">Colores neutros</div>
+    <div class="color-grid">
+      <div class="swatch-card"><div class="swatch" style="background:#131921;"></div><div class="swatch-name">Navy</div><div class="swatch-hex">#131921</div><div class="swatch-use">Header · Footer</div></div>
+      <div class="swatch-card"><div class="swatch" style="background:#486284;"></div><div class="swatch-name">Navy Border</div><div class="swatch-hex">#486284</div><div class="swatch-use">Bordes sobre navy</div></div>
+      <div class="swatch-card"><div class="swatch" style="background:#1a202c;"></div><div class="swatch-name">Texto</div><div class="swatch-hex">#1A202C</div><div class="swatch-use">Headings · Body</div></div>
+      <div class="swatch-card"><div class="swatch" style="background:#fafbfd; border:1px solid #eee;"></div><div class="swatch-name">Background</div><div class="swatch-hex">#FAFBFD</div><div class="swatch-use">Fondo de secciones</div></div>
+      <div class="swatch-card"><div class="swatch" style="background:#ffffff; border:1px solid #eee;"></div><div class="swatch-name">Blanco</div><div class="swatch-hex">#FFFFFF</div><div class="swatch-use">Cards · Inputs</div></div>
+      <div class="swatch-card"><div class="swatch" style="background:#ffb020;"></div><div class="swatch-name">Star</div><div class="swatch-hex">#FFB020</div><div class="swatch-use">Rating de productos</div></div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 02 TIPOGRAFÍA -->
+  <div class="ds-section" id="tipografia">
+    <div class="ds-section-label">02</div>
+    <h2 class="ds-section-title">Tipografía</h2>
+    <p class="ds-section-desc">Plus Jakarta Sans para headings y UI (limpia, geométrica), Rubik para ratings y testimonios (más redonda y cercana).</p>
+    <table class="type-table">
+      <tr><td style="font-family:'Plus Jakarta Sans'; font-weight:700; font-size:44px;">Todo lo que necesitas</td><td class="type-meta"><strong>Hero title</strong>Plus Jakarta Sans / Bold<br>clamp(24px, 4.6vw, 72px)</td></tr>
+      <tr><td style="font-family:'Plus Jakarta Sans'; font-weight:500; font-size:32px;">Conoce todo lo que tenemos</td><td class="type-meta"><strong>Section heading</strong>Plus Jakarta Sans / Medium<br>32–48px · tracking -0.02em</td></tr>
+      <tr><td style="font-family:'Plus Jakarta Sans'; font-weight:600; font-size:18px;">Air Pods Prox Max</td><td class="type-meta"><strong>Product title</strong>Plus Jakarta Sans / SemiBold<br>18px</td></tr>
+      <tr><td style="font-family:'Rubik'; font-weight:400; font-size:15px;">"El producto llegó en perfectas condiciones..."</td><td class="type-meta"><strong>Body / Testimonio</strong>Rubik / Regular<br>15–16px · line-height 1.6</td></tr>
+      <tr><td style="font-family:'Plus Jakarta Sans'; font-weight:700; font-size:16px; color:#3560bd;">$99.00</td><td class="type-meta"><strong>Precio</strong>Plus Jakarta Sans / Bold<br>16px · color var(--az-price)</td></tr>
+    </table>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 03 ESPACIADO -->
+  <div class="ds-section" id="espaciado">
+    <div class="ds-section-label">03</div>
+    <h2 class="ds-section-title">Espaciado</h2>
+    <p class="ds-section-desc">Grid base de 4px. Cualquier padding, margin o gap nuevo debería mapear a uno de estos valores en vez de inventar un número — es lo que evita que cada sección nueva tenga su propio "aire" distinto.</p>
+    <div class="space-grid">
+      <div class="space-row"><div class="space-label"><strong>space-1</strong> · 4px</div><div class="space-bar" style="width:4px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-2</strong> · 8px</div><div class="space-bar" style="width:8px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-3</strong> · 12px</div><div class="space-bar" style="width:12px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-4</strong> · 16px</div><div class="space-bar" style="width:16px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-5</strong> · 20px</div><div class="space-bar" style="width:20px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-6</strong> · 24px</div><div class="space-bar" style="width:24px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-7</strong> · 32px</div><div class="space-bar" style="width:32px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-8</strong> · 40px</div><div class="space-bar" style="width:40px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-9</strong> · 48px</div><div class="space-bar" style="width:48px;"></div></div>
+      <div class="space-row"><div class="space-label"><strong>space-10</strong> · 64px</div><div class="space-bar" style="width:64px;"></div></div>
+    </div>
+    <p class="ds-section-desc" style="margin-top:20px; margin-bottom:0;">Uso típico: <code>space-2</code>–<code>space-3</code> entre elementos dentro de un componente (ícono y texto, label e input) · <code>space-4</code>–<code>space-6</code> entre componentes (cards de un grid, campos de un formulario) · <code>space-7</code>+ entre secciones completas de la página.</p>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 04 RADIUS -->
+  <div class="ds-section" id="radius">
+    <div class="ds-section-label">04</div>
+    <h2 class="ds-section-title">Border radius</h2>
+    <p class="ds-section-desc">Esquinas consistentes según el tamaño del componente.</p>
+    <div class="radius-grid">
+      <div class="radius-item"><div class="radius-box" style="border-radius:8px;">8px</div><div class="radius-label"><strong>Small</strong><span>--az-radius-sm</span></div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:10px;">10px</div><div class="radius-label"><strong>Medium</strong><span>--az-radius-md</span></div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:20px;">20px</div><div class="radius-label"><strong>Large</strong><span>--az-radius-lg</span></div></div>
+      <div class="radius-item"><div class="radius-box" style="border-radius:999px;">Full</div><div class="radius-label"><strong>Pill</strong><span>--az-radius-full</span></div></div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 05 SOMBRAS -->
+  <div class="ds-section" id="sombras">
+    <div class="ds-section-label">05</div>
+    <h2 class="ds-section-title">Sombras &amp; Elevación</h2>
+    <p class="ds-section-desc">Las tres sombras específicas de abajo siguen usándose tal cual (son las que ya están en producción). Para cualquier componente <strong>nuevo</strong> — modal, tooltip, dropdown, popover — usa la escala genérica de elevación en vez de inventar una sombra suelta.</p>
+    <div class="color-group-title">Sombras específicas (existentes)</div>
+    <div class="shadow-grid">
+      <div class="shadow-item"><div class="shadow-card" style="box-shadow:0 2px 14px rgba(0,0,0,.06);">Card</div><div class="shadow-label"><strong>Product card</strong><code>0 2px 14px rgba(0,0,0,.06)</code></div></div>
+      <div class="shadow-item"><div class="shadow-card" style="box-shadow:0 4px 2px rgba(0,0,0,.25);">Cart FAB</div><div class="shadow-label"><strong>--az-shadow-cart</strong><code>0 4px 2px rgba(0,0,0,.25)</code></div></div>
+      <div class="shadow-item"><div class="shadow-card" style="box-shadow:0 4px 20px rgba(63,62,62,.25);">Testimonio</div><div class="shadow-label"><strong>--az-shadow-testimonial</strong><code>0 4px 20px rgba(63,62,62,.25)</code></div></div>
+    </div>
+    <div class="color-group-title">Escala de elevación (para componentes nuevos)</div>
+    <div class="shadow-grid">
+      <div class="shadow-item"><div class="shadow-card" style="box-shadow:var(--az-elevation-1);">Nivel 1</div><div class="shadow-label"><strong>Reposo</strong><code>--az-elevation-1</code></div></div>
+      <div class="shadow-item"><div class="shadow-card" style="box-shadow:var(--az-elevation-2);">Nivel 2</div><div class="shadow-label"><strong>Hover / dropdown</strong><code>--az-elevation-2</code></div></div>
+      <div class="shadow-item"><div class="shadow-card" style="box-shadow:var(--az-elevation-3);">Nivel 3</div><div class="shadow-label"><strong>Popover / menú</strong><code>--az-elevation-3</code></div></div>
+      <div class="shadow-item"><div class="shadow-card" style="box-shadow:var(--az-elevation-4);">Nivel 4</div><div class="shadow-label"><strong>Modal / diálogo</strong><code>--az-elevation-4</code></div></div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 06 BREAKPOINTS & LAYOUT -->
+  <div class="ds-section" id="layout">
+    <div class="ds-section-label">06</div>
+    <h2 class="ds-section-title">Breakpoints &amp; Layout</h2>
+    <p class="ds-section-desc">Tres puntos de quiebre para todo el sitio. Nueva página o sección nueva: usar estos mismos números, no 767px/770px/800px sueltos.</p>
+    <table class="bp-table">
+      <tr><th>Token</th><th>Valor</th><th>Uso</th></tr>
+      <tr><td>--az-bp-sm</td><td>480px</td><td>Ajustes finos de móvil chico (grid de producto a 1 columna)</td></tr>
+      <tr><td>--az-bp-md</td><td>768px</td><td>Quiebre principal mobile ↔ desktop (nav, filtros, grids)</td></tr>
+      <tr><td>--az-bp-lg</td><td>1024px</td><td>Reservado para ajustes de tablet/laptop chico</td></tr>
+      <tr><td>--az-bp-xl / --az-container-max</td><td>1440px</td><td>Ancho máximo del contenido (hero, header, footer)</td></tr>
+    </table>
+    <p class="ds-section-desc" style="margin-top:16px; margin-bottom:0;">Nota técnica: las custom properties no funcionan dentro de <code>@media</code>. Estos tokens son la referencia de "número correcto" para copiar a mano en cada <code>@media (max-width: …)</code> nuevo.</p>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 07 MOVIMIENTO & Z-INDEX -->
+  <div class="ds-section" id="movimiento">
+    <div class="ds-section-label">07</div>
+    <h2 class="ds-section-title">Movimiento &amp; Z-index</h2>
+    <p class="ds-section-desc">Duraciones y curvas estándar (pasa el mouse por las tarjetas) y capas de apilamiento por función, no por número adivinado.</p>
+    <div class="motion-grid" style="margin-bottom:32px;">
+      <div class="motion-card"><div class="swatch"></div><strong>Fast</strong><span>150ms</span></div>
+      <div class="motion-card"><div class="swatch"></div><strong>Base</strong><span>200ms</span></div>
+      <div class="motion-card"><div class="swatch"></div><strong>Slow</strong><span>300ms</span></div>
+      <div class="motion-card"><div class="swatch"></div><strong>Slower</strong><span>400ms</span></div>
+    </div>
+    <div class="zindex-list">
+      <div class="zindex-row"><span>Base (contenido, cards)</span><code>--az-z-base · 1</code></div>
+      <div class="zindex-row"><span>Dropdown (selects abiertos)</span><code>--az-z-dropdown · 10</code></div>
+      <div class="zindex-row"><span>Sticky (header, nav fija)</span><code>--az-z-sticky · 20</code></div>
+      <div class="zindex-row"><span>Overlay (fondo oscurecido)</span><code>--az-z-overlay · 30</code></div>
+      <div class="zindex-row"><span>Modal / diálogo</span><code>--az-z-modal · 40</code></div>
+      <div class="zindex-row"><span>Toast / notificación</span><code>--az-z-toast · 50</code></div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 08 BOTONES -->
+  <div class="ds-section" id="botones">
+    <div class="ds-section-label">08</div>
+    <h2 class="ds-section-title">Botones</h2>
+    <p class="ds-section-desc">Regla del Brand Book: un solo CTA primary por sección. El resto de las acciones van en secondary o ghost.</p>
+
+    <div class="color-group-title">Variantes</div>
+    <div class="btn-grid" style="margin-bottom:28px;">
+      <div class="btn-item"><button class="b-primary">Comprar</button><span class="btn-item-label">Primary</span></div>
+      <div class="btn-item"><button class="b-secondary">Mostrar más productos</button><span class="btn-item-label">Secondary</span></div>
+      <div class="btn-item"><button class="b-ghost">Limpiar</button><span class="btn-item-label">Ghost / texto</span></div>
+      <div class="btn-item">
+        <button class="b-fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg></button>
+        <span class="btn-item-label">Cart FAB (sobre imagen)</span>
+      </div>
+      <div class="btn-item">
+        <button class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+        <span class="btn-item-label">Icon button (wishlist)</span>
+      </div>
+      <div class="btn-item">
+        <button class="b-icon is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+        <span class="btn-item-label">Icon button · activo</span>
+      </div>
+    </div>
+
+    <div class="color-group-title">Tamaños</div>
+    <div class="btn-grid" style="margin-bottom:28px; align-items:center;">
+      <div class="btn-item"><button class="b-primary size-sm">Comprar</button><span class="btn-item-label">Small</span></div>
+      <div class="btn-item"><button class="b-primary">Comprar</button><span class="btn-item-label">Medium (default)</span></div>
+      <div class="btn-item"><button class="b-primary size-lg">Comprar</button><span class="btn-item-label">Large</span></div>
+    </div>
+
+    <div class="color-group-title">Estados</div>
+    <div class="state-row">
+      <span>Default</span><button class="b-primary">Comprar</button>
+      <span>Hover</span><button class="b-primary" style="background:var(--az-blue-dark);">Comprar</button>
+      <span>Disabled</span><button class="b-primary" disabled>Comprar</button>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 09 INPUTS & SELECTS -->
+  <div class="ds-section" id="inputs">
+    <div class="ds-section-label">09</div>
+    <h2 class="ds-section-title">Inputs &amp; Selects</h2>
+    <p class="ds-section-desc">Campo genérico para formularios futuros (login, checkout, newsletter) — no existía como componente reutilizable, solo como parte hardcodeada de la barra de filtros.</p>
+    <div class="input-grid">
+      <div class="field-demo">
+        <label for="dsInput1">Nombre</label>
+        <input id="dsInput1" type="text" placeholder="Escribe tu nombre">
+        <span class="field-help">Texto de ayuda opcional</span>
+      </div>
+      <div class="field-demo">
+        <label for="dsInput2">Correo</label>
+        <input id="dsInput2" type="email" class="has-error" value="correo-mal">
+        <span class="field-error">Ingresa un correo válido</span>
+      </div>
+      <div class="field-demo">
+        <label for="dsSelect1">País</label>
+        <select id="dsSelect1">
+          <option>Perú</option>
+          <option>México</option>
+          <option>Chile</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 10 BADGES & CHIPS -->
+  <div class="ds-section" id="badges">
+    <div class="ds-section-label">10</div>
+    <h2 class="ds-section-title">Badges &amp; Chips</h2>
+    <p class="ds-section-desc">Badge: contador numérico sobre un ícono (carrito, wishlist). Chip: filtro activo removible.</p>
+    <div class="color-group-title">Badges</div>
+    <div class="badge-demo-wrap" style="margin-bottom:28px;">
+      <div class="badge-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg><span class="badge-count">3</span></div>
+      <div class="badge-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg><span class="badge-count">0</span></div>
+    </div>
+    <div class="color-group-title">Chips (filtro activo)</div>
+    <div class="row">
+      <span class="chip-demo">Categoría: Tecnología <span>✕</span></span>
+      <span class="chip-demo">Marca: Apple <span>✕</span></span>
+      <span class="chip-demo">Valoración: 4.5★ o más <span>✕</span></span>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 11 TAGS / RATING -->
+  <div class="ds-section" id="tags">
+    <div class="ds-section-label">11</div>
+    <h2 class="ds-section-title">Tags &amp; Rating</h2>
+    <div class="row" style="margin-bottom:24px;">
+      <span class="tag tag-blue">Tecnología, Celulares</span>
+      <span class="tag tag-navy">Categorías</span>
+    </div>
+    <div class="ds-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 5.0 <span style="color:#a0a8b4; font-family:var(--font-heading); font-size:13px;">(rating de producto y testimonios)</span></div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 12 PRODUCT CARD -->
+  <div class="ds-section" id="cards">
+    <div class="ds-section-label">12</div>
+    <h2 class="ds-section-title">Product Card</h2>
+    <p class="ds-section-desc">Componente base de todo el grid de productos: imagen 1:1, categoría, título, rating, precio y CTA.</p>
+    <div class="demo-card">
+      <img src="images/amazon-redesign/producto-1-crop.jpg" alt="Air Pods Prox Max">
+      <div class="demo-card-body">
+        <p class="demo-cat">Tecnología, Auriculares</p>
+        <h3>Air Pods Prox Max</h3>
+        <div class="ds-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 5.0</div>
+        <div class="demo-bottom"><span class="demo-price">$99.00</span><button class="b-primary" style="padding:9px 16px; font-size:12px;">Comprar</button></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 13 FILTROS -->
+  <div class="ds-section" id="filtros">
+    <div class="ds-section-label">13</div>
+    <h2 class="ds-section-title">Widget de filtros</h2>
+    <p class="ds-section-desc">Panel flotante sobre el banner del hero, con degradado navy → azul, campos separados por divisores y scroll horizontal en mobile. Refleja los 5 campos reales del sitio.</p>
+    <div class="demo-pickup">
+      <div class="demo-field"><strong>Categoría</strong><span>Todas ⌄</span></div>
+      <div class="demo-field"><strong>Marca</strong><span>Todas ⌄</span></div>
+      <div class="demo-field"><strong>Precio</strong><span>Cualquiera ⌄</span></div>
+      <div class="demo-field"><strong>Valoración</strong><span>Cualquiera ⌄</span></div>
+      <div class="demo-field"><strong>Ordenar por</strong><span>Relevancia ⌄</span></div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 14 ESTADOS -->
+  <div class="ds-section" id="estados">
+    <div class="ds-section-label">14</div>
+    <h2 class="ds-section-title">Estados</h2>
+    <p class="ds-section-desc">Todo listado (productos, resultados de búsqueda futura, pedidos) necesita definir su estado vacío desde el inicio, no como parche después.</p>
+    <div class="empty-demo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-3.5-3.5"/></svg>
+      <strong>No encontramos productos</strong>
+      <p>Prueba con otros filtros o quita alguno de los que aplicaste.</p>
+      <button class="b-secondary" style="padding:9px 18px; font-size:13px;">Quitar filtros</button>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 15 TOKENS -->
+  <div class="ds-section" id="tokens">
+    <div class="ds-section-label">15</div>
+    <h2 class="ds-section-title">Tokens CSS</h2>
+    <p class="ds-section-desc">Variables compartidas entre esta página, el Brand Book y la web del proyecto — todas viven en un único archivo, <code>amazon-redesign-tokens.css</code>, que se importa, nunca se duplica.</p>
+    <div class="tokens-code">:root {<br>
+<span class="tk-group">/* color */</span>
+&nbsp;&nbsp;<span class="tk-c">--az-blue</span>: #0b75fb;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-blue-dark</span>: #085dc7;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-navy</span>: #131921;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-price</span>: #3560bd;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-text</span>: #1a202c;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-bg-light</span>: #fafbfd;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-star</span>: #ffb020;<br>
+<span class="tk-group">/* radius */</span>
+&nbsp;&nbsp;<span class="tk-c">--az-radius-sm</span>: 8px;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-radius-md</span>: 10px;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-radius-lg</span>: 20px;<br>
+<span class="tk-group">/* spacing */</span>
+&nbsp;&nbsp;<span class="tk-c">--az-space-1</span> … <span class="tk-c">--az-space-10</span>: 4px → 64px;<br>
+<span class="tk-group">/* type scale */</span>
+&nbsp;&nbsp;<span class="tk-c">--az-fs-xs</span> … <span class="tk-c">--az-fs-display</span>: 12px → clamp(28px,5vw,52px);<br>
+&nbsp;&nbsp;<span class="tk-c">--az-lh-tight</span> … <span class="tk-c">--az-lh-relaxed</span>: 1.15 → 1.6;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-fw-regular</span> … <span class="tk-c">--az-fw-extrabold</span>: 400 → 800;<br>
+<span class="tk-group">/* layout */</span>
+&nbsp;&nbsp;<span class="tk-c">--az-bp-sm / md / lg / xl</span>: 480 / 768 / 1024 / 1440px;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-container-max</span>: 1440px;<br>
+<span class="tk-group">/* z-index */</span>
+&nbsp;&nbsp;<span class="tk-c">--az-z-base … --az-z-toast</span>: 1 → 50;<br>
+<span class="tk-group">/* motion */</span>
+&nbsp;&nbsp;<span class="tk-c">--az-duration-fast … slower</span>: 150 → 400ms;<br>
+&nbsp;&nbsp;<span class="tk-c">--az-ease-standard / out</span>: cubic-bezier(…);<br>
+<span class="tk-group">/* elevation */</span>
+&nbsp;&nbsp;<span class="tk-c">--az-elevation-1 … 4</span><br>
+<span class="tk-group">/* fonts */</span>
+&nbsp;&nbsp;<span class="tk-c">--font-heading</span>: 'Plus Jakarta Sans', sans-serif;<br>
+&nbsp;&nbsp;<span class="tk-c">--font-body</span>: 'Rubik', sans-serif;<br>
+}</div>
+    <p class="ds-section-desc" style="margin-top:16px; margin-bottom:0;">Ver el archivo completo: <code>amazon-redesign-tokens.css</code>.</p>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 16 GOBERNANZA -->
+  <div class="ds-section" id="gobernanza">
+    <div class="ds-section-label">16</div>
+    <h2 class="ds-section-title">Gobernanza — cómo escalar este sistema</h2>
+    <p class="ds-section-desc">Reglas para que agregar una página, un botón o una sección nueva no rompa la consistencia del resto.</p>
+    <div class="gov-list">
+      <div class="gov-item">
+        <div class="gov-num">01</div>
+        <div><strong>Una sola fuente de verdad</strong><p>Todo color, radio, sombra o tipografía se define <strong>una vez</strong> en <code>amazon-redesign-tokens.css</code> y se referencia con <code>var(--token)</code> en cualquier archivo nuevo. Nunca redefinir un valor a mano (esto ya causó que el Brand Book tuviera un color de precio desactualizado — corregido en esta revisión).</p></div>
+      </div>
+      <div class="gov-item">
+        <div class="gov-num">02</div>
+        <div><strong>Convención de nombres</strong><p>Prefijo <code>az-</code> en toda clase CSS del proyecto (<code>az-product-card</code>, <code>az-filter-btn</code>). Modificadores de estado con <code>is-</code> (<code>is-active</code>, <code>is-hidden</code>, <code>is-disabled</code>).</p></div>
+      </div>
+      <div class="gov-item">
+        <div class="gov-num">03</div>
+        <div><strong>Antes de crear un componente nuevo</strong><p>Revisar si ya existe algo parecido en este documento (botón, chip, badge, input). Si el caso es 80% igual a uno existente, extender esa clase con un modificador — no crear una clase paralela.</p></div>
+      </div>
+      <div class="gov-item">
+        <div class="gov-num">04</div>
+        <div><strong>Este documento se actualiza junto con el código</strong><p>Si un componente cambia en <code>amazon-redesign-website.html</code> (como pasó con la barra de filtros al agregar Marca y Valoración), esta página se actualiza en el mismo cambio. Un design system desincronizado es peor que no tener ninguno — genera falsa confianza.</p></div>
+      </div>
+      <div class="gov-item">
+        <div class="gov-num">05</div>
+        <div><strong>Accesibilidad no es opcional</strong><p>Todo color de texto sobre fondo debe cumplir WCAG AA (4.5:1 texto normal, 3:1 texto grande). Los ajustes ya hechos están documentados como comentarios en <code>tokens.css</code>; cualquier color nuevo se valida antes de agregarse.</p></div>
+      </div>
+      <div class="gov-item">
+        <div class="gov-num">06</div>
+        <div><strong>Mobile-first en cada componente nuevo</strong><p>Diseñar primero el estado comprimido (mobile) y expandir hacia desktop, no al revés. Usar siempre los breakpoints tokenizados en la sección 06.</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

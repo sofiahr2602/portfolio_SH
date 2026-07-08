@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Angie Hamasaki</title>
+<meta name="description" content="Documento de referencia visual del design system creado para Angie Hamasaki: colores, tipografía, espaciado, componentes y tokens CSS. Case study de UX/UI por Sofia Hualpa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="angie-tokens.css">
+<style>
+  /* Shared reset, :root tokens and base body styles now live in angie-tokens.css */
+
+  /* ── LAYOUT ── */
+  .ds-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 48px;
+  }
+
+  .ds-header {
+    margin-bottom: 64px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ds-header-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+
+  .ds-header h1 {
+    font-family: var(--font-heading);
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.05;
+  }
+
+  .ds-header p {
+    font-size: 17px;
+    color: var(--text-mid);
+  }
+
+  /* ── SECTIONS ── */
+  .ds-section {
+    margin-bottom: 80px;
+    scroll-margin-top: 80px;
+  }
+
+  .ds-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+
+  .ds-section-title {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -.5px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .ds-section-desc {
+    font-size: 14px;
+    color: var(--text-mid);
+    margin-bottom: 32px;
+  }
+
+  .ds-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 72px 0;
+  }
+
+  /* ── NAV LATERAL ── */
+  .ds-nav {
+    position: fixed;
+    top: 48px;
+    left: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 10;
+  }
+
+  .ds-nav a {
+    font-size: 12px;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 180ms;
+    padding: 2px 0;
+  }
+
+  .ds-nav a:hover { color: var(--coral); }
+
+  /* ── GRID HELPERS ── */
+  .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+  .col { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ── 01 COLORES ── */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+  }
+
+  .swatch-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .swatch {
+    height: 72px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .swatch-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .swatch-hex { font-size: 12px; color: var(--text-light); font-family: monospace; }
+  .swatch-use { font-size: 11px; color: var(--text-light); }
+
+  .color-group-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-mid);
+    margin: 24px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── 02 TIPOGRAFÍA ── */
+  .type-table { width: 100%; border-collapse: collapse; }
+  .type-table tr { border-bottom: 1px solid var(--border); }
+  .type-table td { padding: 20px 16px; vertical-align: middle; }
+  .type-meta { font-size: 12px; color: var(--text-light); line-height: 1.6; min-width: 180px; font-family: monospace; }
+  .type-meta strong { display: block; font-family: var(--font-body); font-size: 13px; color: var(--text-mid); font-weight: 600; margin-bottom: 2px; }
+
+  /* ── 03 ESPACIADO ── */
+  .space-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .space-bar {
+    background: var(--green);
+    border-radius: 4px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .space-name { font-size: 13px; font-weight: 600; color: var(--text); min-width: 80px; }
+  .space-val { font-size: 12px; color: var(--text-light); font-family: monospace; min-width: 60px; }
+  .space-use { font-size: 12px; color: var(--text-light); }
+
+  /* ── 04 RADIUS ── */
+  .radius-grid { display: flex; gap: 32px; flex-wrap: wrap; }
+  .radius-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .radius-box {
+    background: var(--white);
+    border: 1.5px solid var(--border-mid);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-light);
+  }
+
+  .radius-label { text-align: center; }
+  .radius-label strong { display: block; font-size: 14px; font-weight: 600; color: var(--text); }
+  .radius-label span { font-size: 12px; color: var(--text-light); font-family: monospace; }
+  .radius-label small { display: block; font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+  /* ── 05 SOMBRAS ── */
+  .shadow-grid { display: flex; gap: 32px; flex-wrap: wrap; }
+  .shadow-item { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .shadow-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    width: 140px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+
+  .shadow-label { text-align: center; }
+  .shadow-label strong { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+  .shadow-label code { font-size: 11px; color: var(--text-light); }
+
+  /* ── 06 BOTONES ── */
+  .btn-grid { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; }
+  .btn-item { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .btn-item-label { font-size: 12px; color: var(--text-light); }
+
+  .btn-primary {
+    background: var(--coral);
+    color: var(--white);
+    padding: 16px 32px;
+    border-radius: var(--radius-full);
+    font-size: 16px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    border: none;
+    cursor: pointer;
+    transition: background 180ms var(--ease-out), transform 180ms var(--ease-out);
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover { background: var(--coral-hover); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    padding: 16px 32px;
+    border-radius: var(--radius-full);
+    font-size: 16px;
+    font-weight: 400;
+    font-family: var(--font-body);
+    border: 1.5px solid var(--border-mid);
+    cursor: pointer;
+    transition: border-color 180ms, color 180ms;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover { border-color: var(--text); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--coral);
+    padding: 16px 0;
+    font-size: 16px;
+    font-family: var(--font-body);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 180ms;
+  }
+
+  .btn-nav {
+    background: var(--coral);
+    color: var(--white);
+    padding: 10px 24px;
+    border-radius: var(--radius-full);
+    font-size: 15px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    transition: background 180ms;
+  }
+
+  .btn-nav:hover { background: var(--coral-hover); }
+
+  .btn-states { margin-top: 24px; }
+  .btn-states h4 { font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 12px; }
+
+  /* ── 07 TAGS ── */
+  .tags-grid { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+  .tag-item { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .tag-item-label { font-size: 11px; color: var(--text-light); }
+
+  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; font-family: var(--font-body); padding: 4px 12px; border-radius: var(--radius-full); letter-spacing: .04em; }
+  .tag-green { background: var(--green-light); color: #2a5a10; }
+  .tag-coral { background: var(--coral-light); color: #c04a28; }
+  .tag-yellow { background: #fff4e0; color: #8a5a00; }
+  .tag-sage { background: #e8f0e8; color: #3a5a3a; }
+
+  .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--coral); font-family: var(--font-body); }
+
+  /* ── 08 CARDS ── */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+
+  .card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 32px; transition: background 220ms var(--ease-out), border-color 220ms, transform 220ms, box-shadow 220ms; }
+  .card:hover { background: var(--green-light); border-color: var(--green); transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .card-dark { background: var(--text); border: none; border-radius: var(--radius-md); padding: 40px; }
+  .card-green { background: var(--green); border-radius: var(--radius-md); padding: 40px; }
+
+  .card h3 { font-family: var(--font-heading); font-size: 19px; font-weight: 600; color: var(--text); margin: 16px 0 10px; }
+  .card p { font-size: 15px; color: var(--text-mid); line-height: 1.65; }
+  .card-dark blockquote { font-size: 16px; color: rgba(250,250,247,.75); line-height: 1.75; font-style: italic; margin-bottom: 24px; }
+  .card-dark .author-name { font-size: 14px; font-weight: 600; font-family: var(--font-heading); color: #FAFAF7; }
+  .card-dark .author-role { font-size: 13px; color: rgba(250,250,247,.45); }
+
+  .card-icon { width: 52px; height: 52px; background: var(--white); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); margin-bottom: 8px; }
+  .stars { display: flex; gap: 4px; margin-bottom: 16px; }
+  .star { width: 15px; height: 15px; fill: var(--coral); }
+
+  /* ── 09 STATS ── */
+  .stats-grid { display: flex; gap: 48px; flex-wrap: wrap; }
+  .stat strong { display: block; font-family: var(--font-heading); font-size: 48px; font-weight: 700; color: var(--coral); line-height: 1; letter-spacing: -1.5px; margin-bottom: 6px; }
+  .stat span { font-size: 14px; color: var(--text-mid); }
+
+  /* ── 10 FORMULARIOS ── */
+  .form-demo { max-width: 520px; display: flex; flex-direction: column; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 14px; font-weight: 500; color: var(--text); }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    background: var(--white);
+    border: 1px solid var(--border-mid);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 15px;
+    font-family: var(--font-body);
+    color: var(--text);
+    transition: border-color 180ms, box-shadow 180ms;
+    outline: none;
+    width: 100%;
+    resize: none;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--coral);
+    box-shadow: 0 0 0 3px rgba(248,106,67,.12);
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ── 11 TOKENS CODE ── */
+  .code-block {
+    background: var(--text);
+    color: var(--green);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .code-comment { color: #5a8a4a; }
+  .code-prop { color: #fde8e2; }
+  .code-val-coral { color: #F86A43; }
+  .code-val-green { color: #C2EC9A; }
+  .code-val-white { color: #FAFAF7; }
+  .code-val-dark { color: #8a8a8a; }
+
+  /* ── FLOATING CARD DEMO ── */
+  .floating-card { background: var(--white); border-radius: var(--radius-md); padding: 14px 18px; box-shadow: var(--shadow-lg); display: inline-flex; align-items: center; gap: 12px; }
+  .float-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .float-icon.green { background: var(--green-light); }
+  .float-icon.coral { background: var(--coral-light); }
+  .float-text strong { display: block; font-size: 13px; font-weight: 600; font-family: var(--font-heading); }
+  .float-text span { font-size: 12px; color: var(--text-light); }
+
+  /* ── 12 ANIMACIONES ── */
+  .anim-table { width: 100%; border-collapse: collapse; }
+  .anim-table th { font-size: 12px; font-weight: 600; color: var(--text-mid); padding: 8px 16px; border-bottom: 1.5px solid var(--border-mid); text-align: left; }
+  .anim-table td { font-size: 13px; color: var(--text); padding: 14px 16px; border-bottom: 1px solid var(--border); font-family: monospace; }
+  .anim-table td:first-child { font-family: var(--font-body); font-weight: 600; color: var(--text-mid); font-size: 12px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .ds-nav { display: none; }
+    .ds-wrapper { padding: 40px 24px; }
+    .ds-header h1 { font-size: 36px; }
+  }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .stats-grid { gap: 28px; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a href="../index.html#projects" style="position:fixed;top:20px;right:20px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:rgba(44,44,44,0.85);color:#fff;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:8px 16px;border-radius:999px;text-decoration:none;backdrop-filter:blur(4px);">&larr; Volver al portafolio</a>
+
+<nav class="ds-nav" aria-label="Secciones del design system">
+  <a href="#colores">01 · Colores</a>
+  <a href="#roles">02 · Roles semánticos</a>
+  <a href="#tipografia">03 · Tipografía</a>
+  <a href="#espaciado">04 · Espaciado</a>
+  <a href="#radius">05 · Radius</a>
+  <a href="#sombras">06 · Sombras</a>
+  <a href="#breakpoints">07 · Breakpoints</a>
+  <a href="#grid">08 · Grid</a>
+  <a href="#z-index">09 · Z-Index</a>
+  <a href="#botones">10 · Botones</a>
+  <a href="#estados">11 · Estados</a>
+  <a href="#tags">12 · Tags</a>
+  <a href="#cards">13 · Cards</a>
+  <a href="#stats">14 · Stats</a>
+  <a href="#formularios">15 · Formularios</a>
+  <a href="#tokens">16 · Tokens CSS</a>
+  <a href="#animaciones">17 · Animaciones</a>
+  <a href="#accesibilidad">18 · Accesibilidad</a>
+  <a href="#tarjetas-servicio">19 · Serv. cards</a>
+  <a href="#testimonios-pattern">20 · Testimonios</a>
+  <a href="#contacto-highlights">21 · CTA</a>
+</nav>
+
+<div class="ds-wrapper">
+
+  <!-- HEADER -->
+  <div class="ds-header">
+    <div class="ds-header-eyebrow">Design System · v1.2</div>
+    <h1>Angie Hamasaki</h1>
+    <p>Nutricionista Clínica en Lima, Perú · Documento de referencia visual</p>
+  </div>
+
+  <!-- 01 COLORES -->
+  <div class="ds-section" id="colores">
+    <div class="ds-section-label">01</div>
+    <h2 class="ds-section-title">Paleta de colores</h2>
+    <p class="ds-section-desc">Colores principales de la marca, con sus variantes y usos recomendados.</p>
+
+    <div class="color-group-title">Colores primarios</div>
+    <div class="color-grid">
+      <div class="swatch-card">
+        <div class="swatch" style="background:#F86A43;"></div>
+        <div class="swatch-name">Coral</div>
+        <div class="swatch-hex">#F86A43</div>
+        <div class="swatch-use">CTAs · Botones · Acento principal</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#E05A35;"></div>
+        <div class="swatch-name">Coral Hover</div>
+        <div class="swatch-hex">#E05A35</div>
+        <div class="swatch-use">Estado hover de botones</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#fde8e2;"></div>
+        <div class="swatch-name">Coral Light</div>
+        <div class="swatch-hex">#FDE8E2</div>
+        <div class="swatch-use">Fondos tags coral · Iconos</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#C2EC9A;"></div>
+        <div class="swatch-name">Verde</div>
+        <div class="swatch-hex">#C2EC9A</div>
+        <div class="swatch-use">Secundario · Tags · Sección contacto</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#5a9e2f;"></div>
+        <div class="swatch-name">Verde Dark</div>
+        <div class="swatch-hex">#5A9E2F</div>
+        <div class="swatch-use">Texto sobre verde · Iconos</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#e8f8d4;"></div>
+        <div class="swatch-name">Verde Light</div>
+        <div class="swatch-hex">#E8F8D4</div>
+        <div class="swatch-use">Hover cards · Fondos suaves</div>
+      </div>
+    </div>
+
+    <div class="color-group-title">Colores neutros</div>
+    <div class="color-grid">
+      <div class="swatch-card">
+        <div class="swatch" style="background:#FAFAF7; border:1px solid #eee;"></div>
+        <div class="swatch-name">Background</div>
+        <div class="swatch-hex">#FAFAF7</div>
+        <div class="swatch-use">Fondo general de la página</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#ffffff; border:1px solid #eee;"></div>
+        <div class="swatch-name">Blanco</div>
+        <div class="swatch-hex">#FFFFFF</div>
+        <div class="swatch-use">Cards · Inputs · Nav</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#2C2C2C;"></div>
+        <div class="swatch-name">Texto</div>
+        <div class="swatch-hex">#2C2C2C</div>
+        <div class="swatch-use">Headings · Body principal · Footer</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#5a5a5a;"></div>
+        <div class="swatch-name">Texto Mid</div>
+        <div class="swatch-hex">#5A5A5A</div>
+        <div class="swatch-use">Párrafos · Subtítulos</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#8a8a8a;"></div>
+        <div class="swatch-name">Texto Light</div>
+        <div class="swatch-hex">#8A8A8A</div>
+        <div class="swatch-use">Metadatos · Hints · Placeholders</div>
+      </div>
+      <div class="swatch-card">
+        <div class="swatch" style="background:#FFD166;"></div>
+        <div class="swatch-name">Amarillo</div>
+        <div class="swatch-hex">#FFD166</div>
+        <div class="swatch-use">Plato interactivo · Grasas</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 02 ROLES SEMÁNTICOS -->
+  <div class="ds-section" id="roles">
+    <div class="ds-section-label">02</div>
+    <h2 class="ds-section-title">Roles semánticos de color</h2>
+    <p class="ds-section-desc">Cada color primitivo tiene un <em>rol semántico</em> — su intención de uso. Al agregar un componente nuevo, usar el rol (no el valor HEX) garantiza consistencia y facilita cambios globales de paleta en el futuro.</p>
+
+    <table class="anim-table">
+      <thead><tr><th>Token semántico</th><th>Valor</th><th>Muestra</th><th>Cuándo usarlo</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>--color-action</code></td>
+          <td style="font-family:monospace; font-size:12px;">#F86A43</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#F86A43;"></div></td>
+          <td>Botón principal, CTA, enlace de acción primaria</td>
+        </tr>
+        <tr>
+          <td><code>--color-action-bg</code></td>
+          <td style="font-family:monospace; font-size:12px;">#FDE8E2</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#fde8e2;border:1px solid #eee;"></div></td>
+          <td>Fondo de tags coral, iconos sobre claro</td>
+        </tr>
+        <tr>
+          <td><code>--color-brand</code></td>
+          <td style="font-family:monospace; font-size:12px;">#C2EC9A</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#C2EC9A;"></div></td>
+          <td>Números sobre fondo oscuro (stats), iconos de éxito</td>
+        </tr>
+        <tr>
+          <td><code>--color-brand-dark</code></td>
+          <td style="font-family:monospace; font-size:12px;">#5A9E2F</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#5a9e2f;"></div></td>
+          <td>Texto sobre fondos verdes, links de acción secundaria</td>
+        </tr>
+        <tr>
+          <td><code>--color-brand-bg</code></td>
+          <td style="font-family:monospace; font-size:12px;">#E8F8D4</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#e8f8d4;"></div></td>
+          <td>Fondo de secciones de transición, hover de cards</td>
+        </tr>
+        <tr>
+          <td><code>--color-surface</code></td>
+          <td style="font-family:monospace; font-size:12px;">#FFFFFF</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#fff;border:1px solid #eee;"></div></td>
+          <td>Cards, inputs, nav — cualquier componente elevado</td>
+        </tr>
+        <tr>
+          <td><code>--color-page</code></td>
+          <td style="font-family:monospace; font-size:12px;">#FAFAF7</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#FAFAF7;border:1px solid #eee;"></div></td>
+          <td>Fondo de página exclusivamente</td>
+        </tr>
+        <tr>
+          <td><code>--color-ink</code></td>
+          <td style="font-family:monospace; font-size:12px;">#2C2C2C</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#2C2C2C;"></div></td>
+          <td>Headings, texto cuerpo principal</td>
+        </tr>
+        <tr>
+          <td><code>--color-ink-secondary</code></td>
+          <td style="font-family:monospace; font-size:12px;">#5A5A5A</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#5a5a5a;"></div></td>
+          <td>Párrafos, subtítulos, descripciones</td>
+        </tr>
+        <tr>
+          <td><code>--color-ink-tertiary</code></td>
+          <td style="font-family:monospace; font-size:12px;">#8A8A8A</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:#8a8a8a;"></div></td>
+          <td>Metadatos, placeholders, hints, fechas</td>
+        </tr>
+        <tr>
+          <td><code>--color-line</code></td>
+          <td style="font-family:monospace; font-size:12px;">rgba(44,44,44,.10)</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:rgba(44,44,44,.10);"></div></td>
+          <td>Separadores, bordes de sección, hr</td>
+        </tr>
+        <tr>
+          <td><code>--color-line-mid</code></td>
+          <td style="font-family:monospace; font-size:12px;">rgba(44,44,44,.15)</td>
+          <td><div style="width:28px;height:28px;border-radius:6px;background:rgba(44,44,44,.15);"></div></td>
+          <td>Bordes de inputs, cards con más peso visual</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:20px; background:var(--green-light); border-radius:var(--radius-md); padding:16px 20px; font-size:13px; color:var(--text-mid); line-height:1.7;">
+      <strong style="color:var(--green-dark);">Regla de oro:</strong> Nunca hardcodear un valor HEX en un componente nuevo. Usar siempre el token semántico. Si necesitas un color que no existe en la tabla, primero agrega el token en <code>angie-tokens.css</code> y luego úsalo.
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 03 TIPOGRAFÍA -->
+  <div class="ds-section" id="tipografia">
+    <div class="ds-section-label">03</div>
+    <h2 class="ds-section-title">Tipografía</h2>
+    <p class="ds-section-desc">DM Sans para headings y UI, Inter para body text y formularios.</p>
+
+    <table class="type-table">
+      <tbody>
+        <tr>
+          <td><div class="type-meta"><strong>H1 Hero</strong>DM Sans · 700 · 64px<br>letter-spacing: -1.5px</div></td>
+          <td><div style="font-family:'DM Sans',sans-serif; font-size:42px; font-weight:700; letter-spacing:-1.5px; line-height:1.05; color:#2C2C2C;">Nutrición que se adapta <span style="color:#F86A43;">a usted.</span></div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>H2 Sección</strong>DM Sans · 700 · 44px<br>letter-spacing: -1px</div></td>
+          <td><div style="font-family:'DM Sans',sans-serif; font-size:32px; font-weight:700; letter-spacing:-1px; color:#2C2C2C;">Un camino para cada persona.</div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>H2 Contacto</strong>DM Sans · 700 · 48px<br>letter-spacing: -1px</div></td>
+          <td><div style="font-family:'DM Sans',sans-serif; font-size:34px; font-weight:700; letter-spacing:-1px; color:#2C2C2C;">Dé el primer paso hacia su bienestar.</div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>H3 Card</strong>DM Sans · 600 · 19px<br>letter-spacing: 0</div></td>
+          <td><div style="font-family:'DM Sans',sans-serif; font-size:19px; font-weight:600; color:#2C2C2C;">Nutrición Clínica</div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>Body Lead</strong>Inter · 400 · 18px<br>line-height: 1.7</div></td>
+          <td><div style="font-family:'Inter',sans-serif; font-size:17px; color:#5a5a5a; line-height:1.7;">Cada persona tiene una historia y desafíos distintos. Por eso, antes de hablar de alimentos, escuchamos a la persona.</div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>Body</strong>Inter · 400 · 15–16px<br>line-height: 1.65</div></td>
+          <td><div style="font-family:'Inter',sans-serif; font-size:15px; color:#5a5a5a; line-height:1.65;">Evaluación integral y plan alimenticio personalizado basado en su historial de salud, hábitos actuales y objetivos a largo plazo.</div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>Eyebrow</strong>Inter · 500 · 13px<br>uppercase · letter-spacing: .08em</div></td>
+          <td><div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:#F86A43;">Nutricionista Clínica</div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>Nav Logo</strong>DM Sans · 600 · 18px<br>letter-spacing: -0.3px</div></td>
+          <td><div style="font-family:'DM Sans',sans-serif; font-size:18px; font-weight:600; letter-spacing:-.3px; color:#2C2C2C;">Angie <span style="color:#F86A43;">Hamasaki</span></div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>Nav Links</strong>Inter · 400 · 15px<br>color: text-mid</div></td>
+          <td><div style="font-family:'Inter',sans-serif; font-size:15px; color:#5a5a5a;">Sobre mí &nbsp;·&nbsp; Servicios &nbsp;·&nbsp; Testimonios &nbsp;·&nbsp; Blog</div></td>
+        </tr>
+        <tr>
+          <td><div class="type-meta"><strong>Stat Number</strong>DM Sans · 700 · 40px<br>color: coral · letter-spacing: -1px</div></td>
+          <td><div style="font-family:'DM Sans',sans-serif; font-size:40px; font-weight:700; color:#F86A43; letter-spacing:-1px;">+10</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 04 ESPACIADO -->
+  <div class="ds-section" id="espaciado">
+    <div class="ds-section-label">04</div>
+    <h2 class="ds-section-title">Espaciado</h2>
+    <p class="ds-section-desc">Escala de espaciado basada en múltiplos de 8px.</p>
+
+    <div class="space-row"><div class="space-bar" style="width:8px;"></div><div class="space-name">XS</div><div class="space-val">8px</div><div class="space-use">Gap entre iconos y texto, espacios internos mínimos</div></div>
+    <div class="space-row"><div class="space-bar" style="width:12px;"></div><div class="space-name">XS+</div><div class="space-val">12px</div><div class="space-use">Gap entre tags, gap entre elementos de lista</div></div>
+    <div class="space-row"><div class="space-bar" style="width:16px;"></div><div class="space-name">SM</div><div class="space-val">16px</div><div class="space-use">Gap entre campos de formulario, margin-bottom eyebrow</div></div>
+    <div class="space-row"><div class="space-bar" style="width:24px;"></div><div class="space-name">MD</div><div class="space-val">24px</div><div class="space-use">Padding cards pequeñas, margin entre elementos de card</div></div>
+    <div class="space-row"><div class="space-bar" style="width:32px;"></div><div class="space-name">MD+</div><div class="space-val">32px</div><div class="space-use">Padding nav, gap en grids de testimonios</div></div>
+    <div class="space-row"><div class="space-bar" style="width:40px;"></div><div class="space-name">LG</div><div class="space-val">40px</div><div class="space-use">Padding hero actions, gap entre secciones menores</div></div>
+    <div class="space-row"><div class="space-bar" style="width:48px;"></div><div class="space-name">LG+</div><div class="space-val">48px</div><div class="space-use">Padding stats bar, gap grids sobre/contacto</div></div>
+    <div class="space-row"><div class="space-bar" style="width:64px;"></div><div class="space-name">XL</div><div class="space-val">64px</div><div class="space-use">Gap hero, padding móvil de secciones</div></div>
+    <div class="space-row"><div class="space-bar" style="width:80px;"></div><div class="space-name">2XL</div><div class="space-val">80px</div><div class="space-use">Padding lateral desktop, gap en grids de servicios</div></div>
+    <div class="space-row"><div class="space-bar" style="width:96px;"></div><div class="space-name">3XL</div><div class="space-val">96px</div><div class="space-use">Padding tablet de secciones</div></div>
+    <div class="space-row" style="border-bottom:none;"><div class="space-bar" style="width:128px;"></div><div class="space-name">4XL</div><div class="space-val">128px</div><div class="space-use">Padding desktop de todas las secciones principales</div></div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 05 BORDER RADIUS -->
+  <div class="ds-section" id="radius">
+    <div class="ds-section-label">05</div>
+    <h2 class="ds-section-title">Border radius</h2>
+    <p class="ds-section-desc">Cuatro niveles de redondez para distintos tipos de componentes.</p>
+
+    <div class="radius-grid">
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:8px;">8px</div>
+        <div class="radius-label"><strong>SM</strong><span>--radius-sm: 8px</span><small>Inputs · Iconos · Badges pequeños</small></div>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:16px;">16px</div>
+        <div class="radius-label"><strong>MD</strong><span>--radius-md: 16px</span><small>Cards · Info panels · Testimonios</small></div>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:24px;">24px</div>
+        <div class="radius-label"><strong>LG</strong><span>--radius-lg: 24px</span><small>Secciones · Fotos · Contacto</small></div>
+      </div>
+      <div class="radius-item">
+        <div class="radius-box" style="border-radius:999px; width:120px; height:48px;">999px</div>
+        <div class="radius-label"><strong>Full</strong><span>--radius-full: 999px</span><small>Botones · Tags · Pills · Nav CTA</small></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 06 SOMBRAS -->
+  <div class="ds-section" id="sombras">
+    <div class="ds-section-label">06</div>
+    <h2 class="ds-section-title">Sombras</h2>
+    <p class="ds-section-desc">Tres niveles de elevación para distintos componentes.</p>
+
+    <div class="shadow-grid">
+      <div class="shadow-item">
+        <div class="shadow-card" style="box-shadow:0 2px 12px rgba(44,44,44,0.06);">Shadow SM</div>
+        <div class="shadow-label">
+          <strong>--shadow-sm</strong>
+          <code>0 2px 12px rgba(44,44,44,0.06)</code>
+          <div style="font-size:11px; color:var(--text-light); margin-top:4px;">Stats bar · Cards sutiles</div>
+        </div>
+      </div>
+      <div class="shadow-item">
+        <div class="shadow-card" style="box-shadow:0 4px 24px rgba(44,44,44,0.08);">Shadow MD</div>
+        <div class="shadow-label">
+          <strong>--shadow-md</strong>
+          <code>0 4px 24px rgba(44,44,44,0.08)</code>
+          <div style="font-size:11px; color:var(--text-light); margin-top:4px;">Cards en hover · Info panels</div>
+        </div>
+      </div>
+      <div class="shadow-item">
+        <div class="shadow-card" style="box-shadow:0 8px 48px rgba(44,44,44,0.10);">Shadow LG</div>
+        <div class="shadow-label">
+          <strong>--shadow-lg</strong>
+          <code>0 8px 48px rgba(44,44,44,0.10)</code>
+          <div style="font-size:11px; color:var(--text-light); margin-top:4px;">Foto hero · Sobre badge · Floating cards</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 07 BREAKPOINTS -->
+  <div class="ds-section" id="breakpoints">
+    <div class="ds-section-label">07</div>
+    <h2 class="ds-section-title">Breakpoints</h2>
+    <p class="ds-section-desc">Cinco puntos de quiebre nombrados. Siempre usar <code>max-width</code> descendente (mobile-first opcional). Nunca hardcodear un valor en px sin referenciar la tabla.</p>
+
+    <table class="anim-table">
+      <thead><tr><th>Nombre</th><th>Valor</th><th>Target</th><th>Qué cambia</th></tr></thead>
+      <tbody>
+        <tr><td><code>sm</code></td><td>640px</td><td>Móvil grande (iPhone Pro Max)</td><td>Ajustes de padding menores</td></tr>
+        <tr><td><code>md</code></td><td>768px</td><td>Tablet (iPad, Android tablet)</td><td>Grid 1 col, nav hamburger, hero apilado</td></tr>
+        <tr><td><code>lg</code></td><td>1024px</td><td>Desktop pequeño, laptop</td><td>Grid 2 col, padding reducido vs desktop</td></tr>
+        <tr><td><code>xl</code></td><td>1280px</td><td>Desktop estándar</td><td>Layout completo de diseño original</td></tr>
+        <tr><td><code>2xl</code></td><td>1440px</td><td>Pantallas grandes</td><td>Max-width del contenido, no escalar más</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:20px; display:grid; grid-template-columns:repeat(5,1fr); gap:8px;">
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; text-align:center;">
+        <div style="font-size:11px; font-weight:700; color:var(--coral); margin-bottom:4px;">SM</div>
+        <div style="font-size:13px; font-weight:600; color:var(--text);">640px</div>
+        <div style="height:3px; background:var(--coral-light); border-radius:2px; margin-top:8px;"></div>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; text-align:center;">
+        <div style="font-size:11px; font-weight:700; color:var(--coral); margin-bottom:4px;">MD</div>
+        <div style="font-size:13px; font-weight:600; color:var(--text);">768px</div>
+        <div style="height:3px; background:var(--coral); border-radius:2px; margin-top:8px;"></div>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; text-align:center;">
+        <div style="font-size:11px; font-weight:700; color:var(--green-dark); margin-bottom:4px;">LG</div>
+        <div style="font-size:13px; font-weight:600; color:var(--text);">1024px</div>
+        <div style="height:3px; background:var(--green); border-radius:2px; margin-top:8px;"></div>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; text-align:center;">
+        <div style="font-size:11px; font-weight:700; color:var(--green-dark); margin-bottom:4px;">XL</div>
+        <div style="font-size:13px; font-weight:600; color:var(--text);">1280px</div>
+        <div style="height:3px; background:var(--green-dark); border-radius:2px; margin-top:8px;"></div>
+      </div>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; text-align:center;">
+        <div style="font-size:11px; font-weight:700; color:var(--text-light); margin-bottom:4px;">2XL</div>
+        <div style="font-size:13px; font-weight:600; color:var(--text);">1440px</div>
+        <div style="height:3px; background:var(--border-mid); border-radius:2px; margin-top:8px;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:16px 20px; font-family:monospace; font-size:12px; line-height:2; overflow-x:auto; color:var(--text-mid);">
+      <span style="color:#8a8a8a;">/* Patrón de uso — siempre descendente */</span><br>
+      <span style="color:var(--coral);">@media (max-width: 1024px)</span> { <span style="color:var(--text-mid);">/* lg → ajustes tablet */</span> }<br>
+      <span style="color:var(--coral);">@media (max-width: 768px)</span>  { <span style="color:var(--text-mid);">/* md → layout mobile */</span> }<br>
+      <span style="color:var(--coral);">@media (max-width: 640px)</span>  { <span style="color:var(--text-mid);">/* sm → ajustes finos mobile */</span> }
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 08 GRID SYSTEM -->
+  <div class="ds-section" id="grid">
+    <div class="ds-section-label">08</div>
+    <h2 class="ds-section-title">Sistema de grid y layout</h2>
+    <p class="ds-section-desc">Reglas de max-width, padding horizontal y estructura de columnas para cada breakpoint. Seguir este sistema al agregar páginas nuevas garantiza consistencia visual sin revisar el código existente.</p>
+
+    <table class="anim-table">
+      <thead><tr><th>Breakpoint</th><th>Max-width</th><th>Padding H</th><th>Columnas</th><th>Gutter</th></tr></thead>
+      <tbody>
+        <tr><td><code>2xl</code> ≥ 1440px</td><td>1440px</td><td>80px</td><td>12</td><td>24px</td></tr>
+        <tr><td><code>xl</code> 1280–1439px</td><td>1280px</td><td>80px</td><td>12</td><td>24px</td></tr>
+        <tr><td><code>lg</code> 1024–1279px</td><td>100%</td><td>48px</td><td>8</td><td>20px</td></tr>
+        <tr><td><code>md</code> 768–1023px</td><td>100%</td><td>48px</td><td>4</td><td>16px</td></tr>
+        <tr><td><code>sm/xs</code> &lt; 768px</td><td>100%</td><td>24px</td><td>4</td><td>16px</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:20px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:20px;">
+      <div style="font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--text-light); margin-bottom:12px;">Wrappers de layout usados en el proyecto</div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="width:8px; height:8px; border-radius:50%; background:var(--coral); flex-shrink:0;"></div>
+          <div style="font-family:monospace; font-size:13px; color:var(--text);">section</div>
+          <div style="font-size:13px; color:var(--text-mid);">padding: 128px 80px → 96px 48px → 64px 24px</div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="width:8px; height:8px; border-radius:50%; background:var(--green-dark); flex-shrink:0;"></div>
+          <div style="font-family:monospace; font-size:13px; color:var(--text);">.stats-bar-wrapper</div>
+          <div style="font-size:13px; color:var(--text-mid);">max-width 1440px, centrado, padding H separado</div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="width:8px; height:8px; border-radius:50%; background:var(--green-dark); flex-shrink:0;"></div>
+          <div style="font-family:monospace; font-size:13px; color:var(--text);">.testimonios-bg</div>
+          <div style="font-size:13px; color:var(--text-mid);">full-bleed con gradient — section interior controla el ancho</div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="width:8px; height:8px; border-radius:50%; background:var(--text-light); flex-shrink:0;"></div>
+          <div style="font-family:monospace; font-size:13px; color:var(--text);">.contacto-inner</div>
+          <div style="font-size:13px; color:var(--text-mid);">grid 1fr 1fr con gap 80px → 1fr en mobile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 09 Z-INDEX -->
+  <div class="ds-section" id="z-index">
+    <div class="ds-section-label">09</div>
+    <h2 class="ds-section-title">Escala de Z-Index</h2>
+    <p class="ds-section-desc">Cinco capas nombradas evitan conflictos al agregar modales, tooltips o nuevos componentes fijos. Nunca usar valores arbitrarios como <code>z-index: 9999</code>.</p>
+
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; align-items:center; gap:16px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 20px;">
+        <div style="width:56px; font-family:monospace; font-size:13px; font-weight:700; color:var(--text);">300</div>
+        <div style="flex:1;">
+          <div style="font-size:13px; font-weight:600; color:var(--text);">--z-toast</div>
+          <div style="font-size:12px; color:var(--text-mid);">Notificaciones, alertas — siempre encima de todo</div>
+        </div>
+        <div style="width:32px; height:32px; border-radius:6px; background:var(--coral); opacity:.9;"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 20px;">
+        <div style="width:56px; font-family:monospace; font-size:13px; font-weight:700; color:var(--text);">200</div>
+        <div style="flex:1;">
+          <div style="font-size:13px; font-weight:600; color:var(--text);">--z-overlay</div>
+          <div style="font-size:12px; color:var(--text-mid);">Modales, tooltips, popovers, drawers</div>
+        </div>
+        <div style="width:32px; height:32px; border-radius:6px; background:var(--coral); opacity:.7;"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 20px;">
+        <div style="width:56px; font-family:monospace; font-size:13px; font-weight:700; color:var(--text);">100</div>
+        <div style="flex:1;">
+          <div style="font-size:13px; font-weight:600; color:var(--text);">--z-sticky</div>
+          <div style="font-size:12px; color:var(--text-mid);">Nav fija, botón WhatsApp, bottom bars</div>
+        </div>
+        <div style="width:32px; height:32px; border-radius:6px; background:var(--text); opacity:.8;"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 20px;">
+        <div style="width:56px; font-family:monospace; font-size:13px; font-weight:700; color:var(--text);">10</div>
+        <div style="flex:1;">
+          <div style="font-size:13px; font-weight:600; color:var(--text);">--z-raised</div>
+          <div style="font-size:12px; color:var(--text-mid);">Cards con hover elevado, dropdowns locales, badges</div>
+        </div>
+        <div style="width:32px; height:32px; border-radius:6px; background:var(--green-dark); opacity:.6;"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 20px;">
+        <div style="width:56px; font-family:monospace; font-size:13px; font-weight:700; color:var(--text);">0</div>
+        <div style="flex:1;">
+          <div style="font-size:13px; font-weight:600; color:var(--text);">--z-base</div>
+          <div style="font-size:12px; color:var(--text-mid);">Flujo normal del documento — no necesita z-index explícito</div>
+        </div>
+        <div style="width:32px; height:32px; border-radius:6px; background:var(--border-mid);"></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 10 BOTONES -->
+  <div class="ds-section" id="botones">
+    <div class="ds-section-label">10</div>
+    <h2 class="ds-section-title">Botones</h2>
+    <p class="ds-section-desc">Cuatro variantes según contexto y jerarquía visual.</p>
+
+    <div class="btn-grid">
+      <div class="btn-item">
+        <button class="btn-primary">Agendar mi primera consulta</button>
+        <div class="btn-item-label">
+          <strong style="display:block; font-size:13px; color:var(--text);">Primary</strong>
+          bg: coral · color: white · padding: 16px 32px<br>
+          border-radius: full · font-weight: 500
+        </div>
+      </div>
+      <div class="btn-item">
+        <button class="btn-secondary">Conocer más →</button>
+        <div class="btn-item-label">
+          <strong style="display:block; font-size:13px; color:var(--text);">Secondary</strong>
+          bg: transparent · border: 1.5px solid<br>
+          hover: border-color text
+        </div>
+      </div>
+      <div class="btn-item">
+        <button class="btn-ghost">Ver todos los artículos →</button>
+        <div class="btn-item-label">
+          <strong style="display:block; font-size:13px; color:var(--text);">Ghost</strong>
+          bg: transparent · color: coral<br>
+          hover: color coral-hover
+        </div>
+      </div>
+      <div class="btn-item">
+        <button class="btn-nav">Agendar consulta</button>
+        <div class="btn-item-label">
+          <strong style="display:block; font-size:13px; color:var(--text);">Nav CTA</strong>
+          bg: coral · padding: 10px 24px<br>
+          font-size: 15px (compacto)
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-states" style="margin-top:32px;">
+      <h4>Estados del botón primary</h4>
+      <div class="row" style="align-items:center; gap:24px;">
+        <div class="col" style="align-items:center; gap:6px;">
+          <button class="btn-primary" style="opacity:.6; pointer-events:none;">Disabled</button>
+          <div style="font-size:11px; color:var(--text-light);">opacity: 0.6</div>
+        </div>
+        <div class="col" style="align-items:center; gap:6px;">
+          <button class="btn-primary">Default</button>
+          <div style="font-size:11px; color:var(--text-light);">bg: #F86A43</div>
+        </div>
+        <div class="col" style="align-items:center; gap:6px;">
+          <button class="btn-primary" style="background:#e05a35; transform:translateY(-2px);">Hover</button>
+          <div style="font-size:11px; color:var(--text-light);">bg: #E05A35 · translateY(-2px)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 11 ESTADOS DE COMPONENTES -->
+  <div class="ds-section" id="estados">
+    <div class="ds-section-label">11</div>
+    <h2 class="ds-section-title">Estados de componentes</h2>
+    <p class="ds-section-desc">Cada componente interactivo tiene cinco estados posibles. Documentarlos evita decisiones ad hoc al crear nuevos elementos.</p>
+
+    <table class="anim-table">
+      <thead><tr><th>Estado</th><th>Visual</th><th>Token</th><th>Aplica a</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Default</strong></td>
+          <td>Sin modificación</td>
+          <td>—</td>
+          <td>Todos los componentes</td>
+        </tr>
+        <tr>
+          <td><strong>Hover</strong></td>
+          <td>Elevación + cambio de color de fondo</td>
+          <td><code>--color-action-hover</code>, <code>--shadow-md</code></td>
+          <td>Botones, cards, links</td>
+        </tr>
+        <tr>
+          <td><strong>Focus</strong></td>
+          <td>Ring 3px coral · offset 2px</td>
+          <td><code>outline: 3px solid var(--coral); outline-offset: 2px</code></td>
+          <td>Todos los elementos focusables</td>
+        </tr>
+        <tr>
+          <td><strong>Disabled</strong></td>
+          <td>Opacidad 40% · cursor not-allowed</td>
+          <td><code>opacity: 0.4; pointer-events: none</code></td>
+          <td>Botones, inputs, selects</td>
+        </tr>
+        <tr>
+          <td><strong>Error</strong></td>
+          <td>Borde rojo · mensaje debajo</td>
+          <td><code>border-color: #d32f2f; box-shadow: 0 0 0 3px rgba(211,47,47,.12)</code></td>
+          <td>Inputs de formulario</td>
+        </tr>
+        <tr>
+          <td><strong>Loading</strong></td>
+          <td>Texto reemplazado por spinner o "…"</td>
+          <td><code>pointer-events: none; opacity: 0.7</code></td>
+          <td>Botón de submit</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:20px; display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px;">
+      <!-- Default -->
+      <div style="text-align:center;">
+        <button style="background:var(--coral); color:#fff; border:none; border-radius:var(--radius-full); padding:10px 20px; font-size:14px; font-weight:600; cursor:pointer; font-family:var(--font-body);">Agendar</button>
+        <div style="font-size:11px; color:var(--text-light); margin-top:8px;">Default</div>
+      </div>
+      <!-- Hover -->
+      <div style="text-align:center;">
+        <button style="background:var(--coral-hover); color:#fff; border:none; border-radius:var(--radius-full); padding:10px 20px; font-size:14px; font-weight:600; transform:translateY(-2px); box-shadow:var(--shadow-md); font-family:var(--font-body);">Agendar</button>
+        <div style="font-size:11px; color:var(--text-light); margin-top:8px;">Hover</div>
+      </div>
+      <!-- Focus -->
+      <div style="text-align:center;">
+        <button style="background:var(--coral); color:#fff; border:none; border-radius:var(--radius-full); padding:10px 20px; font-size:14px; font-weight:600; outline:3px solid var(--coral); outline-offset:3px; font-family:var(--font-body);">Agendar</button>
+        <div style="font-size:11px; color:var(--text-light); margin-top:8px;">Focus</div>
+      </div>
+      <!-- Disabled -->
+      <div style="text-align:center;">
+        <button style="background:var(--coral); color:#fff; border:none; border-radius:var(--radius-full); padding:10px 20px; font-size:14px; font-weight:600; opacity:.4; cursor:not-allowed; font-family:var(--font-body);">Agendar</button>
+        <div style="font-size:11px; color:var(--text-light); margin-top:8px;">Disabled</div>
+      </div>
+      <!-- Error input -->
+      <div style="text-align:center;">
+        <input value="correo@" style="width:100%; padding:10px 14px; border:1.5px solid #d32f2f; border-radius:var(--radius-sm); font-size:14px; box-shadow:0 0 0 3px rgba(211,47,47,.12); font-family:var(--font-body); color:var(--text); outline:none;">
+        <div style="font-size:11px; color:var(--text-light); margin-top:8px;">Error</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 12 TAGS -->
+  <div class="ds-section" id="tags">
+    <div class="ds-section-label">12</div>
+    <h2 class="ds-section-title">Tags y etiquetas</h2>
+    <p class="ds-section-desc">Elementos de categorización y jerarquía de contenido.</p>
+
+    <div class="tags-grid">
+      <div class="tag-item">
+        <span class="tag tag-green">✦ Más solicitado</span>
+        <div class="tag-item-label"><strong style="display:block; font-size:12px; color:var(--text);">Tag verde</strong>bg: #E8F8D4 · color: #2a5a10<br>Servicios destacados</div>
+      </div>
+      <div class="tag-item">
+        <span class="tag tag-green">Nutrición Clínica</span>
+        <div class="tag-item-label"><strong style="display:block; font-size:12px; color:var(--text);">Tag verde</strong>Blog · Categorías generales</div>
+      </div>
+      <div class="tag-item">
+        <span class="tag tag-coral">Deportiva</span>
+        <div class="tag-item-label"><strong style="display:block; font-size:12px; color:var(--text);">Tag coral</strong>bg: #FDE8E2 · color: #c04a28<br>Blog · Subcategorías</div>
+      </div>
+      <div class="tag-item">
+        <span class="tag tag-yellow">Diabetes</span>
+        <div class="tag-item-label"><strong style="display:block; font-size:12px; color:var(--text);">Tag amarillo</strong>bg: #FFF4E0 · color: #8a5a00<br>Blog · Especialidades</div>
+      </div>
+      <div class="tag-item">
+        <span class="tag tag-sage">Hábitos</span>
+        <div class="tag-item-label"><strong style="display:block; font-size:12px; color:var(--text);">Tag sage</strong>bg: #E8F0E8 · color: #3a5a3a<br>Blog · General</div>
+      </div>
+      <div class="tag-item">
+        <span class="eyebrow">Sobre mí</span>
+        <div class="tag-item-label"><strong style="display:block; font-size:12px; color:var(--text);">Eyebrow</strong>Inter · 500 · 13px · uppercase<br>Inicio de cada sección</div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <h4 style="font-family:var(--font-heading); font-size:15px; font-weight:600; margin-bottom:16px; color:var(--text-mid);">Floating cards (Hero)</h4>
+      <div class="row" style="gap:20px;">
+        <div class="floating-card">
+          <div class="float-icon green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5a9e2f" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6 2 3 8 3 12s3 10 9 10 9-4 9-10S18 2 12 2z"/><path d="M12 6v6l3 3"/></svg>
+          </div>
+          <div class="float-text">
+            <strong>Sin restricciones extremas</strong>
+            <span>Alimentación sostenible</span>
+          </div>
+        </div>
+        <div class="floating-card">
+          <div class="float-icon coral">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F86A43" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="float-text">
+            <strong>Acompañamiento constante</strong>
+            <span>Siempre a su lado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 13 CARDS -->
+  <div class="ds-section" id="cards">
+    <div class="ds-section-label">13</div>
+    <h2 class="ds-section-title">Cards</h2>
+    <p class="ds-section-desc">Tres variantes principales según el contexto de uso.</p>
+
+    <div class="cards-grid">
+      <div>
+        <div class="card">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a9e2f" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8.56 2.9A7 7 0 0 1 19 9v4"/><path d="M19 15a3 3 0 1 1-6 0v-3a3 3 0 0 1 6 0v3z"/><path d="M9 9H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14"/><path d="M9 9v10"/></svg>
+          </div>
+          <span class="tag tag-green" style="margin-bottom:8px;">✦ Más solicitado</span>
+          <h3>Nutrición Clínica</h3>
+          <p>Evaluación integral y plan personalizado basado en su historial de salud y objetivos.</p>
+        </div>
+        <div style="font-size:11px; color:var(--text-light); margin-top:8px; text-align:center;">Servicio · Default</div>
+      </div>
+
+      <div>
+        <div class="card" style="background:var(--green-light); border-color:var(--green); transform:translateY(-4px); box-shadow:var(--shadow-md);">
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5a9e2f" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 5 10 5 14a7 7 0 0 0 14 0c0-4-3-8-7-12z"/></svg>
+          </div>
+          <h3>Diabetes &amp; Resistencia</h3>
+          <p>Manejo especializado con seguimiento continuo y educación permanente.</p>
+        </div>
+        <div style="font-size:11px; color:var(--text-light); margin-top:8px; text-align:center;">Servicio · Hover</div>
+      </div>
+
+      <div>
+        <div class="card-dark">
+          <div class="stars">
+            <svg class="star" viewBox="0 0 16 16"><path d="M8 1l2.06 4.18L15 6.27l-3.5 3.41.83 4.82L8 12.18l-4.33 2.32.83-4.82L1 6.27l4.94-.09z"/></svg>
+            <svg class="star" viewBox="0 0 16 16"><path d="M8 1l2.06 4.18L15 6.27l-3.5 3.41.83 4.82L8 12.18l-4.33 2.32.83-4.82L1 6.27l4.94-.09z"/></svg>
+            <svg class="star" viewBox="0 0 16 16"><path d="M8 1l2.06 4.18L15 6.27l-3.5 3.41.83 4.82L8 12.18l-4.33 2.32.83-4.82L1 6.27l4.94-.09z"/></svg>
+            <svg class="star" viewBox="0 0 16 16"><path d="M8 1l2.06 4.18L15 6.27l-3.5 3.41.83 4.82L8 12.18l-4.33 2.32.83-4.82L1 6.27l4.94-.09z"/></svg>
+            <svg class="star" viewBox="0 0 16 16"><path d="M8 1l2.06 4.18L15 6.27l-3.5 3.41.83 4.82L8 12.18l-4.33 2.32.83-4.82L1 6.27l4.94-.09z"/></svg>
+          </div>
+          <blockquote>"Por fin encontré una nutricionista que entiende mi realidad sin restricciones extremas."</blockquote>
+          <div class="author-name">María R.</div>
+          <div class="author-role">Control de peso · 34 años</div>
+        </div>
+        <div style="font-size:11px; color:var(--text-light); margin-top:8px; text-align:center;">Testimonio · Featured dark</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 14 STATS -->
+  <div class="ds-section" id="stats">
+    <div class="ds-section-label">14</div>
+    <h2 class="ds-section-title">Stats bar — barra de credenciales</h2>
+    <p class="ds-section-desc">Fondo oscuro (<code>--text</code>) con números en <code>--green</code> para máximo contraste contra el fondo casi blanco de la página. Garantiza legibilidad y presencia visual.</p>
+
+    <div style="background:var(--text); border-radius:var(--radius-lg); padding:40px 48px; box-shadow:var(--shadow-lg);">
+      <div class="stats-grid">
+        <div class="stat" style="border-color:rgba(250,250,247,0.2);"><strong style="color:var(--green);">+10</strong><span style="color:rgba(250,250,247,0.6);">años de experiencia</span></div>
+        <div class="stat" style="border-color:rgba(250,250,247,0.2);"><strong style="color:var(--green);">+200</strong><span style="color:rgba(250,250,247,0.6);">pacientes acompañados</span></div>
+        <div class="stat" style="border-color:rgba(250,250,247,0.2);"><strong style="color:var(--green);">4</strong><span style="color:rgba(250,250,247,0.6);">etapas de vida</span></div>
+        <div class="stat" style="border-color:rgba(250,250,247,0.2);"><strong style="color:var(--green);">100%</strong><span style="color:rgba(250,250,247,0.6);">planes personalizados</span></div>
+      </div>
+    </div>
+    <div style="margin-top:16px; font-size:13px; color:var(--text-mid); line-height:1.6;">
+      <strong>Decisión de diseño:</strong> La barra cambió de fondo blanco (invisible contra <code>--bg: #FAFAF7</code>) a fondo oscuro. Los números en verde aportan energía y los textos en blanco 60% mantienen la legibilidad sin competir.
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 15 FORMULARIOS -->
+  <div class="ds-section" id="formularios">
+    <div class="ds-section-label">15</div>
+    <h2 class="ds-section-title">Formularios</h2>
+    <p class="ds-section-desc">Inputs, selects y textareas con estados focus en coral.</p>
+
+    <div class="form-demo">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nombre</label>
+          <input class="form-input" type="text" placeholder="Su nombre">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Edad</label>
+          <input class="form-input" type="number" placeholder="Su edad">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Correo electrónico</label>
+        <input class="form-input" type="email" placeholder="correo@ejemplo.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Qué servicio le interesa?</label>
+        <select class="form-select">
+          <option value="">Seleccione una opción</option>
+          <option>Nutrición Clínica</option>
+          <option>Nutrición Materno-Infantil</option>
+          <option>Diabetes &amp; Resistencia</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cuénteme brevemente sobre usted</label>
+        <textarea class="form-textarea" rows="4" placeholder="¿Cuál es su principal objetivo?"></textarea>
+      </div>
+      <div>
+        <button class="btn-primary" style="width:100%; cursor:pointer;">Enviar consulta</button>
+      </div>
+    </div>
+
+    <div style="margin-top:24px; background:var(--text); border-radius:var(--radius-md); padding:20px; font-family:monospace; font-size:12px; line-height:1.8;">
+      <span style="color:#8a8a8a;">/* Estado focus */</span><br>
+      <span style="color:#fde8e2;">border-color:</span> <span style="color:#F86A43;">var(--coral)</span>;<br>
+      <span style="color:#fde8e2;">box-shadow:</span> <span style="color:#C2EC9A;">0 0 0 3px rgba(248,106,67,0.12)</span>;
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 16 TOKENS -->
+  <div class="ds-section" id="tokens">
+    <div class="ds-section-label">16</div>
+    <h2 class="ds-section-title">Tokens CSS</h2>
+    <p class="ds-section-desc">Variables CSS completas para usar en cualquier componente nuevo.</p>
+
+    <div class="code-block">
+<span class="code-comment">/* ─── COLORES ──────────────────────────────────── */</span><br>
+<span class="code-prop">--bg:</span>                <span class="code-val-white">#FAFAF7</span>;          <span class="code-comment">/* Fondo general */</span><br>
+<span class="code-prop">--white:</span>             <span class="code-val-white">#FFFFFF</span>;          <span class="code-comment">/* Cards, inputs */</span><br>
+<span class="code-prop">--green:</span>             <span class="code-val-green">#C2EC9A</span>;          <span class="code-comment">/* Verde principal */</span><br>
+<span class="code-prop">--green-dark:</span>        <span class="code-val-green">#5A9E2F</span>;          <span class="code-comment">/* Texto sobre verde */</span><br>
+<span class="code-prop">--green-light:</span>       <span class="code-val-green">#E8F8D4</span>;          <span class="code-comment">/* Fondos, hover cards */</span><br>
+<span class="code-prop">--coral:</span>             <span class="code-val-coral">#F86A43</span>;          <span class="code-comment">/* Acento principal */</span><br>
+<span class="code-prop">--coral-hover:</span>       <span class="code-val-coral">#E05A35</span>;          <span class="code-comment">/* Hover botones coral */</span><br>
+<span class="code-prop">--coral-light:</span>       <span class="code-val-coral">#FDE8E2</span>;          <span class="code-comment">/* Fondos tags coral */</span><br>
+<span class="code-prop">--text:</span>              #2C2C2C;          <span class="code-comment">/* Texto principal */</span><br>
+<span class="code-prop">--text-mid:</span>          #5A5A5A;          <span class="code-comment">/* Párrafos, subtítulos */</span><br>
+<span class="code-prop">--text-light:</span>        #8A8A8A;          <span class="code-comment">/* Metadatos, hints */</span><br>
+<span class="code-prop">--border:</span>            rgba(44,44,44,0.10); <span class="code-comment">/* Bordes sutiles */</span><br>
+<span class="code-prop">--border-mid:</span>        rgba(44,44,44,0.15); <span class="code-comment">/* Bordes formularios */</span><br>
+<br>
+<span class="code-comment">/* ─── BORDER RADIUS ────────────────────────────── */</span><br>
+<span class="code-prop">--radius-sm:</span>         8px;             <span class="code-comment">/* Inputs, iconos */</span><br>
+<span class="code-prop">--radius-md:</span>         16px;            <span class="code-comment">/* Cards */</span><br>
+<span class="code-prop">--radius-lg:</span>         24px;            <span class="code-comment">/* Secciones, fotos */</span><br>
+<span class="code-prop">--radius-full:</span>       999px;           <span class="code-comment">/* Botones, tags, pills */</span><br>
+<br>
+<span class="code-comment">/* ─── SOMBRAS ──────────────────────────────────── */</span><br>
+<span class="code-prop">--shadow-sm:</span>         0 2px 12px rgba(44,44,44,0.06);<br>
+<span class="code-prop">--shadow-md:</span>         0 4px 24px rgba(44,44,44,0.08);<br>
+<span class="code-prop">--shadow-lg:</span>         0 8px 48px rgba(44,44,44,0.10);<br>
+<br>
+<span class="code-comment">/* ─── TIPOGRAFÍA ───────────────────────────────── */</span><br>
+<span class="code-prop">--font-heading:</span>      'DM Sans', sans-serif;<br>
+<span class="code-prop">--font-body:</span>         'Inter', sans-serif;<br>
+<br>
+<span class="code-comment">/* ─── TRANSICIONES ─────────────────────────────── */</span><br>
+<span class="code-prop">--ease-out:</span>          cubic-bezier(0.22, 0.61, 0.36, 1);<br>
+<span class="code-prop">--ease-in-out:</span>       cubic-bezier(0.65, 0, 0.35, 1);
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 17 ANIMACIONES -->
+  <div class="ds-section" id="animaciones">
+    <div class="ds-section-label">17</div>
+    <h2 class="ds-section-title">Animaciones y transiciones</h2>
+    <p class="ds-section-desc">Tiempos y curvas de easing usadas en toda la interfaz.</p>
+
+    <table class="anim-table">
+      <thead>
+        <tr>
+          <th>Elemento</th>
+          <th>Propiedad</th>
+          <th>Duración</th>
+          <th>Easing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Botones</td><td>background, transform</td><td>180ms</td><td>--ease-out</td></tr>
+        <tr><td>Nav links</td><td>color</td><td>180ms</td><td>--ease-out</td></tr>
+        <tr><td>Nav scroll</td><td>box-shadow</td><td>200ms</td><td>--ease-out</td></tr>
+        <tr><td>Cards servicio</td><td>background, border, transform, box-shadow</td><td>220ms</td><td>--ease-out</td></tr>
+        <tr><td>Cards testimonio</td><td>box-shadow, transform</td><td>220ms</td><td>--ease-out</td></tr>
+        <tr><td>Foto sobre mí</td><td>transform (scale)</td><td>600ms</td><td>--ease-out</td></tr>
+        <tr><td>Hamburger</td><td>transform, opacity</td><td>280ms</td><td>--ease-in-out</td></tr>
+        <tr><td>FAQ chevron</td><td>transform</td><td>280ms</td><td>--ease-in-out</td></tr>
+        <tr><td>FAQ respuesta</td><td>max-height</td><td>350ms</td><td>--ease-out</td></tr>
+        <tr><td>Inputs focus</td><td>border-color, box-shadow</td><td>180ms</td><td>--ease-out</td></tr>
+        <tr><td>Scroll reveal</td><td>opacity, transform (translateY 24px)</td><td>500ms</td><td>--ease-out</td></tr>
+        <tr><td>Floating card 1</td><td>translateY (0→-8px) + rotate 1.5deg</td><td>7s loop</td><td>ease-in-out</td></tr>
+        <tr><td>Floating card 2</td><td>translateY (0→-6px) + rotate -1deg</td><td>9s loop</td><td>ease-in-out</td></tr>
+        <tr><td>WhatsApp sticky</td><td>transform, box-shadow</td><td>200ms</td><td>--ease-out</td></tr>
+        <tr><td>Plato interactivo</td><td>opacity (segmentos SVG)</td><td>200ms</td><td>ease</td></tr>
+        <tr><td>Icono servicio (hover)</td><td>transform: scale(1.12) rotate(-6deg)</td><td>320ms</td><td>--ease-out</td></tr>
+        <tr><td>Acento inferior tarjeta</td><td>transform: scaleX(0→1)</td><td>380ms</td><td>--ease-out</td></tr>
+        <tr><td>Link "Consultar" (hover)</td><td>opacity + translateX(-8px→0)</td><td>260ms</td><td>--ease-out</td></tr>
+        <tr><td>Testimonio auto-cycle</td><td>box-shadow, transform, ::before opacity</td><td>280ms</td><td>--ease-out</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:24px; background:var(--green-light); border-radius:var(--radius-md); padding:20px; font-size:14px; color:var(--text-mid); line-height:1.7;">
+      <strong style="color:var(--green-dark);">Nota de accesibilidad:</strong> Todos los elementos con animación respetan <code>@media (prefers-reduced-motion: reduce)</code> — cuando el usuario tiene activada esta preferencia en su sistema, todas las animaciones y transiciones se eliminan automáticamente.
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 19 TARJETAS DE SERVICIO -->
+  <div class="ds-section" id="tarjetas-servicio">
+    <div class="ds-section-label">19</div>
+    <h2 class="ds-section-title">Tarjetas de servicio — hover interactivo</h2>
+    <p class="ds-section-desc">Tres capas de interacción al pasar el cursor: elevación de la card, animación del icono y aparición del link de acción.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:24px; margin-bottom:24px;">
+      <div style="position:relative; overflow:hidden; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:28px 24px 24px;">
+        <div style="width:48px; height:48px; border-radius:var(--radius-sm); background:var(--green-light); border:1px solid rgba(194,236,154,0.4); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="1.6" width="22" height="22"><path d="M12 2C8 6 5 10 5 14a7 7 0 0 0 14 0c0-4-3-8-7-12z"/></svg>
+        </div>
+        <h3 style="font-family:var(--font-heading); font-size:16px; font-weight:700; margin-bottom:8px;">Nutrición Clínica</h3>
+        <p style="font-size:14px; color:var(--text-mid); line-height:1.6; margin-bottom:0;">Evaluación integral y plan personalizado.</p>
+        <div style="position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--green-dark), var(--green));"></div>
+      </div>
+    </div>
+
+    <div style="background:var(--text); border-radius:var(--radius-md); padding:20px 24px; font-family:monospace; font-size:12px; line-height:2.2; overflow-x:auto;">
+      <span style="color:#8a8a8a;">/* Acento inferior — reveal en hover */</span><br>
+      <span style="color:#fde8e2;">.servicio-card::after</span> {<br>
+      &nbsp;&nbsp;<span style="color:#C2EC9A;">content</span>: <span style="color:#fde8e2;">''</span>; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;<br>
+      &nbsp;&nbsp;<span style="color:#C2EC9A;">background</span>: <span style="color:#fde8e2;">linear-gradient(90deg, var(--green-dark), var(--green))</span>;<br>
+      &nbsp;&nbsp;<span style="color:#C2EC9A;">transform</span>: <span style="color:#fde8e2;">scaleX(0)</span>; transform-origin: left center;<br>
+      &nbsp;&nbsp;<span style="color:#C2EC9A;">transition</span>: <span style="color:#fde8e2;">transform 380ms var(--ease-out)</span>;<br>
+      }<br>
+      <span style="color:#fde8e2;">.servicio-card:hover::after</span> { <span style="color:#C2EC9A;">transform</span>: <span style="color:#fde8e2;">scaleX(1)</span>; }<br><br>
+      <span style="color:#8a8a8a;">/* Icono — escala y rotación */</span><br>
+      <span style="color:#fde8e2;">.servicio-card:hover .servicio-icon</span> {<br>
+      &nbsp;&nbsp;<span style="color:#C2EC9A;">transform</span>: <span style="color:#fde8e2;">scale(1.12) rotate(-6deg)</span>;<br>
+      &nbsp;&nbsp;<span style="color:#C2EC9A;">background</span>: <span style="color:#fde8e2;">var(--green)</span>;<br>
+      }<br><br>
+      <span style="color:#8a8a8a;">/* Link "Consultar" — slide in */</span><br>
+      <span style="color:#fde8e2;">.servicio-link</span> { opacity: 0; transform: translateX(-8px); transition: 260ms; }<br>
+      <span style="color:#fde8e2;">.servicio-card:hover .servicio-link</span> { opacity: 1; transform: translateX(0); }
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 20 TESTIMONIOS -->
+  <div class="ds-section" id="testimonios-pattern">
+    <div class="ds-section-label">20</div>
+    <h2 class="ds-section-title">Testimonios — grid igual + auto-ciclo</h2>
+    <p class="ds-section-desc">Tres cards de igual tamaño en grid <code>repeat(3,1fr)</code>. Cada card tiene un borde superior de color único (coral / verde / dorado). El JS rota la clase <code>.auto-active</code> cada 3.5 s y pausa en hover.</p>
+
+    <div style="background:linear-gradient(180deg, transparent 0%, var(--green-light) 15%, var(--green-light) 85%, transparent 100%); border-radius:var(--radius-lg); padding:40px 32px;">
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+        <!-- Card 1 — coral top -->
+        <div style="position:relative; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px; overflow:hidden; box-shadow:0 16px 48px rgba(44,44,44,0.12); transform:translateY(-6px);">
+          <div style="position:absolute; top:0; left:0; right:0; height:4px; background:var(--coral);"></div>
+          <p style="font-size:13px; color:var(--text-mid); font-style:italic; margin-bottom:16px;">"Por fin encontré una nutricionista que entiende mi realidad."</p>
+          <strong style="font-size:13px; color:var(--text);">María R.</strong>
+          <span style="font-size:12px; color:var(--text-light); display:block;">Control de peso · 34 años</span>
+        </div>
+        <!-- Card 2 — green top -->
+        <div style="position:relative; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px; overflow:hidden;">
+          <div style="position:absolute; top:0; left:0; right:0; height:4px; background:var(--green-dark); opacity:0.45;"></div>
+          <p style="font-size:13px; color:var(--text-mid); font-style:italic; margin-bottom:16px;">"Angie me explicó todo con paciencia y sin hacerme sentir mal."</p>
+          <strong style="font-size:13px; color:var(--text);">Jorge L.</strong>
+          <span style="font-size:12px; color:var(--text-light); display:block;">Resistencia insulínica · 52 años</span>
+        </div>
+        <!-- Card 3 — gold top -->
+        <div style="position:relative; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px; overflow:hidden;">
+          <div style="position:absolute; top:0; left:0; right:0; height:4px; background:#d4a500; opacity:0.45;"></div>
+          <p style="font-size:13px; color:var(--text-mid); font-style:italic; margin-bottom:16px;">"La nutrición durante mi embarazo era un tema que me preocupaba mucho."</p>
+          <strong style="font-size:13px; color:var(--text);">Carmen V.</strong>
+          <span style="font-size:12px; color:var(--text-light); display:block;">Nutrición materna · 29 años</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; background:var(--text); border-radius:var(--radius-md); padding:16px 20px; font-family:monospace; font-size:12px; line-height:2; overflow-x:auto;">
+      <span style="color:#8a8a8a;">/* Borde superior por posición */</span><br>
+      <span style="color:#fde8e2;">.testimonios-grid .testimonio-card:nth-child(1)::before</span> { background: <span style="color:#F86A43;">var(--coral)</span>; }<br>
+      <span style="color:#fde8e2;">.testimonios-grid .testimonio-card:nth-child(2)::before</span> { background: <span style="color:#C2EC9A;">var(--green-dark)</span>; }<br>
+      <span style="color:#fde8e2;">.testimonios-grid .testimonio-card:nth-child(3)::before</span> { background: <span style="color:#FFD166;">#d4a500</span>; }<br>
+      <span style="color:#8a8a8a;">/* Auto-ciclo JS: setInterval 3500ms — pausa en mouseenter */</span>
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 21 CONTACTO CTA -->
+  <div class="ds-section" id="contacto-highlights">
+    <div class="ds-section-label">21</div>
+    <h2 class="ds-section-title">Contacto highlights — stats en CTA</h2>
+    <p class="ds-section-desc">Tres números grandes en negrita reemplazan el bloque de texto largo y las badges con ícono en la sección CTA. Más impacto visual, menos fricción cognitiva.</p>
+
+    <div style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius-lg); padding:40px 48px; box-shadow:var(--shadow-sm); display:inline-block; min-width:340px;">
+      <h2 style="font-family:var(--font-heading); font-size:28px; font-weight:700; letter-spacing:-1px; margin-bottom:8px;">Dé el primer paso hacia su bienestar.</h2>
+      <p style="font-size:15px; color:var(--text-mid); margin-bottom:32px;">En menos de 24 horas me pondré en contacto con usted.</p>
+      <div style="display:flex; gap:36px; flex-wrap:wrap;">
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <strong style="font-family:var(--font-heading); font-size:38px; font-weight:700; color:var(--text); letter-spacing:-1.5px; line-height:1;">+10</strong>
+          <span style="font-size:13px; color:var(--text-mid);">años de experiencia</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <strong style="font-family:var(--font-heading); font-size:38px; font-weight:700; color:var(--text); letter-spacing:-1.5px; line-height:1;">+200</strong>
+          <span style="font-size:13px; color:var(--text-mid);">pacientes acompañados</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <strong style="font-family:var(--font-heading); font-size:38px; font-weight:700; color:var(--text); letter-spacing:-1.5px; line-height:1;">24h</strong>
+          <span style="font-size:13px; color:var(--text-mid);">tiempo de respuesta</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; font-size:13px; color:var(--text-mid); line-height:1.6;">
+      <strong>Decisión de diseño:</strong> El párrafo largo + 3 badges con ícono se reemplazó por 3 números grandes en DM Sans. Jerárquicamente más claro, escaneable en 1 segundo, y emocionalmente más directo para motivar al usuario a completar el formulario.
+    </div>
+  </div>
+
+  <hr class="ds-divider">
+
+  <!-- 18 ACCESIBILIDAD -->
+  <div class="ds-section" id="accesibilidad">
+    <div class="ds-section-label">18</div>
+    <h2 class="ds-section-title">Accesibilidad</h2>
+    <p class="ds-section-desc">Checklist de cumplimiento WCAG 2.1 AA — nivel mínimo exigible para cualquier página nueva. Verificar antes de publicar cada sección.</p>
+
+    <table class="anim-table">
+      <thead><tr><th>Criterio</th><th>Especificación</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Contraste texto normal</strong></td>
+          <td>≥ 4.5:1 (texto &lt; 18px)</td>
+          <td><span style="background:#e8f8d4; color:#2a5a10; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">✓ Cumple</span></td>
+        </tr>
+        <tr>
+          <td><strong>Contraste texto grande</strong></td>
+          <td>≥ 3:1 (headings ≥ 18px)</td>
+          <td><span style="background:#e8f8d4; color:#2a5a10; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">✓ Cumple</span></td>
+        </tr>
+        <tr>
+          <td><strong>Focus visible</strong></td>
+          <td>outline 3px coral, offset 2px en todos los interactivos</td>
+          <td><span style="background:#e8f8d4; color:#2a5a10; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">✓ Cumple</span></td>
+        </tr>
+        <tr>
+          <td><strong>Reduced motion</strong></td>
+          <td><code>@media (prefers-reduced-motion)</code> elimina todas las animaciones</td>
+          <td><span style="background:#e8f8d4; color:#2a5a10; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">✓ Cumple</span></td>
+        </tr>
+        <tr>
+          <td><strong>Touch targets</strong></td>
+          <td>Mínimo 44×44px en elementos táctiles</td>
+          <td><span style="background:#e8f8d4; color:#2a5a10; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">✓ Cumple</span></td>
+        </tr>
+        <tr>
+          <td><strong>Semántica HTML</strong></td>
+          <td><code>&lt;nav&gt;</code>, <code>&lt;section aria-labelledby&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;main&gt;</code></td>
+          <td><span style="background:#e8f8d4; color:#2a5a10; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">✓ Cumple</span></td>
+        </tr>
+        <tr>
+          <td><strong>Alt text en imágenes</strong></td>
+          <td>Descriptivo y contextual, no decorativo en SVGs con <code>aria-hidden</code></td>
+          <td><span style="background:#e8f8d4; color:#2a5a10; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">✓ Cumple</span></td>
+        </tr>
+        <tr>
+          <td><strong>Formulario con labels</strong></td>
+          <td><code>&lt;label for="id"&gt;</code> explícito en cada campo</td>
+          <td><span style="background:#e8f8d4; color:#2a5a10; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">✓ Cumple</span></td>
+        </tr>
+        <tr>
+          <td><strong>Errores de formulario</strong></td>
+          <td><code>aria-live="polite"</code> o <code>role="alert"</code> para mensajes de error</td>
+          <td><span style="background:#fde8e2; color:#c0392b; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td><strong>Skip to content</strong></td>
+          <td>Enlace invisible que se activa con Tab al inicio de la página</td>
+          <td><span style="background:#fde8e2; color:#c0392b; font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px;">Pendiente</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:20px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius-md); padding:20px 24px;">
+      <h4 style="font-family:var(--font-heading); font-size:14px; font-weight:700; margin-bottom:12px;">Ratios de contraste — pares más usados</h4>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:10px;">
+        <div style="background:var(--text); border-radius:var(--radius-sm); padding:14px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#fff; font-size:13px; font-weight:600;">#2C2C2C sobre #FAFAF7</span>
+          <span style="color:var(--green); font-size:12px; font-weight:700;">17.8:1 ✓</span>
+        </div>
+        <div style="background:#F86A43; border-radius:var(--radius-sm); padding:14px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#fff; font-size:13px; font-weight:600;">#FFF sobre #F86A43</span>
+          <span style="color:#fff; font-size:12px; font-weight:700; opacity:.9;">3.1:1 ⚠</span>
+        </div>
+        <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:var(--text-mid); font-size:13px; font-weight:600;">#5A5A5A sobre #FAFAF7</span>
+          <span style="color:var(--green-dark); font-size:12px; font-weight:700;">7.4:1 ✓</span>
+        </div>
+        <div style="background:var(--text); border-radius:var(--radius-sm); padding:14px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:var(--green); font-size:13px; font-weight:600;">#C2EC9A sobre #2C2C2C</span>
+          <span style="color:var(--green); font-size:12px; font-weight:700;">9.2:1 ✓</span>
+        </div>
+      </div>
+      <p style="font-size:12px; color:var(--text-light); margin-top:12px;">⚠ El blanco sobre coral (#F86A43) tiene ratio 3.1:1 — cumple solo para texto grande (≥18px bold). Nunca usar para texto pequeño.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding:40px 0 0; border-top:1px solid var(--border); margin-top:40px;">
+    <div style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--text); margin-bottom:4px;">Angie <span style="color:var(--coral);">Hamasaki</span></div>
+    <div style="font-size:13px; color:var(--text-light);">Design System v1.2 · Nutricionista Clínica · Lima, Perú</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+/* Angie Hamasaki — shared design tokens v1.2
+   Single source of truth. Used by angie-website.html,
+   angie-design-system.html and angie-brand-book.html. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+
+  /* ── COLORES PRIMITIVOS ─────────────────────────────────────── */
+  --coral:         #F86A43;
+  --coral-hover:   #e05a35;
+  --coral-light:   #fde8e2;
+  --green:         #C2EC9A;
+  --green-dark:    #5a9e2f;
+  --green-light:   #e8f8d4;
+  --yellow:        #FFD166;   /* plato interactivo – grasas */
+  --bg:            #FAFAF7;
+  --white:         #ffffff;
+  --text:          #2C2C2C;
+  --text-mid:      #5a5a5a;
+  --text-light:    #8a8a8a;
+  --border:        rgba(44,44,44,0.10);
+  --border-mid:    rgba(44,44,44,0.15);
+
+  /* ── ROLES SEMÁNTICOS (mapean primitivos a intenciones) ──────── */
+  --color-action:        var(--coral);      /* botones primarios, CTAs */
+  --color-action-hover:  var(--coral-hover);
+  --color-action-bg:     var(--coral-light);/* fondos de tags de acción */
+  --color-brand:         var(--green);      /* identidad, éxito, checkmarks */
+  --color-brand-dark:    var(--green-dark); /* texto sobre verde, iconos */
+  --color-brand-bg:      var(--green-light);/* fondos de secciones verdes */
+  --color-surface:       var(--white);      /* cards, inputs, nav */
+  --color-page:          var(--bg);         /* fondo de página */
+  --color-ink:           var(--text);       /* texto principal */
+  --color-ink-secondary: var(--text-mid);   /* párrafos, subtítulos */
+  --color-ink-tertiary:  var(--text-light); /* metadatos, hints */
+  --color-line:          var(--border);     /* bordes sutiles */
+  --color-line-mid:      var(--border-mid); /* bordes de inputs */
+
+  /* ── TIPOGRAFÍA ─────────────────────────────────────────────── */
+  --font-heading: 'DM Sans', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Escala tipográfica (en rem; base = 16px) */
+  --text-xs:   0.6875rem;   /*  11px – eyebrows, badges */
+  --text-sm:   0.8125rem;   /*  13px – labels, captions */
+  --text-base: 1rem;        /*  16px – body default */
+  --text-md:   1.0625rem;   /*  17px – body destacado */
+  --text-lg:   1.125rem;    /*  18px – subtítulos */
+  --text-xl:   1.5rem;      /*  24px – h3, tarjetas */
+  --text-2xl:  1.75rem;     /*  28px – h2 pequeño */
+  --text-3xl:  2.5rem;      /*  40px – h2 sección */
+  --text-4xl:  3rem;        /*  48px – h2 grande */
+  --text-5xl:  4rem;        /*  64px – h1 hero */
+
+  /* Line-heights */
+  --lh-tight:  1.05;
+  --lh-snug:   1.2;
+  --lh-normal: 1.5;
+  --lh-relaxed:1.7;
+
+  /* Letter-spacing */
+  --ls-tight:  -1.5px;
+  --ls-snug:   -1px;
+  --ls-normal: 0;
+  --ls-wide:   0.04em;
+  --ls-wider:  0.08em;
+  --ls-widest: 0.12em;
+
+  /* ── ESPACIADO (base 8 px) ──────────────────────────────────── */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-32:  128px;
+
+  /* ── BORDER RADIUS ──────────────────────────────────────────── */
+  --radius-sm:   8px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-full: 999px;
+
+  /* ── ELEVACIÓN / SOMBRAS ────────────────────────────────────── */
+  --shadow-sm:  0 2px 12px rgba(44,44,44,0.06);
+  --shadow-md:  0 4px 24px rgba(44,44,44,0.08);
+  --shadow-lg:  0 8px 48px rgba(44,44,44,0.10);
+
+  /* ── MOTION ─────────────────────────────────────────────────── */
+  --ease-out:    cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast:   180ms;
+  --duration-base:   260ms;
+  --duration-slow:   380ms;
+  --duration-reveal: 500ms;
+
+  /* ── Z-INDEX LAYERS ─────────────────────────────────────────── */
+  --z-base:    0;
+  --z-raised:  10;    /* cards elevadas, dropdowns locales */
+  --z-sticky:  100;   /* nav, stats bar */
+  --z-overlay: 200;   /* modales, tooltips */
+  --z-toast:   300;   /* notificaciones encima de todo */
+
+  /* ── BREAKPOINTS (solo documentación — usar en @media) ──────── */
+  /* --bp-sm:  640px   → móvil grande                           */
+  /* --bp-md:  768px   → tablet                                 */
+  /* --bp-lg:  1024px  → desktop pequeño                        */
+  /* --bp-xl:  1280px  → desktop estándar                       */
+  /* --bp-2xl: 1440px  → pantallas grandes                      */
+
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 900px 700px at 8% 8%, rgba(194,236,154,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 500px at 92% 92%, rgba(248,106,67,0.08) 0%, transparent 60%);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}

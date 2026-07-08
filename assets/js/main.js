@@ -64,6 +64,21 @@
   }, { threshold: 0.1 });
   revealEls.forEach(el => io.observe(el));
 
+  /* ── Lazy-play project card videos ──
+     Only plays while scrolled into view instead of autoplaying immediately
+     on load — avoids a second video competing with the hero background
+     video for bandwidth/decode on page load. */
+  const cardVideos = document.querySelectorAll('.project-card-video');
+  if (cardVideos.length) {
+    const videoIo = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.play().catch(() => {});
+        else e.target.pause();
+      });
+    }, { threshold: 0.25 });
+    cardVideos.forEach(v => videoIo.observe(v));
+  }
+
   /* ── Project filter ── */
   const filterBtns   = document.querySelectorAll('.filter-btn');
   const projectItems = document.querySelectorAll('.project-item');
@@ -118,14 +133,19 @@
   }
 
   /* ── Contact form validation + feedback ─────────────────────
-     To connect to a real backend, replace the setTimeout block
-     with a fetch() call, e.g. Formspree:
+     Current behavior: opens the visitor's email client via mailto:
+     as a zero-backend stopgap (CONTACT_EMAIL below).
+
+     To upgrade to a real inbox form (recommended once you have an
+     endpoint — e.g. formspree.io, free, no code needed), replace
+     the mailto redirect below with a fetch() call:
        fetch('https://formspree.io/f/YOUR_FORM_ID', {
          method: 'POST',
          body: new FormData(form),
          headers: { 'Accept': 'application/json' }
        }).then(r => r.ok ? showToast('Sent!', false) : showToast('Error.', true));
   ─────────────────────────────────────────────────────────── */
+  const CONTACT_EMAIL = 'sofiartc02@gmail.com';
   const form     = document.getElementById('contact-form');
   const toast    = document.getElementById('toast');
   const toastMsg = document.getElementById('toast-msg');
@@ -143,24 +163,38 @@
   if (form) {
     form.addEventListener('submit', e => {
       e.preventDefault();
-      const name    = form.querySelector('#name').value.trim();
-      const email   = form.querySelector('#email').value.trim();
-      const message = form.querySelector('#message').value.trim();
+      const name        = form.querySelector('#name').value.trim();
+      const email       = form.querySelector('#email').value.trim();
+      const message     = form.querySelector('#message').value.trim();
+      const projectType = form.querySelector('#project-type').value;
       if (!name)    { showToast('Please enter your name.', true);              form.querySelector('#name').focus();    return; }
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         showToast('Please enter a valid email address.', true);
         form.querySelector('#email').focus(); return;
       }
       if (!message) { showToast('Please write a message.', true);              form.querySelector('#message').focus(); return; }
+
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
-      btn.textContent = 'Sending…';
+      btn.textContent = 'Opening your email app…';
+
+      const bodyLines = [
+        `Name: ${name}`,
+        `Email: ${email}`,
+        projectType ? `Project type: ${projectType}` : null,
+        '',
+        message
+      ].filter(line => line !== null).join('\n');
+      const subject = encodeURIComponent(`New project inquiry from ${name}`);
+      const body    = encodeURIComponent(bodyLines);
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+
       setTimeout(() => {
         form.reset();
         btn.disabled = false;
         btn.innerHTML = 'Send message <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>';
-        showToast("Message sent! I'll get back to you soon.", false);
-      }, 1200);
+        showToast("Opening your email app to finish sending…", false);
+      }, 600);
     });
   }
 

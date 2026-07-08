@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.className += ' js';</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Redesign — Case Study | Sofia</title>
+<meta name="description" content="Rediseño conceptual del home de Amazon: una versión simplificada y más clara del e-commerce más cargado del mercado.">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="amazon-redesign-tokens.css">
+
+<style>
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important; scroll-behavior: auto !important;
+  }
+}
+
+/* ============ ACCESSIBILITY ============ */
+a, button, select, input, [tabindex] { font-family: inherit; }
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 2px solid var(--az-blue); outline-offset: 2px; border-radius: 4px;
+}
+/* Skip link: primer elemento tabulable, visible sólo al recibir foco */
+.az-skip {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  background: var(--az-blue-dark); color: #fff; padding: 11px 20px;
+  border-radius: var(--az-radius-sm); font-weight: 700; font-size: 14px;
+  transition: top .18s ease;
+}
+.az-skip:focus { top: 12px; }
+
+/* ============ SCROLL REVEAL ============ */
+/* Progressive enhancement: sólo se oculta si el JS marca <html class="js">.
+   Sin JS, el contenido permanece visible en vez de quedar en opacity:0. */
+.js .az-reveal { opacity: 0; translate: 0 26px; transition: opacity .6s ease, translate .6s ease; }
+.js .az-reveal.in-view { opacity: 1; translate: 0 0; }
+
+/* ============ HEADER ============ */
+.az-header { position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 14px rgba(0,0,0,.1); }
+.az-topbar { background: var(--az-navy); color: var(--az-white); }
+.az-topbar-inner {
+  max-width: 1440px; margin: 0 auto; padding: 16px 24px;
+  display: flex; align-items: center; gap: 20px;
+}
+.az-logo { display: flex; border-radius: 6px; transition: opacity .15s ease; }
+.az-logo:hover { opacity: .8; }
+.az-logo img { height: 44px; }
+.az-ship-to { display: flex; align-items: center; gap: 6px; font-size: 14px; white-space: nowrap; }
+.az-ship-to svg { width: 18px; height: 18px; flex-shrink: 0; }
+.az-ship-to strong { display: block; font-weight: 600; }
+.az-search { flex: 1; min-width: 0; max-width: 460px; display: flex; }
+.az-search input {
+  flex: 1; min-width: 0; border: 1px solid transparent; border-radius: var(--az-radius-md) 0 0 var(--az-radius-md);
+  padding: 0 16px; font-size: 14px; font-family: inherit; height: 41px; color: var(--az-text); transition: border-color .15s ease;
+}
+.az-search input:hover { border-color: rgba(11,117,251,.35); }
+.az-search input:focus-visible { outline-offset: -2px; }
+.az-search button {
+  width: 43px; height: 41px; background: var(--az-blue); border: none;
+  border-radius: 0 var(--az-radius-md) var(--az-radius-md) 0; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s ease;
+}
+.az-search button:hover { background: var(--az-blue-dark); }
+.az-search button svg { width: 18px; height: 18px; flex-shrink: 0; }
+.az-lang {
+  display: flex; align-items: center; font-weight: 700; font-size: 13px; letter-spacing: .04em;
+  color: rgba(255,255,255,.6); padding: 8px 4px;
+}
+.az-link { color: #fff; text-decoration: underline; font-size: 14px; opacity: .9; white-space: nowrap; transition: opacity .15s ease; }
+.az-link:hover { opacity: 1; }
+.az-topbar-right { display: flex; align-items: center; gap: 14px; margin-left: auto; }
+.az-topbar-right::before { content: ""; width: 1px; height: 22px; background: rgba(255,255,255,.15); margin-right: 2px; }
+.az-login-btn {
+  background: var(--az-blue-dark); color: #fff; font-weight: 500; font-size: 14px;
+  padding: 10px 22px; border-radius: var(--az-radius-md); white-space: nowrap; transition: background .15s ease, translate .15s ease;
+}
+.az-login-btn:hover { background: var(--az-blue-darker); translate: 0 -1px; }
+.az-cart { position: relative; background: none; border: none; color: #fff; cursor: pointer; display: flex; padding: 6px; border-radius: 50%; transition: background .15s ease; }
+.az-cart:hover { background: rgba(255,255,255,.1); }
+.az-cart svg { width: 24px; height: 24px; }
+.az-badge {
+  position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; padding: 0 4px;
+  background: var(--az-deal); color: #fff; font-size: 10px; font-weight: 700; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center; line-height: 1; transition: scale .2s ease;
+}
+.az-badge.is-zero { display: none; }
+.az-badge.pop { animation: azPop .35s ease; }
+.az-menu-toggle { display: none; background: none; border: none; color: #fff; cursor: pointer; padding: 6px; border-radius: 50%; transition: background .15s ease; }
+.az-menu-toggle:hover { background: rgba(255,255,255,.1); }
+.az-menu-toggle svg { width: 26px; height: 26px; }
+
+.az-catnav { background: var(--az-bg); border-bottom: 1px solid var(--az-gray-100); }
+.az-catnav-inner {
+  max-width: 1440px; margin: 0 auto; padding: 11px 24px;
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+}
+.az-catnav-toggle-wrap { position: relative; }
+.az-catnav-toggle {
+  background: var(--az-blue-dark); color: #fff; border: none; border-radius: var(--az-radius-md);
+  padding: 8px 18px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px;
+  cursor: pointer; white-space: nowrap; transition: background .15s ease;
+}
+.az-catnav-toggle:hover { background: var(--az-blue-darker); }
+.az-catnav-toggle svg { width: 20px; height: 20px; transition: rotate .2s ease; }
+.az-catnav-toggle[aria-expanded="true"] svg.chev { rotate: 180deg; }
+.az-cat-dropdown {
+  position: absolute; top: calc(100% + 10px); left: 0; background: #fff; border-radius: 12px;
+  box-shadow: 0 16px 40px var(--az-shadow-navy); padding: 10px; min-width: 210px;
+  opacity: 0; visibility: hidden; translate: 0 -8px; transition: opacity .18s ease, translate .18s ease, visibility .18s;
+}
+.az-cat-dropdown.open { opacity: 1; visibility: visible; translate: 0 0; }
+.az-cat-dropdown button {
+  display: block; width: 100%; text-align: left; padding: 10px 14px; border-radius: 8px;
+  background: none; border: none; font-size: 14px; font-weight: 600; color: var(--az-text); cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.az-cat-dropdown button:hover { background: var(--az-blue-pale); color: var(--az-blue-dark); }
+.az-catnav-links { list-style: none; display: flex; gap: clamp(14px, 1.8vw, 26px); flex-wrap: wrap; }
+.az-catnav-links a { color: #3d4451; font-weight: 700; font-size: 14px; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; position: relative; }
+.az-catnav-links a::after {
+  content: ""; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px; background: var(--az-blue);
+  transition: width .2s ease;
+}
+.az-catnav-links a:hover { color: var(--az-blue-dark); }
+.az-catnav-links a:hover::after { width: 100%; }
+.az-catnav-links a .az-badge { position: static; background: var(--az-blue); }
+
+/* ============ HERO ============ */
+.az-hero { max-width: 1440px; margin: 0 auto; padding: 24px 24px 0; }
+.az-hero-banner {
+  position: relative; border-radius: var(--az-radius-xl); overflow: hidden; background: var(--az-navy);
+  aspect-ratio: 16 / 7;
+}
+.az-hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; }
+.az-hero-slide.active { opacity: 1; }
+.az-hero-slide img { width: 100%; height: 100%; object-fit: cover; }
+.az-hero-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(100deg, rgba(10,14,20,.6) 0%, rgba(10,14,20,.55) 42%, transparent 72%);
+}
+.az-hero-title {
+  position: absolute; left: max(5%, 90px); top: 50%; translate: 0 -50%;
+  max-width: min(44%, 560px); z-index: 2;
+  font-family: inherit; font-weight: 700; color: #fff;
+  font-size: clamp(20px, 3.2vw, 48px); line-height: 1.25; transition: opacity .3s ease;
+}
+.az-hero-title .blue { color: var(--az-blue-tint); }
+.az-hero-arrow {
+  position: absolute; top: 50%; translate: 0 -50%; width: 48px; height: 48px; border-radius: 50%; z-index: 2;
+  background: rgba(255,255,255,.85); border: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--az-navy); transition: background .15s ease, scale .15s ease;
+}
+.az-hero-arrow:hover { background: #fff; scale: 1.08; }
+.az-hero-arrow svg { width: 22px; height: 22px; }
+.az-hero-arrow.left { left: 16px; }
+.az-hero-arrow.right { right: 16px; }
+.az-hero-dots { position: absolute; left: 50%; translate: -50% 0; bottom: 18px; z-index: 2; display: flex; gap: 8px; }
+.az-hero-dots button { width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%; background: rgba(255,255,255,.5); cursor: pointer; transition: width .2s ease, background .2s ease; }
+.az-hero-dots button.active { background: #fff; width: 22px; border-radius: 4px; }
+
+.az-pickup {
+  margin-top: -28px; position: relative; z-index: 3; margin-inline: clamp(16px, 4vw, 48px);
+  border-radius: var(--az-radius-md); padding: 20px 28px;
+  background: linear-gradient(100deg, var(--az-navy) 0%, var(--az-blue-dark) 60%, var(--az-blue) 100%);
+  color: #fff; box-shadow: 0 20px 48px var(--az-shadow-navy), 0 0 0 1px rgba(255,255,255,.06) inset;
+}
+.az-pickup-row { display: flex; align-items: flex-end; gap: 20px; }
+.az-pickup-scroll {
+  display: flex; align-items: flex-end; gap: 26px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  min-width: 0; flex: 1 1 auto;
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+}
+.az-pickup-scroll::-webkit-scrollbar { display: none; }
+.az-select-group {
+  display: flex; flex-direction: column; gap: 8px; flex: 0 1 160px; width: 160px; flex-shrink: 1;
+  padding-right: 22px; border-right: 1px solid rgba(255,255,255,.22);
+}
+.az-select-group label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.75); text-transform: uppercase; letter-spacing: .03em; }
+.az-select-wrap { position: relative; }
+.az-select-wrap svg { position: absolute; right: 0; top: 50%; translate: 0 -50%; width: 12px; height: 12px; pointer-events: none; color: #fff; transition: rotate .2s ease; }
+.az-select-wrap:focus-within svg { rotate: 180deg; }
+.az-select-group select {
+  appearance: none; -webkit-appearance: none; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,.35);
+  color: #fff; font-size: 14px; font-weight: 600; font-family: inherit; padding: 4px 18px 8px 0; width: 100%; cursor: pointer;
+  transition: border-color .15s ease;
+}
+.az-select-group select:hover { border-color: var(--az-blue-tint); }
+.az-select-group select:focus-visible { outline-offset: 2px; }
+.az-select-group select option { color: var(--az-text); }
+.az-filter-actions { display: flex; align-items: center; gap: 14px; flex-shrink: 0; margin-left: auto; padding-left: 4px; }
+.az-filter-btn {
+  background: #fff; color: var(--az-text); border: none; border-radius: var(--az-radius-sm);
+  padding: 12px 26px; font-weight: 700; font-size: 15px; cursor: pointer; white-space: nowrap;
+  transition: box-shadow .15s ease, translate .15s ease;
+}
+.az-filter-btn:hover { box-shadow: 0 8px 22px rgba(0,0,0,.35); translate: 0 -2px; }
+.az-filter-clear { background: none; border: none; color: rgba(255,255,255,.75); font-size: 13px; font-weight: 600; text-decoration: underline; cursor: pointer; white-space: nowrap; transition: color .15s ease; }
+.az-filter-clear:hover { color: #fff; }
+
+/* ============ PRODUCTS ============ */
+.az-products { max-width: 1360px; margin: 0 auto; padding: 96px 24px; scroll-margin-top: 140px; }
+.az-products-head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
+.az-products-head h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 500; letter-spacing: -0.02em; margin-bottom: 16px; }
+.az-products-head p { color: var(--az-text); font-size: 18px; opacity: .85; }
+.az-tabs-row { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid var(--az-gray-200); padding-bottom: 20px; margin-bottom: 12px; }
+.az-tabs { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+.az-tabs button {
+  background: none; border: none; font-family: inherit; font-size: 18px; font-weight: 500;
+  color: var(--az-text); opacity: .55; cursor: pointer; padding-bottom: 4px; transition: opacity .15s ease, color .15s ease;
+}
+.az-tabs button:hover { opacity: .85; color: var(--az-blue-dark); }
+.az-tabs button.active { opacity: 1; font-weight: 600; border-bottom: 3px solid var(--az-blue); }
+.az-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; }
+.az-chips.is-hidden { display: none; }
+.az-chip {
+  display: inline-flex; align-items: center; gap: 8px; background: var(--az-blue-pale); color: var(--az-blue-dark);
+  border: none; border-radius: var(--az-radius-full); padding: 7px 14px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: background .15s ease, color .15s ease;
+}
+.az-chip:hover { background: var(--az-blue); color: #fff; }
+.az-chip span { font-size: 11px; }
+.az-result-count { text-align: center; font-size: 13px; color: var(--az-text-mid); margin-bottom: 32px; }
+
+.az-product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+.az-product-grid.is-hidden { display: none; }
+.az-product-card {
+  border-radius: var(--az-radius-lg); overflow: hidden; background: #fff; border: 1px solid var(--az-border-subtle);
+  box-shadow: 0 4px 18px rgba(19,25,33,.08); transition: box-shadow .25s ease, translate .25s ease;
+}
+.az-product-card.is-hidden { display: none; }
+.az-product-card:hover { box-shadow: 0 18px 38px var(--az-shadow-navy); translate: 0 -5px; }
+.az-product-img { position: relative; aspect-ratio: 1/1; background: var(--az-gray-50); overflow: hidden; }
+.az-product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.az-product-card:hover .az-product-img img { transform: scale(1.07); }
+.az-deal-badge {
+  position: absolute; top: 12px; left: 12px; background: var(--az-deal); color: #fff; font-size: 11px;
+  font-weight: 700; padding: 4px 9px; border-radius: var(--az-radius-full); z-index: 1;
+}
+.az-icon-btn {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; background: #fff;
+  border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--az-text);
+  z-index: 1; transition: color .2s ease, scale .15s ease, box-shadow .15s ease;
+}
+.az-icon-btn svg { width: 18px; height: 18px; }
+.az-icon-btn:hover { scale: 1.1; box-shadow: 0 4px 12px rgba(0,0,0,.18); }
+.az-icon-btn.is-active { color: var(--az-deal); }
+.az-icon-btn.is-active svg { fill: var(--az-deal); }
+.az-icon-btn.pop { animation: azHeartPop .4s ease; }
+.az-product-info { padding: 16px 18px 18px; }
+.az-product-cat { font-size: 12px; color: var(--az-text-mid); margin-bottom: 6px; }
+.az-product-info h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+.az-rating { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; font-family: var(--font-body); font-size: 14px; }
+.az-rating svg { width: 14px; height: 14px; color: var(--az-star); }
+.az-rating .az-reviews { color: var(--az-text-mid); font-size: 12px; margin-left: 2px; }
+.az-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+.az-price { color: var(--az-price); font-weight: 700; font-size: 18px; }
+.az-price-old { color: var(--az-text-mid); font-size: 13px; text-decoration: line-through; }
+.az-buy-btn {
+  width: 100%; background: var(--az-blue-dark); color: #fff; border: none; border-radius: var(--az-radius-sm);
+  padding: 12px 16px; font-weight: 700; font-size: 14px; cursor: pointer; transition: background .15s ease, box-shadow .15s ease;
+}
+.az-buy-btn:hover { background: var(--az-blue-darker); box-shadow: 0 6px 16px rgba(11,117,251,.35); }
+.az-buy-btn.is-added { background: var(--az-success); }
+.az-empty { text-align: center; padding: 48px 24px; }
+.az-empty.is-hidden { display: none; }
+.az-empty p { color: var(--az-text-mid); font-size: 15px; margin-bottom: 16px; }
+.az-empty button {
+  background: none; border: 1px solid var(--az-gray-200); color: var(--az-blue-dark); font-weight: 700; font-size: 14px;
+  padding: 10px 22px; border-radius: var(--az-radius-sm); cursor: pointer; transition: background .15s ease;
+}
+.az-empty button:hover { background: var(--az-bg-light); }
+.az-show-more { text-align: center; margin-top: 44px; }
+.az-show-more.is-hidden { display: none; }
+.az-show-more button {
+  background: #fff; border: 1px solid var(--az-gray-200); color: var(--az-blue-dark); font-weight: 700; font-size: 15px;
+  padding: 12px 24px; border-radius: var(--az-radius-sm); cursor: pointer; transition: background .15s ease, box-shadow .15s ease;
+}
+.az-show-more button:hover { background: var(--az-bg-light); box-shadow: 0 8px 20px rgba(19,25,33,.1); }
+
+/* ============ PROMO STRIP ============ */
+.az-promo { background: var(--az-blue-dark); padding: 96px 24px; }
+.az-promo-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+.az-promo-item { display: flex; align-items: center; gap: 16px; color: #fff; }
+.az-promo-icon {
+  flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+}
+.az-promo-icon svg { width: 24px; height: 24px; }
+.az-promo-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+.az-promo-item p { font-size: 13px; opacity: .82; }
+
+/* ============ TESTIMONIALS ============ */
+.az-testimonials { max-width: 1140px; margin: 0 auto; padding: 96px 24px; text-align: center; }
+.az-testimonials h2 { font-size: clamp(24px, 3.4vw, 40px); font-weight: 500; margin-bottom: 56px; }
+.az-testimonial-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.az-testimonial-card {
+  border: 1px solid var(--az-blue); border-radius: var(--az-radius-md); padding: 32px 28px;
+  text-align: left; box-shadow: 0 10px 30px rgba(63,62,62,.16); position: relative; background: #fff;
+  transition: box-shadow .25s ease, translate .25s ease;
+}
+.az-testimonial-card:hover { box-shadow: 0 18px 40px rgba(11,117,251,.18); translate: 0 -4px; }
+.az-testimonial-card.is-hidden { display: none; }
+.az-testimonial-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.az-testimonial-head img {
+  width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 3px solid var(--az-blue);
+}
+.az-testimonial-who strong { display: block; font-family: var(--font-body); font-size: 18px; }
+.az-testimonial-who span { font-family: var(--font-body); font-size: 14px; color: var(--az-text-mid); }
+.az-testimonial-card .az-rating { font-size: 15px; margin-bottom: 16px; }
+.az-testimonial-card p { font-family: var(--font-body); font-size: 15px; line-height: 1.7; }
+.az-test-controls { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 28px; }
+.az-test-controls.is-hidden { display: none; }
+.az-test-arrow {
+  flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--az-blue-pale);
+  color: var(--az-blue); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .15s ease, scale .15s ease;
+}
+.az-test-arrow:hover { background: var(--az-blue); color: #fff; scale: 1.08; }
+.az-test-arrow svg { width: 18px; height: 18px; }
+.az-test-arrow.right { transform: rotate(180deg); }
+.az-dots { display: flex; justify-content: center; gap: 8px; }
+.az-dots button { width: 8px; height: 8px; padding: 0; border: none; border-radius: 50%; background: var(--az-gray-300); cursor: pointer; transition: width .2s ease, background .2s ease; }
+.az-dots button:hover { background: var(--az-gray-400); }
+.az-dots button.active { background: var(--az-blue); width: 22px; border-radius: 4px; }
+
+/* ============ FOOTER ============ */
+.az-footer { background: var(--az-navy); color: #fff; padding: 96px 24px 28px; }
+.az-footer-top { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+.az-footer-brand img { height: 56px; margin-bottom: 16px; }
+.az-footer-brand p { font-size: 15px; opacity: .85; max-width: 340px; margin-bottom: 20px; }
+.az-social { display: flex; gap: 12px; }
+.az-social a {
+  width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: center; color: #fff; transition: background .15s ease, translate .15s ease;
+}
+.az-social a:hover { background: var(--az-blue); translate: 0 -2px; }
+.az-social svg { width: 16px; height: 16px; }
+.az-footer-col h4 { color: var(--az-blue-tint); font-size: 18px; font-weight: 600; margin-bottom: 18px; }
+.az-footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.az-footer-col a { color: #fff; opacity: .85; font-size: 15px; transition: opacity .15s ease; }
+.az-footer-col a:hover { opacity: 1; text-decoration: underline; }
+.az-footer-divider { max-width: 1360px; margin: 36px auto 20px; border: none; border-top: 1px solid rgba(255,255,255,.15); }
+.az-footer-bottom {
+  max-width: 1360px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; flex-wrap: wrap; font-size: 15px; font-weight: 600;
+}
+.az-footer-legal { display: flex; gap: 24px; }
+.az-footer-legal a { color: #fff; transition: opacity .15s ease; }
+.az-footer-legal a:hover { text-decoration: underline; opacity: .85; }
+
+/* ============ BACK TO TOP ============ */
+.az-to-top {
+  position: fixed; right: 24px; bottom: 24px; z-index: 40; width: 48px; height: 48px; border-radius: 50%;
+  background: var(--az-blue-dark); color: #fff; border: none; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 26px rgba(11,20,32,.32); cursor: pointer; opacity: 0; translate: 0 14px; pointer-events: none;
+  transition: opacity .25s ease, translate .25s ease, background .15s ease;
+}
+.az-to-top.is-visible { opacity: 1; translate: 0 0; pointer-events: auto; }
+.az-to-top:hover { background: var(--az-blue-darker); }
+.az-to-top svg { width: 22px; height: 22px; }
+
+/* ============ KEYFRAMES ============ */
+@keyframes azHeartPop { 0% { scale: 1; } 35% { scale: 1.35; } 60% { scale: .92; } 100% { scale: 1; } }
+@keyframes azPop { 0% { scale: 1; } 50% { scale: 1.4; } 100% { scale: 1; } }
+
+/* ============ RESPONSIVE ============ */
+/* Tablet tier (769–1024px): its own layout, not a hybrid of desktop/mobile rules */
+@media (max-width: 1024px) {
+  .az-product-grid { grid-template-columns: repeat(2, 1fr); }
+  .az-testimonial-cards { grid-template-columns: repeat(2, 1fr); max-width: 700px; margin: 0 auto; }
+  .az-testimonial-cards .az-testimonial-card:last-child { grid-column: 1 / -1; max-width: 340px; margin: 0 auto; }
+  .az-footer-top { grid-template-columns: 1fr 1fr; }
+  /* Barra de filtros: en tablet los 5 selects ocupan la fila entera y las
+     acciones (Limpiar/Filtrar) bajan a su propia línea para no recortar labels. */
+  .az-pickup-row { flex-wrap: wrap; row-gap: 16px; }
+  .az-pickup-scroll { flex-basis: 100%; order: 1; }
+  .az-filter-actions { order: 2; width: 100%; justify-content: flex-end; margin-left: 0; }
+}
+@media (max-width: 768px) {
+  .az-ship-to, .az-link, .az-lang, .az-login-btn { display: none; }
+  .az-catnav-inner { flex-wrap: wrap; }
+  .az-catnav-links {
+    flex-basis: 100%; width: 100%; gap: 4px; flex-direction: column;
+    max-height: 0; overflow: hidden; opacity: 0; transition: max-height .3s ease, opacity .25s ease;
+  }
+  .az-catnav-links.open { max-height: 480px; opacity: 1; padding-top: 8px; }
+  .az-catnav-links a { display: block; padding: 10px 4px; }
+  .az-catnav-links a::after { display: none; }
+  .az-menu-toggle { display: flex; }
+  .az-topbar-inner { gap: 12px; padding-inline: 16px; }
+  .az-topbar-right { gap: 10px; }
+  .az-logo img { height: 32px; }
+  .az-cat-dropdown { left: -4px; min-width: 180px; }
+  .az-hero { padding: 16px 16px 0; }
+  .az-hero-banner { border-radius: 24px; aspect-ratio: 3/4; }
+  .az-hero-scrim { background: linear-gradient(180deg, rgba(10,14,20,.1) 0%, rgba(10,14,20,.72) 60%); }
+  .az-hero-title { top: auto; bottom: 15%; left: 6%; max-width: 88%; font-size: clamp(24px, 7vw, 40px); }
+  .az-hero-dots { bottom: 6%; }
+  .az-hero-arrow { width: 40px; height: 40px; }
+  .az-pickup { margin-inline: 16px; padding: 14px 16px; border-radius: 16px; }
+  .az-pickup-row { gap: 10px; }
+  .az-pickup-scroll { gap: 14px; }
+  .az-select-group { padding-right: 12px; width: 104px; min-width: 84px; }
+  .az-select-group label { font-size: 10px; }
+  .az-select-group select { font-size: 13px; padding: 3px 14px 6px 0; }
+  .az-filter-actions { padding-left: 0; gap: 8px; }
+  .az-filter-btn { padding: 9px 14px; font-size: 13px; }
+  .az-filter-clear { font-size: 11px; }
+  .az-products { padding: 56px 20px; }
+  .az-tabs-row { padding-bottom: 14px; }
+  .az-tabs { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; gap: 22px; padding-bottom: 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .az-tabs::-webkit-scrollbar { display: none; }
+  .az-tabs button { flex-shrink: 0; font-size: 15px; white-space: nowrap; }
+  .az-promo { padding: 56px 20px; }
+  .az-promo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; }
+  .az-product-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .az-product-info { padding: 12px 12px 14px; }
+  .az-product-info h3 { font-size: 15px; }
+  .az-testimonials { padding: 56px 20px; }
+  .az-testimonial-cards { grid-template-columns: 1fr; max-width: 480px; }
+  .az-testimonial-cards .az-testimonial-card:last-child { grid-column: auto; max-width: none; margin: 0; }
+  .az-footer { padding: 56px 20px 24px; }
+  .az-footer-top { grid-template-columns: 1fr; }
+}
+@media (max-width: 380px) {
+  .az-product-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
+}
+</style>
+</head>
+<body>
+
+<a class="az-skip" href="#main">Saltar al contenido</a>
+
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header class="az-header">
+  <div class="az-topbar">
+    <div class="az-topbar-inner">
+      <a class="az-logo" href="#top"><img src="images/amazon-redesign/logo.png" alt="Amazon"></a>
+
+      <div class="az-ship-to">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <span>Envíos a:<strong>Lima, 28318</strong></span>
+      </div>
+
+      <form class="az-search" id="azSearchForm">
+        <input type="search" id="azSearchInput" name="q" placeholder="Busca en Amazon…" aria-label="Buscar productos">
+        <button type="submit" aria-label="Buscar">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
+        </button>
+      </form>
+
+      <span class="az-lang" aria-label="Idioma: Español">ES</span>
+
+      <div class="az-topbar-right">
+        <a class="az-link" href="#">Regístrate</a>
+        <a class="az-login-btn" href="#">Log In</a>
+        <button class="az-cart" aria-label="Carrito">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg>
+          <span class="az-badge is-zero" id="azCartBadge">0</span>
+        </button>
+        <button class="az-menu-toggle" id="azMenuToggle" aria-label="Abrir menú" aria-expanded="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="az-catnav" id="azCatnav">
+    <div class="az-catnav-inner">
+      <div class="az-catnav-toggle-wrap">
+        <button class="az-catnav-toggle" id="azCatToggle" aria-haspopup="true" aria-expanded="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          Categorías
+          <svg class="chev" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="az-cat-dropdown" id="azCatDropdown" role="menu">
+          <button type="button" data-cat="Tecnología" role="menuitem">Tecnología</button>
+          <button type="button" data-cat="Deporte" role="menuitem">Deporte</button>
+          <button type="button" data-cat="Mascotas" role="menuitem">Mascotas</button>
+          <button type="button" data-cat="Skin care" role="menuitem">Skin care</button>
+          <button type="button" data-cat="Carteras" role="menuitem">Carteras</button>
+        </div>
+      </div>
+      <ul class="az-catnav-links" id="azCatLinks">
+        <li><a href="#productos" id="navParaTi">Para tí</a></li>
+        <li><a href="#productos" id="navOfertas">Ofertas</a></li>
+        <li><a href="#" id="navWishlist">Lista de deseos <span class="az-badge is-zero" id="azWishBadge">0</span></a></li>
+        <li><a href="#">Vender</a></li>
+        <li><a href="#">Servicio al Cliente</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="az-hero" id="top">
+  <div class="az-hero-banner" id="azHeroBanner">
+    <div class="az-hero-slide active">
+      <img src="images/amazon-redesign/hero-banner.jpg" alt="Mujer sonriendo con bolsas de compras">
+    </div>
+    <div class="az-hero-slide">
+      <img src="images/amazon-redesign/ads-1.jpg" alt="Nuevas cremas cítricas">
+    </div>
+    <div class="az-hero-slide">
+      <img src="images/amazon-redesign/ads-2.jpg" alt="Belleza y accesorios">
+    </div>
+    <div class="az-hero-scrim" aria-hidden="true"></div>
+    <h1 class="az-hero-title" id="azHeroTitle"><span class="blue">Todo</span> lo que necesitas en <span class="blue">un solo lugar</span></h1>
+    <button class="az-hero-arrow left" id="azHeroPrev" aria-label="Imagen anterior">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="az-hero-arrow right" id="azHeroNext" aria-label="Imagen siguiente">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div class="az-hero-dots" id="azHeroDots">
+      <button class="active" aria-label="Ver imagen 1"></button>
+      <button aria-label="Ver imagen 2"></button>
+      <button aria-label="Ver imagen 3"></button>
+    </div>
+  </div>
+
+  <div class="az-pickup">
+    <div class="az-pickup-row">
+      <div class="az-pickup-scroll">
+      <div class="az-select-group">
+        <label for="fCategory">Categoría</label>
+        <div class="az-select-wrap">
+          <select id="fCategory">
+            <option value="">Todas</option>
+            <option>Tecnología</option>
+            <option>Deporte</option>
+            <option>Mascotas</option>
+            <option>Skin care</option>
+            <option>Carteras</option>
+          </select>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="az-select-group">
+        <label for="fBrand">Marca</label>
+        <div class="az-select-wrap">
+          <select id="fBrand">
+            <option value="">Todas</option>
+            <option>Apple</option>
+            <option>Asus</option>
+            <option>Nilson</option>
+            <option>PetCare</option>
+            <option>Natura</option>
+            <option>CYM</option>
+          </select>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="az-select-group">
+        <label for="fPrice">Precio</label>
+        <div class="az-select-wrap">
+          <select id="fPrice">
+            <option value="">Cualquiera</option>
+            <option value="lt50">Menos de $50</option>
+            <option value="mid">$50 – $150</option>
+            <option value="gt150">Más de $150</option>
+          </select>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="az-select-group">
+        <label for="fRating">Valoración</label>
+        <div class="az-select-wrap">
+          <select id="fRating">
+            <option value="">Cualquiera</option>
+            <option value="4">4★ o más</option>
+            <option value="4.5">4.5★ o más</option>
+          </select>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="az-select-group">
+        <label for="fSort">Ordenar por</label>
+        <div class="az-select-wrap">
+          <select id="fSort">
+            <option value="relevancia">Relevancia</option>
+            <option value="price-asc">Precio: menor a mayor</option>
+            <option value="price-desc">Precio: mayor a menor</option>
+            <option value="rating-desc">Mejor valorados</option>
+          </select>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      </div>
+      <div class="az-filter-actions">
+        <button class="az-filter-clear" id="azFilterClear" type="button">Limpiar</button>
+        <button class="az-filter-btn" id="azFilterApply" type="button">Filtrar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PRODUCTS
+════════════════════════════════════════ -->
+<section class="az-products" id="productos">
+  <div class="az-products-head az-reveal">
+    <h2>Conoce todo lo que tenemos para tí</h2>
+    <p>Encuentra todo lo que necesitas en nuestras categorías personalizadas especialmente para ti.</p>
+  </div>
+
+  <div class="az-tabs-row">
+    <div class="az-tabs" id="azTabs">
+      <button class="active" data-tag="todos" aria-pressed="true">Todos</button>
+      <button data-tag="bestseller" aria-pressed="false">Los más vendidos</button>
+      <button data-tag="new" aria-pressed="false">Últimas novedades</button>
+      <button data-tag="deal" aria-pressed="false">Ofertas</button>
+      <button data-tag="peru" aria-pressed="false">Solo en Perú</button>
+    </div>
+  </div>
+  <div class="az-chips is-hidden" id="azChips"></div>
+  <p class="az-result-count" id="azResultCount" aria-live="polite">8 productos</p>
+
+  <div class="az-product-grid" id="azProductGrid">
+
+    <article class="az-product-card az-reveal" data-tags="bestseller new" data-category="Tecnología" data-brand="Apple" data-price="99" data-rating="4.8">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-1-crop.jpg" alt="Air Pods Prox Max">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Tecnología, Auriculares</p>
+        <h3>Air Pods Prox Max</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.8 <span class="az-reviews">(312)</span></div>
+        <div class="az-price-row"><span class="az-price">$99.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller deal" data-category="Tecnología" data-brand="Apple" data-price="89" data-rating="4.9">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-2-crop.jpg" alt="Iphone 16">
+        <span class="az-deal-badge">-18%</span>
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Tecnología, Celulares</p>
+        <h3>Iphone 16</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.9 <span class="az-reviews">(540)</span></div>
+        <div class="az-price-row"><span class="az-price">$89.00</span><span class="az-price-old">$109.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="new peru" data-category="Deporte" data-brand="Nilson" data-price="99" data-rating="4.6">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-3-crop.jpg" alt="Zapatillas Nilson">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Deporte, Zapatillas</p>
+        <h3>Zapatillas Nilson</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.6 <span class="az-reviews">(128)</span></div>
+        <div class="az-price-row"><span class="az-price">$99.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="peru" data-category="Mascotas" data-brand="PetCare" data-price="99" data-rating="4.7">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-4-crop.jpg" alt="Arnés para gato">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Mascotas, Gatos</p>
+        <h3>Arnés para gato</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.7 <span class="az-reviews">(89)</span></div>
+        <div class="az-price-row"><span class="az-price">$99.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="deal peru" data-category="Skin care" data-brand="Natura" data-price="20" data-rating="4.5">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-5-crop.jpg" alt="Crema Hidro Natura">
+        <span class="az-deal-badge">-29%</span>
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Cremas</p>
+        <h3>Crema Hidro Natura</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.5 <span class="az-reviews">(204)</span></div>
+        <div class="az-price-row"><span class="az-price">$20.00</span><span class="az-price-old">$28.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller" data-category="Tecnología" data-brand="Asus" data-price="300" data-rating="5.0">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-6.jpg" alt="Laptop Rog Zephirus">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Tecnología, Laptops</p>
+        <h3>Laptop Rog Zephirus</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 5.0 <span class="az-reviews">(76)</span></div>
+        <div class="az-price-row"><span class="az-price">$300.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="deal bestseller" data-category="Tecnología" data-brand="Apple" data-price="94.50" data-rating="4.8">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-7.jpg" alt="Iphone 12 Pro Max 512 GB">
+        <span class="az-deal-badge">-21%</span>
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Tecnología, Celulares</p>
+        <h3>Iphone 12 Pro Max 512 GB</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.8 <span class="az-reviews">(410)</span></div>
+        <div class="az-price-row"><span class="az-price">$94.50</span><span class="az-price-old">$120.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="new peru" data-category="Carteras" data-brand="CYM" data-price="50" data-rating="4.6">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-8-crop.jpg" alt="Cartera Negra CYM">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Carteras, Moda</p>
+        <h3>Cartera Negra CYM</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.6 <span class="az-reviews">(156)</span></div>
+        <div class="az-price-row"><span class="az-price">$50.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="az-empty is-hidden" id="azEmptyState">
+    <p>No encontramos productos con estos filtros.</p>
+    <button type="button" id="azEmptyClear">Limpiar filtros</button>
+  </div>
+
+  <div class="az-show-more is-hidden" id="azShowMore"><button type="button">Mostrar más productos</button></div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PROMO STRIP
+════════════════════════════════════════ -->
+<section class="az-promo">
+  <div class="az-promo-grid">
+    <div class="az-promo-item az-reveal">
+      <div class="az-promo-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg></div>
+      <div><h3>Envío gratis</h3><p>En compras desde $15</p></div>
+    </div>
+    <div class="az-promo-item az-reveal">
+      <div class="az-promo-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></div>
+      <div><h3>Devoluciones fáciles</h3><p>30 días para cambios</p></div>
+    </div>
+    <div class="az-promo-item az-reveal">
+      <div class="az-promo-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="m9.5 12 1.8 1.8L15 10"/></svg></div>
+      <div><h3>Pago seguro</h3><p>Protegemos tus datos</p></div>
+    </div>
+    <div class="az-promo-item az-reveal">
+      <div class="az-promo-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.6 12.3 12.7 20a2 2 0 0 1-2.8 0l-6-6a2 2 0 0 1 0-2.8L11.7 3.5H19a1.5 1.5 0 0 1 1.5 1.5v7.3z"/><circle cx="15" cy="8" r="1.3"/></svg></div>
+      <div><h3>Ofertas cada semana</h3><p>Nuevas promociones</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════ -->
+<section class="az-testimonials">
+  <h2 class="az-reveal">Conoce la opinión de los productos que vas a adquirir</h2>
+
+  <div class="az-testimonial-cards" id="azTestimonialCards">
+    <article class="az-testimonial-card az-reveal">
+      <div class="az-testimonial-head">
+        <img src="images/amazon-redesign/testimonial-avatar-1.jpg" alt="Valentina Cruz">
+        <div class="az-testimonial-who"><strong>Valentina Cruz</strong><span>Lima, Perú</span></div>
+      </div>
+      <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 5.0</div>
+      <p>El producto llegó en perfectas condiciones y antes de lo esperado. Lo uso todos los días y hasta ahora funciona excelente. ¡Muy recomendado!</p>
+    </article>
+
+    <article class="az-testimonial-card az-reveal">
+      <div class="az-testimonial-head">
+        <img src="images/amazon-redesign/testimonial-avatar-2.jpg" alt="Marco Silva">
+        <div class="az-testimonial-who"><strong>Marco Silva</strong><span>São Paulo, Brasil</span></div>
+      </div>
+      <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.8</div>
+      <p>Desde que lo tengo, me ha simplificado muchísimo la rutina. Además, el diseño es lindo y moderno. Me encantó la calidad.</p>
+    </article>
+
+    <article class="az-testimonial-card az-reveal">
+      <div class="az-testimonial-head">
+        <img src="images/amazon-redesign/testimonial-avatar-3.jpg" alt="Renata Flores">
+        <div class="az-testimonial-who"><strong>Renata Flores</strong><span>Bogotá, Colombia</span></div>
+      </div>
+      <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.9</div>
+      <p>La relación calidad-precio es muy buena. Ya lo he recomendado a mis amigas porque realmente cumplió mis expectativas.</p>
+    </article>
+  </div>
+
+  <div class="az-test-controls" id="azTestControls">
+    <button class="az-test-arrow left" id="azTestPrev" aria-label="Testimonio anterior">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="az-dots" id="azTestDots">
+      <button class="active" aria-label="Ver testimonio 1"></button>
+      <button aria-label="Ver testimonio 2"></button>
+      <button aria-label="Ver testimonio 3"></button>
+    </div>
+    <button class="az-test-arrow right" id="azTestNext" aria-label="Siguiente testimonio">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+  </div>
+</section>
+
+</main>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="az-footer">
+  <div class="az-footer-top">
+    <div class="az-footer-brand">
+      <img src="images/amazon-redesign/logo.png" alt="Amazon">
+      <p>Amazon evoluciona contigo: entendemos tus gustos, tus necesidades y te ofrecemos una experiencia hecha a tu medida.</p>
+      <div class="az-social">
+        <a href="#" aria-label="Facebook"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+        <a href="#" aria-label="Twitter"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.9c-.7.3-1.5.6-2.3.7a4 4 0 0 0 1.8-2.2c-.8.5-1.6.8-2.6 1a4 4 0 0 0-6.9 3.7A11.5 11.5 0 0 1 3.6 4.6a4 4 0 0 0 1.3 5.4c-.6 0-1.2-.2-1.7-.5v.1a4 4 0 0 0 3.3 4 4 4 0 0 1-1.8.1 4 4 0 0 0 3.8 2.8A8.1 8.1 0 0 1 2 18.6a11.4 11.4 0 0 0 6.3 1.9c7.5 0 11.7-6.4 11.7-11.9v-.5c.8-.6 1.5-1.3 2-2.2Z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+      </div>
+    </div>
+
+    <div class="az-footer-col">
+      <h4>Conócenos</h4>
+      <ul>
+        <li><a href="#">¿Cómo funciona?</a></li>
+        <li><a href="#">Trabaja con nosotros</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Acerca de Amazon</a></li>
+        <li><a href="#">Business Relation</a></li>
+      </ul>
+    </div>
+
+    <div class="az-footer-col">
+      <h4>Gana dinero con nosotros</h4>
+      <ul>
+        <li><a href="#">Vender en Amazon</a></li>
+        <li><a href="#">Vende en Amazon Business</a></li>
+        <li><a href="#">Anuncia tus productos</a></li>
+        <li><a href="#">Publica tu libro en Kindle</a></li>
+        <li><a href="#">Programa de afiliados</a></li>
+      </ul>
+    </div>
+
+    <div class="az-footer-col">
+      <h4>Podemos ayudarte</h4>
+      <ul>
+        <li><a href="#">Tu cuenta</a></li>
+        <li><a href="#">Tus pedidos</a></li>
+        <li><a href="#">Tarifas de envíos</a></li>
+        <li><a href="#">Devoluciones y reemplazos</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="az-footer-divider">
+
+  <div class="az-footer-bottom">
+    <p>©2026 Amazon. Todos los derechos reservados</p>
+    <div class="az-footer-legal">
+      <a href="#">Políticas de Privacidad</a>
+      <a href="#">Términos y condiciones</a>
+    </div>
+  </div>
+</footer>
+
+<button class="az-to-top" id="azToTop" aria-label="Volver arriba" type="button">
+  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+(function () {
+
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Placeholder links: don't jump-scroll to top ---------- */
+  document.querySelectorAll('a[href="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); });
+  });
+
+  /* ---------- Mobile category menu (animated) ---------- */
+  var menuToggle = document.getElementById('azMenuToggle');
+  var catLinks = document.getElementById('azCatLinks');
+  if (menuToggle && catLinks) {
+    menuToggle.addEventListener('click', function () {
+      var isOpen = catLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
+  /* ---------- Categories dropdown ---------- */
+  var catToggle = document.getElementById('azCatToggle');
+  var catDropdown = document.getElementById('azCatDropdown');
+  var catToggleWrap = document.querySelector('.az-catnav-toggle-wrap');
+
+  function closeCatDropdown() {
+    catDropdown.classList.remove('open');
+    catToggle.setAttribute('aria-expanded', 'false');
+  }
+  catToggle.addEventListener('click', function () {
+    var isOpen = catDropdown.classList.toggle('open');
+    catToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', function (e) {
+    if (!catToggleWrap.contains(e.target)) closeCatDropdown();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeCatDropdown();
+  });
+  catDropdown.querySelectorAll('button[data-cat]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.getElementById('fCategory').value = btn.dataset.cat;
+      applyFilters();
+      closeCatDropdown();
+      document.getElementById('productos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  /* ---------- Wishlist + cart counters ---------- */
+  var wishCount = 0, cartCount = 0;
+  var wishBadge = document.getElementById('azWishBadge');
+  var cartBadge = document.getElementById('azCartBadge');
+
+  function updateBadge(el, count) {
+    el.textContent = count;
+    el.classList.toggle('is-zero', count === 0);
+    el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+  }
+
+  document.querySelectorAll('.az-icon-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var active = btn.classList.toggle('is-active');
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      wishCount += active ? 1 : -1;
+      updateBadge(wishBadge, wishCount);
+      btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop');
+    });
+  });
+
+  document.querySelectorAll('.az-buy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.classList.contains('is-added')) return;
+      var original = btn.textContent;
+      btn.textContent = 'Agregado ✓';
+      btn.classList.add('is-added');
+      cartCount += 1;
+      updateBadge(cartBadge, cartCount);
+      setTimeout(function () {
+        btn.textContent = original;
+        btn.classList.remove('is-added');
+      }, 1300);
+    });
+  });
+
+  /* ---------- Product tabs + filter bar + search ---------- */
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.az-product-card'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('#azTabs button'));
+  var grid = document.getElementById('azProductGrid');
+  var showMoreWrap = document.getElementById('azShowMore');
+  var emptyState = document.getElementById('azEmptyState');
+  var chipsWrap = document.getElementById('azChips');
+  var resultCount = document.getElementById('azResultCount');
+  var activeTag = 'todos';
+  var searchInput = document.getElementById('azSearchInput');
+
+  function priceBracket(price) {
+    if (price < 50) return 'lt50';
+    if (price <= 150) return 'mid';
+    return 'gt150';
+  }
+
+  var priceLabels = { lt50: 'Menos de $50', mid: '$50 – $150', gt150: 'Más de $150' };
+
+  function applyFilters() {
+    var category = document.getElementById('fCategory').value;
+    var brand = document.getElementById('fBrand').value;
+    var priceFilter = document.getElementById('fPrice').value;
+    var minRating = parseFloat(document.getElementById('fRating').value) || 0;
+    var sort = document.getElementById('fSort').value;
+    var query = (searchInput.value || '').trim().toLowerCase();
+
+    var visible = [];
+    cards.forEach(function (card) {
+      var tags = card.dataset.tags.split(' ');
+      var price = parseFloat(card.dataset.price);
+      var title = card.querySelector('h3').textContent.toLowerCase();
+
+      var matches =
+        (activeTag === 'todos' || tags.indexOf(activeTag) !== -1) &&
+        (!category || card.dataset.category === category) &&
+        (!brand || card.dataset.brand === brand) &&
+        (!priceFilter || priceBracket(price) === priceFilter) &&
+        (parseFloat(card.dataset.rating) >= minRating) &&
+        (!query || title.indexOf(query) !== -1);
+
+      if (matches) visible.push(card);
+      card.classList.toggle('is-hidden', !matches);
+    });
+
+    if (sort === 'price-asc') visible.sort(function (a, b) { return a.dataset.price - b.dataset.price; });
+    if (sort === 'price-desc') visible.sort(function (a, b) { return b.dataset.price - a.dataset.price; });
+    if (sort === 'rating-desc') visible.sort(function (a, b) { return b.dataset.rating - a.dataset.rating; });
+    visible.forEach(function (card) { grid.appendChild(card); });
+
+    resultCount.textContent = visible.length + (visible.length === 1 ? ' producto' : ' productos');
+    showMoreWrap.classList.toggle('is-hidden', visible.length >= cards.length);
+    emptyState.classList.toggle('is-hidden', visible.length !== 0);
+    grid.classList.toggle('is-hidden', visible.length === 0);
+    renderChips(category, brand, priceFilter, minRating, query);
+  }
+
+  function renderChips(category, brand, priceFilter, minRating, query) {
+    var chips = [];
+    if (category) chips.push({ label: 'Categoría: ' + category, clear: function () { document.getElementById('fCategory').value = ''; } });
+    if (brand) chips.push({ label: 'Marca: ' + brand, clear: function () { document.getElementById('fBrand').value = ''; } });
+    if (priceFilter) chips.push({ label: 'Precio: ' + priceLabels[priceFilter], clear: function () { document.getElementById('fPrice').value = ''; } });
+    if (minRating) chips.push({ label: 'Valoración: ' + minRating + '★ o más', clear: function () { document.getElementById('fRating').value = ''; } });
+    if (query) chips.push({ label: 'Buscando: "' + searchInput.value.trim() + '"', clear: function () { searchInput.value = ''; } });
+
+    chipsWrap.innerHTML = '';
+    chipsWrap.classList.toggle('is-hidden', chips.length === 0);
+    chips.forEach(function (c) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'az-chip';
+      btn.setAttribute('aria-label', 'Quitar filtro: ' + c.label);
+      btn.innerHTML = c.label + ' <span aria-hidden="true">✕</span>';
+      btn.addEventListener('click', function () { c.clear(); applyFilters(); });
+      chipsWrap.appendChild(btn);
+    });
+  }
+
+  function resetFilterFields() {
+    document.getElementById('fCategory').value = '';
+    document.getElementById('fBrand').value = '';
+    document.getElementById('fPrice').value = '';
+    document.getElementById('fRating').value = '';
+    document.getElementById('fSort').value = 'relevancia';
+    applyFilters();
+  }
+
+  function resetAllFilters() {
+    activateTab('todos');
+    document.getElementById('fCategory').value = '';
+    document.getElementById('fBrand').value = '';
+    document.getElementById('fPrice').value = '';
+    document.getElementById('fRating').value = '';
+    document.getElementById('fSort').value = 'relevancia';
+    searchInput.value = '';
+    applyFilters();
+  }
+
+  function activateTab(tag) {
+    var target = tabs.filter(function (b) { return b.dataset.tag === tag; })[0];
+    if (!target) return;
+    tabs.forEach(function (b) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+    target.classList.add('active');
+    target.setAttribute('aria-pressed', 'true');
+    activeTag = tag;
+  }
+
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      activateTab(btn.dataset.tag);
+      applyFilters();
+    });
+  });
+
+  document.getElementById('azFilterApply').addEventListener('click', function () {
+    applyFilters();
+    document.getElementById('productos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  document.getElementById('azFilterClear').addEventListener('click', resetFilterFields);
+  document.getElementById('azShowMore').querySelector('button').addEventListener('click', resetAllFilters);
+  document.getElementById('azEmptyClear').addEventListener('click', resetAllFilters);
+
+  document.getElementById('navParaTi').addEventListener('click', function (e) {
+    e.preventDefault();
+    activateTab('todos');
+    applyFilters();
+    document.getElementById('productos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  document.getElementById('navOfertas').addEventListener('click', function (e) {
+    e.preventDefault();
+    activateTab('deal');
+    applyFilters();
+    document.getElementById('productos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  document.getElementById('azSearchForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    applyFilters();
+  });
+  searchInput.addEventListener('input', applyFilters);
+
+  applyFilters();
+
+  /* ---------- Hero carousel (3 slides, autoplay) ---------- */
+  var heroSlides = Array.prototype.slice.call(document.querySelectorAll('.az-hero-slide'));
+  var heroDots = Array.prototype.slice.call(document.querySelectorAll('#azHeroDots button'));
+  var heroTitle = document.getElementById('azHeroTitle');
+  var heroBanner = document.getElementById('azHeroBanner');
+  var heroIndex = 0;
+  var heroTitles = [
+    '<span class="blue">Todo</span> lo que necesitas en <span class="blue">un solo lugar</span>',
+    'Nuevas cremas <span class="blue">cítricas</span> para tu piel',
+    '<span class="blue">Belleza</span> y estilo en un clic'
+  ];
+  var heroTimer, heroTitleTimer;
+
+  function showHeroSlide(i) {
+    heroIndex = (i + heroSlides.length) % heroSlides.length;
+    heroSlides.forEach(function (s, idx) { s.classList.toggle('active', idx === heroIndex); });
+    heroDots.forEach(function (d, idx) { d.classList.toggle('active', idx === heroIndex); });
+    heroTitle.style.opacity = 0;
+    clearTimeout(heroTitleTimer);
+    heroTitleTimer = setTimeout(function () {
+      heroTitle.innerHTML = heroTitles[heroIndex];
+      heroTitle.style.opacity = 1;
+    }, prefersReducedMotion ? 0 : 220);
+  }
+
+  function nextHeroSlide() { showHeroSlide(heroIndex + 1); }
+  function prevHeroSlide() { showHeroSlide(heroIndex - 1); }
+
+  function startHeroAutoplay() {
+    if (prefersReducedMotion) return;
+    stopHeroAutoplay();
+    heroTimer = setInterval(nextHeroSlide, 6000);
+  }
+  function stopHeroAutoplay() { clearInterval(heroTimer); }
+
+  document.getElementById('azHeroNext').addEventListener('click', function () { nextHeroSlide(); startHeroAutoplay(); });
+  document.getElementById('azHeroPrev').addEventListener('click', function () { prevHeroSlide(); startHeroAutoplay(); });
+  heroDots.forEach(function (dot, i) {
+    dot.addEventListener('click', function () { showHeroSlide(i); startHeroAutoplay(); });
+  });
+  heroBanner.addEventListener('mouseenter', stopHeroAutoplay);
+  heroBanner.addEventListener('mouseleave', startHeroAutoplay);
+  heroBanner.addEventListener('focusin', stopHeroAutoplay);
+  heroBanner.addEventListener('focusout', startHeroAutoplay);
+
+  startHeroAutoplay();
+
+  /* ---------- Testimonial carousel (single-card on tablet/mobile) ---------- */
+  var testCards = Array.prototype.slice.call(document.querySelectorAll('.az-testimonial-card'));
+  var testControls = document.getElementById('azTestControls');
+  var testPrev = document.getElementById('azTestPrev');
+  var testNext = document.getElementById('azTestNext');
+  var dots = Array.prototype.slice.call(document.querySelectorAll('#azTestDots button'));
+  var testIndex = 0;
+
+  function isCarouselMode() { return window.innerWidth <= 768; }
+
+  function renderTestimonials() {
+    var carousel = isCarouselMode();
+    testCards.forEach(function (card, i) {
+      card.classList.toggle('is-hidden', carousel && i !== testIndex);
+    });
+    dots.forEach(function (dot, i) { dot.classList.toggle('active', i === testIndex); });
+    testControls.classList.toggle('is-hidden', !carousel);
+  }
+
+  testPrev.addEventListener('click', function () {
+    testIndex = (testIndex - 1 + testCards.length) % testCards.length;
+    renderTestimonials();
+  });
+  testNext.addEventListener('click', function () {
+    testIndex = (testIndex + 1) % testCards.length;
+    renderTestimonials();
+  });
+  dots.forEach(function (dot, i) {
+    dot.addEventListener('click', function () { testIndex = i; renderTestimonials(); });
+  });
+
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(renderTestimonials, 150);
+  });
+
+  renderTestimonials();
+
+  /* ---------- Scroll reveal animations ---------- */
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('.az-reveal'));
+  if ('IntersectionObserver' in window && !prefersReducedMotion) {
+    var counters = new Map();
+    var observer = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var parent = entry.target.parentElement;
+          var n = counters.get(parent) || 0;
+          entry.target.style.transitionDelay = Math.min(n * 60, 300) + 'ms';
+          counters.set(parent, n + 1);
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function (el) { observer.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in-view'); });
+  }
+
+  /* ---------- Back to top ---------- */
+  var toTopBtn = document.getElementById('azToTop');
+  window.addEventListener('scroll', function () {
+    toTopBtn.classList.toggle('is-visible', window.scrollY > 600);
+  });
+  toTopBtn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+  });
+
+})();
+</script>
+</body>
+</html>

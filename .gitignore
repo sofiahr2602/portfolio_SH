@@ -1,0 +1,33 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Dependencies / build tooling (in case they get added later)
+node_modules/
+dist/
+build/
+
+# Env / secrets
+.env
+.env.*
+
+# Design source files (not needed for deploy)
+*.psd
+*.ai
+*.sketch
+*.fig
+*.xd
+
+# Logs
+*.log
+
+# Archives
+*.zip
+*.rar
+*.7z

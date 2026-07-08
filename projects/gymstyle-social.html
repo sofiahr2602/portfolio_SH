@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GymStyle — Contenido para Instagram</title>
+<meta name="description" content="Diseño de contenido para Instagram de GymStyle: feed, identidad visual y aplicaciones de marca. Case study de social media por Sofia Hualpa.">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          gym: {
+            burgundy: '#7A2352',
+            dark: '#4E1735',
+            pink: '#D98BA7',
+            cream: '#F3ECE1',
+          }
+        }
+      }
+    }
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --gym-burgundy:#7A2352;
+    --gym-dark:#4E1735;
+    --gym-pink:#D98BA7;
+    --gym-cream:#F3ECE1;
+  }
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',sans-serif; background:var(--gym-cream); color:#2b1220;}
+  .serif{font-family:'Playfair Display',serif;}
+
+  /* ── Fixed nav — transparent over hero/objetivo, solid once past them ── */
+  #proj-nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:24px 0;
+    background:transparent;
+    transition:padding .4s cubic-bezier(.22,1,.36,1), background .4s ease, backdrop-filter .4s ease, box-shadow .4s ease;
+  }
+  #proj-nav.scrolled{
+    padding:14px 0;
+    background:rgba(243,236,225,0.92);
+    backdrop-filter:blur(10px);
+    box-shadow:0 8px 30px rgba(78,23,53,0.10);
+  }
+  .nav-back{
+    font-size:0.8rem; font-weight:600; color:var(--gym-cream); opacity:0.9;
+    text-decoration:none; transition:color .3s ease, opacity .2s ease;
+  }
+  .nav-back:hover{ opacity:1; }
+  #proj-nav.scrolled .nav-back{ color:var(--gym-burgundy); }
+
+  .nav-links{ display:flex; gap:2rem; }
+  .nav-link-item{
+    position:relative; font-size:0.82rem; font-weight:600; letter-spacing:0.02em;
+    color:var(--gym-cream); opacity:0.85; text-decoration:none; padding-bottom:4px;
+    transition:color .3s ease, opacity .2s ease;
+  }
+  .nav-link-item::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:2px;
+    background:var(--gym-pink); transition:width .25s ease;
+  }
+  .nav-link-item:hover, .nav-link-item.active{ opacity:1; }
+  .nav-link-item:hover::after, .nav-link-item.active::after{ width:100%; }
+  #proj-nav.scrolled .nav-link-item{ color:var(--gym-burgundy); }
+  #proj-nav.scrolled .nav-link-item::after{ background:var(--gym-burgundy); }
+
+  /* ── Hero — full-bleed, full-screen logo ── */
+  .hero-section{
+    min-height:100vh; min-height:100svh; width:100%;
+    background:var(--gym-burgundy);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .hero-logo{
+    font-family:'Playfair Display',serif; font-weight:700;
+    color:var(--gym-cream);
+    font-size:clamp(3.2rem, 14vw, 11rem);
+    letter-spacing:0.02em; line-height:1; text-align:center;
+    padding:0 1rem;
+  }
+  @media (max-width:700px){
+    .hero-section{ min-height:62vh; min-height:62svh; }
+    .hero-logo{ font-size:clamp(2.6rem, 18vw, 5rem); }
+    #objetivo{ padding:3rem 1.25rem 3.5rem; }
+  }
+  .scroll-cue{
+    position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+    color:var(--gym-cream); opacity:0.8;
+    animation:bounceDown 1.8s ease-in-out infinite;
+  }
+  .scroll-cue:hover{ opacity:1; }
+  @keyframes bounceDown{
+    0%,100%{ transform:translateX(-50%) translateY(0); }
+    50%{ transform:translateX(-50%) translateY(10px); }
+  }
+
+  /* ── Objetivo — same brand-color background as hero ── */
+  #objetivo{
+    background:var(--gym-burgundy);
+    padding:5rem 1.5rem 6rem;
+    text-align:center;
+    scroll-margin-top:90px;
+  }
+  .objetivo-inner{ max-width:640px; margin:0 auto; }
+  .objetivo-inner .eyebrow{
+    color:var(--gym-pink); font-size:0.75rem; font-weight:700;
+    letter-spacing:0.14em; text-transform:uppercase;
+  }
+  .objetivo-inner h1{
+    color:var(--gym-cream); font-family:'Playfair Display',serif;
+    font-size:clamp(1.8rem, 4vw, 2.5rem); font-weight:700; margin-top:0.75rem;
+  }
+  .objetivo-inner p{
+    color:rgba(243,236,225,0.82); margin-top:1.1rem; line-height:1.65;
+  }
+
+  .wave-divider{ background:var(--gym-burgundy); line-height:0; }
+  .wave-divider svg{ display:block; width:100%; height:64px; }
+
+  /* ── Reveal on scroll ── */
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.visible{ opacity:1; transform:none; }
+
+  #identidad-visual, #aplicaciones{ scroll-margin-top:100px; }
+
+  /* ── Feed mockup ── */
+  .feed-card{
+    background:#fff; border-radius:1.5rem;
+    box-shadow:0 20px 60px rgba(78,23,53,0.10);
+    padding:1.75rem;
+  }
+  .avatar-circle{
+    width:64px; height:64px; border-radius:50%;
+    background:var(--gym-burgundy); color:var(--gym-cream);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Playfair Display',serif; font-weight:700; font-size:0.62rem;
+    letter-spacing:0.03em; text-align:center; flex-shrink:0;
+    border:2px solid var(--gym-pink);
+  }
+  .highlight-icon{
+    width:48px; height:48px; border-radius:50%; overflow:hidden;
+    border:1.5px solid #ecdfe6; padding:2px; flex-shrink:0;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .highlight-icon:hover{ transform:translateY(-3px); border-color:var(--gym-burgundy); }
+  .highlight-icon img{ width:100%; height:100%; border-radius:50%; object-fit:cover; }
+
+  .feed-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .feed-thumb{
+    position:relative; aspect-ratio:1/1; border-radius:0.6rem; overflow:hidden;
+    cursor:pointer; outline:2px solid transparent; outline-offset:2px;
+    transition:transform .3s cubic-bezier(.22,1,.36,1), outline-color .3s ease;
+  }
+  .feed-thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+  .feed-thumb:hover{ transform:translateY(-3px); }
+  .feed-thumb:hover img{ transform:scale(1.08); }
+  .feed-thumb.active{ outline-color:var(--gym-burgundy); }
+
+  .hint-badge{
+    position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+    background:var(--gym-burgundy); color:#fff; font-size:0.62rem; font-weight:600;
+    padding:4px 10px; border-radius:9999px; white-space:nowrap;
+    box-shadow:0 6px 16px rgba(78,23,53,0.35);
+    animation:hintFloat 2.2s ease-in-out infinite;
+    transition:opacity .4s ease;
+  }
+  @keyframes hintFloat{ 0%,100%{ transform:translateX(-50%) translateY(0); } 50%{ transform:translateX(-50%) translateY(-4px); } }
+  .hint-badge.hidden-hint{ opacity:0; pointer-events:none; }
+
+  /* ── Floating stack ── */
+  .stack-wrap{ position:relative; height:520px; }
+  @media (max-width:1024px){ .stack-wrap{ height:420px; } }
+  .stack-card{
+    position:absolute; inset:0; margin:auto;
+    width:78%; max-width:340px; aspect-ratio:4/5;
+    transition:transform .55s cubic-bezier(.22,1,.36,1), box-shadow .55s ease;
+    will-change:transform;
+  }
+  .stack-card-inner{
+    width:100%; height:100%; border-radius:1.3rem; overflow:hidden;
+    box-shadow:0 24px 50px rgba(78,23,53,0.28);
+    animation:floatCard 5.5s ease-in-out infinite;
+    background:#fff;
+  }
+  .stack-card-inner img{ width:100%; height:100%; object-fit:cover; }
+  @keyframes floatCard{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-10px) rotate(0.4deg); }
+  }
+
+  .brand-app-card{
+    border-radius:1.25rem; overflow:hidden;
+    box-shadow:0 16px 40px rgba(78,23,53,0.12);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .brand-app-card:hover{ transform:translateY(-6px); box-shadow:0 26px 56px rgba(78,23,53,0.2); }
+  .brand-app-card img{ width:100%; height:100%; object-fit:cover; }
+
+  .section-eyebrow{ color:var(--gym-burgundy); font-size:0.75rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; }
+
+  .cta-btn{
+    background:var(--gym-burgundy);
+    transition:background .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .cta-btn:hover{
+    background:var(--gym-dark);
+    transform:scale(1.04);
+    box-shadow:0 10px 30px rgba(78,23,53,0.3);
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Fixed nav: back link + 3 section items ── -->
+<nav id="proj-nav">
+  <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
+    <a href="../index.html#projects" class="nav-back">← Volver al portafolio</a>
+    <div class="nav-links">
+      <a href="#objetivo" class="nav-link-item" data-section="objetivo">Objetivo</a>
+      <a href="#aplicaciones" class="nav-link-item" data-section="aplicaciones">Aplicaciones</a>
+      <a href="#identidad-visual" class="nav-link-item" data-section="identidad-visual">Identidad Visual</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero: full-screen brand logo ── -->
+<section id="hero" class="hero-section">
+  <div class="hero-logo">GYMSTYLE</div>
+  <a href="#objetivo" class="scroll-cue" aria-label="Bajar a la siguiente sección">
+    <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+    </svg>
+  </a>
+</section>
+
+<!-- ── Objetivo: brief brand description, same brand-color background ── -->
+<section id="objetivo">
+  <div class="objetivo-inner reveal">
+    <span class="eyebrow">Objetivo · Reto creativo</span>
+    <h1>GymStyle — Contenido para Instagram</h1>
+    <p>
+      El reto: diseñar el contenido de redes sociales para GymStyle, una marca minimalista de
+      ropa deportiva femenina que busca diferenciarse en un mercado saturado. La solución combina
+      una paleta en tonos burgundy —que resalta la calidad y sofisticación de las prendas— con un
+      estilo visual girly y trendy, alineado a las tendencias que conectan con su público objetivo.
+    </p>
+  </div>
+</section>
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#F3ECE1" d="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 L1440,100 L0,100 Z"/>
+  </svg>
+</div>
+
+<div class="max-w-5xl mx-auto px-6 pb-24 pt-4">
+
+  <!-- ── Identidad Visual: feed + floating stack (unchanged) ── -->
+  <section id="identidad-visual" class="pt-12">
+    <div class="reveal mb-8">
+      <span class="section-eyebrow">Identidad Visual</span>
+      <h2 class="text-2xl font-bold mt-2 serif">Identidad visual en acción</h2>
+      <p class="text-gray-600 mt-2 max-w-2xl">Así se ve la identidad de GymStyle aplicada a un feed real: pasa el cursor o haz clic sobre cada post para verlo en grande.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10 items-start">
+
+      <!-- Feed mockup -->
+      <div class="feed-card reveal">
+        <div class="flex items-center gap-4">
+          <div class="avatar-circle">GYMSTYLE</div>
+          <div class="flex-1 flex justify-around text-center">
+            <div><div class="font-bold text-lg">184</div><div class="text-xs text-gray-500">Posts</div></div>
+            <div><div class="font-bold text-lg">336K</div><div class="text-xs text-gray-500">Followers</div></div>
+            <div><div class="font-bold text-lg">230</div><div class="text-xs text-gray-500">Following</div></div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <p class="font-semibold text-sm">GymStyle_pe</p>
+          <p class="text-sm text-gray-500">Ropa Femenina de Gym</p>
+          <p class="text-sm text-gray-500">GymStyle</p>
+        </div>
+
+        <div class="flex gap-4 mt-5 overflow-x-auto">
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="highlight-icon"><img src="images/gymstyle/highlight-envios.png" alt="Envíos"></div>
+            <span class="text-[11px] text-gray-500">Envíos</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="highlight-icon"><img src="images/gymstyle/highlight-clientes.png" alt="Clientes"></div>
+            <span class="text-[11px] text-gray-500">Clientes</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="highlight-icon"><img src="images/gymstyle/highlight-faq.png" alt="FAQ"></div>
+            <span class="text-[11px] text-gray-500">FAQ</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5">
+            <div class="highlight-icon"><img src="images/gymstyle/highlight-catalogo.png" alt="Catálogo"></div>
+            <span class="text-[11px] text-gray-500">Catálogo</span>
+          </div>
+        </div>
+
+        <div class="feed-grid mt-6" id="feed-grid" style="position:relative;">
+          <div class="hint-badge" id="hint-badge">Pasa el cursor o haz clic ↗</div>
+          <div class="feed-thumb active" data-index="0"><img src="images/gymstyle/post-1-hoy-entrenas.png" alt="Hoy entrenas"></div>
+          <div class="feed-thumb" data-index="1"><img src="images/gymstyle/post-2-top-short-melisa.png" alt="Top y short Melisa"></div>
+          <div class="feed-thumb" data-index="2"><img src="images/gymstyle/post-3-lo-mas-comodo.png" alt="Lo más cómodo de tu día"></div>
+          <div class="feed-thumb" data-index="3"><img src="images/gymstyle/post-4-llego-mi-pedido.png" alt="Llegó mi pedido de GymStyle"></div>
+          <div class="feed-thumb" data-index="4"><img src="images/gymstyle/post-5-nuevo-lanzamiento.png" alt="Nuevo lanzamiento de conjuntos"></div>
+          <div class="feed-thumb" data-index="5"><img src="images/gymstyle/post-6-esenciales-outfit.png" alt="Esenciales para tu outfit"></div>
+        </div>
+      </div>
+
+      <!-- Floating card stack -->
+      <div class="stack-wrap reveal" id="stack-wrap">
+        <div class="stack-card" data-index="0"><div class="stack-card-inner"><img src="images/gymstyle/post-1-hoy-entrenas.png" alt="Hoy entrenas"></div></div>
+        <div class="stack-card" data-index="1"><div class="stack-card-inner"><img src="images/gymstyle/post-2-top-short-melisa.png" alt="Top y short Melisa"></div></div>
+        <div class="stack-card" data-index="2"><div class="stack-card-inner"><img src="images/gymstyle/post-3-lo-mas-comodo.png" alt="Lo más cómodo de tu día"></div></div>
+        <div class="stack-card" data-index="3"><div class="stack-card-inner"><img src="images/gymstyle/post-4-llego-mi-pedido.png" alt="Llegó mi pedido de GymStyle"></div></div>
+        <div class="stack-card" data-index="4"><div class="stack-card-inner"><img src="images/gymstyle/post-5-nuevo-lanzamiento.png" alt="Nuevo lanzamiento de conjuntos"></div></div>
+        <div class="stack-card" data-index="5"><div class="stack-card-inner"><img src="images/gymstyle/post-6-esenciales-outfit.png" alt="Esenciales para tu outfit"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Aplicaciones: brand identity applications ── -->
+  <section id="aplicaciones" class="mt-24">
+    <div class="reveal mb-8">
+      <span class="section-eyebrow">Aplicaciones</span>
+      <h2 class="text-2xl font-bold mt-2 serif">Aplicaciones de marca</h2>
+      <p class="text-gray-600 mt-2 max-w-2xl">La paleta borgoña y la tipografía serif de GymStyle se extienden más allá del feed: empaques, bolsas y bandas de resistencia con la misma identidad visual.</p>
+    </div>
+    <div class="space-y-8">
+      <div class="reveal">
+        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-packaging.png" alt="Empaque GymStyle"></div>
+        <p class="text-center text-sm text-gray-500 mt-3">Empaque</p>
+      </div>
+      <div class="reveal">
+        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-tote-bags.png" alt="Bolsas GymStyle"></div>
+        <p class="text-center text-sm text-gray-500 mt-3">Bolsas tote</p>
+      </div>
+      <div class="reveal">
+        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-bands.png" alt="Bandas de resistencia GymStyle"></div>
+        <p class="text-center text-sm text-gray-500 mt-3">Bandas de resistencia</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Closing ── -->
+  <section class="mt-24 pb-4 text-center reveal">
+    <p class="text-gray-500 text-sm mb-5">¿Quieres ver más proyectos de diseño de marca y contenido?</p>
+    <a href="../index.html#projects" class="cta-btn inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white">
+      Volver al portafolio
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </a>
+  </section>
+
+</div>
+
+<script>
+  const projNav = document.getElementById('proj-nav');
+  const waveDividerEl = document.querySelector('.wave-divider');
+
+  function updateNavBg() {
+    const threshold = waveDividerEl.offsetTop + waveDividerEl.offsetHeight;
+    projNav.classList.toggle('scrolled', window.scrollY > threshold);
+  }
+  window.addEventListener('scroll', updateNavBg);
+  window.addEventListener('resize', updateNavBg);
+  updateNavBg();
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Scroll-spy: highlight active nav item
+  const spySections = ['objetivo', 'identidad-visual', 'aplicaciones'].map(id => document.getElementById(id));
+  const navLinkItems = document.querySelectorAll('.nav-link-item');
+  const spyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinkItems.forEach(l => l.classList.toggle('active', l.dataset.section === entry.target.id));
+      }
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  spySections.forEach(s => spyObserver.observe(s));
+
+  // ── Floating card stack logic ──
+  const stackCards = Array.from(document.querySelectorAll('.stack-card'));
+  const feedThumbs = Array.from(document.querySelectorAll('.feed-thumb'));
+  const hintBadge = document.getElementById('hint-badge');
+  let order = [0, 1, 2, 3, 4, 5]; // order[0] = front-most
+
+  const depthStyles = [
+    { x: 0,  y: 0,  r: 0,   s: 1,    z: 60, o: 1 },
+    { x: 18, y: 16, r: 4,   s: 0.96, z: 50, o: 0.98 },
+    { x: 34, y: 28, r: -6,  s: 0.93, z: 40, o: 0.95 },
+    { x: 48, y: 40, r: 8,   s: 0.90, z: 30, o: 0.9 },
+    { x: 60, y: 50, r: -9,  s: 0.87, z: 20, o: 0.85 },
+    { x: 70, y: 58, r: 10,  s: 0.84, z: 10, o: 0.8 },
+  ];
+
+  function render() {
+    order.forEach((cardIndex, depth) => {
+      const card = stackCards.find(c => c.dataset.index === String(cardIndex));
+      const d = depthStyles[depth];
+      card.style.zIndex = d.z;
+      card.style.opacity = d.o;
+      card.style.transform = `translate(${d.x}px, ${d.y}px) rotate(${d.r}deg) scale(${d.s})`;
+    });
+    feedThumbs.forEach(t => t.classList.toggle('active', Number(t.dataset.index) === order[0]));
+  }
+
+  function bringToFront(index) {
+    if (order[0] === index) return;
+    order = [index, ...order.filter(i => i !== index)];
+    render();
+    hintBadge.classList.add('hidden-hint');
+  }
+
+  feedThumbs.forEach(thumb => {
+    const idx = Number(thumb.dataset.index);
+    thumb.addEventListener('mouseenter', () => bringToFront(idx));
+    thumb.addEventListener('click', () => bringToFront(idx));
+  });
+
+  render();
+</script>
+</body>
+</html>

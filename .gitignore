@@ -16,6 +16,10 @@ node_modules/
 dist/
 build/
 
+# Except: prebuilt React prototype served directly by the case study page
+!projects/alcancia-consciente/app/dist/
+!projects/alcancia-consciente/app/dist/**
+
 # Env / secrets
 .env
 .env.*

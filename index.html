@@ -186,7 +186,7 @@
         Design that<br><span class="serif-italic">moves</span> people
       </h1>
       <p class="stagger-item delay-3 text-white/75 text-lg md:text-xl leading-relaxed mb-10 max-w-md">
-        UX · UI · Motion · Brand · Social Media
+        UX UI · Front-End · Motion · Brand · Social Media
       </p>
       <div class="stagger-item delay-4 flex flex-col sm:flex-row gap-4 items-center">
         <a href="#projects" class="btn-lilac inline-flex items-center gap-2 font-semibold text-[15px] px-8 py-4 rounded-full">
@@ -241,8 +241,7 @@
     <!-- Filter bar -->
     <div class="reveal mb-10 flex flex-wrap gap-2" id="filter-bar" role="group" aria-label="Filter projects by category">
       <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="ux">UX</button>
-      <button class="filter-btn" data-filter="ui">UI</button>
+      <button class="filter-btn" data-filter="uxdev">UX/UI + Frontend</button>
       <button class="filter-btn" data-filter="graphic">Graphic</button>
       <button class="filter-btn" data-filter="social">Social Media</button>
       <button class="filter-btn" data-filter="video">Video</button>
@@ -252,14 +251,37 @@
     <!-- Grid — all cards equal height, 3 cols desktop -->
     <!--
       HOW TO ADD A PROJECT:
-      1. Add a new <div class="project-item" data-category="ux ui"> block below
+      1. Add a new <div class="project-item" data-category="uxdev"> block below
       2. Set data-url to: an external URL (https://behance.net/...), or a local file (projects/my-project.html)
-      3. Set data-category to one or more of: ux, ui, graphic, social, video, motion
+      3. Set data-category to one or more of: uxdev, graphic, social, video, motion
       4. Replace the img src with your project image
     -->
     <div id="projects-grid">
 
-      <!-- ① CATMI — Social Media Content -->
+      <!-- ① Alcancía Consciente — UX/UI + Frontend (single-link card: opens the
+           case-study hub page; project lives in its own folder since it embeds
+           its own React prototype build under app/dist/) -->
+      <div class="project-item" data-category="uxdev"
+           data-url="projects/alcancia-consciente/alcancia-consciente-case-study.html" data-title="Alcancía Consciente — Interbank (concepto)">
+        <div class="project-card bg-gray-100">
+          <img src="projects/images/alcancia-consciente/cover.jpg" loading="lazy" decoding="async"
+               alt="Alcancía Consciente — Interbank (concepto)" style="object-position: center 38%">
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI · Frontend</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">Alcancía Consciente</h3>
+            <p class="text-white/65 text-sm mb-1">Rediseño conceptual · Fricción contextual · Hitos y recompensas</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">UX / UI</span>
+          <div class="tool-icons" aria-label="Herramientas: Figma, React, Claude">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="4.2" r="2.8"/><circle cx="8" cy="11.8" r="2.8" opacity=".5"/><circle cx="11.6" cy="8" r="2.8" opacity=".8"/></svg>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><ellipse cx="8" cy="8" rx="6.5" ry="2.6"/><ellipse cx="8" cy="8" rx="6.5" ry="2.6" transform="rotate(60 8 8)"/><ellipse cx="8" cy="8" rx="6.5" ry="2.6" transform="rotate(120 8 8)"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1c.4 3.6 1.2 5.9 3 6.7v.6c-1.8.8-2.6 3.1-3 6.7-.4-3.6-1.2-5.9-3-6.7v-.6c1.8-.8 2.6-3.1 3-6.7z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② CATMI — Social Media Content (Carla) -->
       <div class="project-item" data-category="graphic social"
            data-url="projects/catmi-social.html" data-title="CATMI — Contenido para Instagram">
         <div class="project-card bg-gray-100">
@@ -281,29 +303,29 @@
         </div>
       </div>
 
-      <!-- ② GymStyle — Social Media Content -->
-      <div class="project-item" data-category="social"
-           data-url="projects/gymstyle-social.html" data-title="GymStyle — Contenido para Instagram">
+      <!-- ③ Amazon Redesign — UX/UI + Frontend (single-link card: opens the
+           case-study hub page, which itself links out to Design System / Brand Book / Website) -->
+      <div class="project-item" data-category="uxdev"
+           data-url="projects/amazon-redesign-case-study.html" data-title="Amazon — Home Redesign">
         <div class="project-card bg-gray-100">
-          <img src="projects/images/gymstyle/post-1-hoy-entrenas.png" loading="lazy" decoding="async"
-               alt="GymStyle — Contenido para Instagram" style="object-position: center top">
+          <img src="projects/images/amazon-redesign/hero-banner.jpg" loading="lazy" decoding="async"
+               alt="Amazon — Home Redesign" style="object-position: 35% 15%">
           <div class="card-overlay">
-            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">Social Media</span>
-            <h3 class="text-white text-lg font-semibold leading-snug">GymStyle — Contenido para Instagram</h3>
-            <p class="text-white/65 text-sm mb-1">Feed · Diseño de contenido · Identidad de marca</p>
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">Amazon — Home Redesign</h3>
+            <p class="text-white/65 text-sm mb-1">Case study · Design system · Website</p>
             <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
           </div>
-          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">Social</span>
-          <div class="tool-icons" aria-label="Herramientas: Illustrator, Photoshop, Canva, Figma">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 13.5 9 2l4.5 4.5L7 13z"/><circle cx="9" cy="2" r=".9" fill="currentColor" stroke="none"/><circle cx="2.5" cy="13.5" r=".9" fill="currentColor" stroke="none"/></svg>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.5 14 5 8 8.5 2 5z"/><path d="M2 8l6 3.5L14 8"/><path d="M2 11l6 3.5L14 11"/></svg>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M8 1.3a6.7 6.7 0 000 13.4c.9 0 1.4-.7 1-1.4-.2-.4.1-.9.6-.9H11a3 3 0 003-3c0-4.5-2.7-8.1-6-8.1z"/><circle cx="5.3" cy="7.2" r=".7" fill="currentColor" stroke="none"/><circle cx="8" cy="4.4" r=".7" fill="currentColor" stroke="none"/><circle cx="10.7" cy="7.2" r=".7" fill="currentColor" stroke="none"/></svg>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">UX / UI</span>
+          <div class="tool-icons" aria-label="Herramientas: Figma, Claude, Gemini">
             <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="4.2" r="2.8"/><circle cx="8" cy="11.8" r="2.8" opacity=".5"/><circle cx="11.6" cy="8" r="2.8" opacity=".8"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="7.3" y="0" width="1.4" height="16" rx="0.7"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(45 8 8)"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(90 8 8)"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(135 8 8)"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1c.4 3.6 1.2 5.9 3 6.7v.6c-1.8.8-2.6 3.1-3 6.7-.4-3.6-1.2-5.9-3-6.7v-.6c1.8-.8 2.6-3.1 3-6.7z"/></svg>
           </div>
         </div>
       </div>
 
-      <!-- ③ Attitude — Journals Social Media Content -->
+      <!-- ④ Attitude — Journals Social Media Content -->
       <div class="project-item" data-category="graphic social"
            data-url="projects/attitude-social.html" data-title="Attitude — Contenido para Instagram">
         <div class="project-card bg-gray-100">
@@ -325,7 +347,29 @@
         </div>
       </div>
 
-      <!-- ④ CATMI — Catsitter Brandbook — Graphic -->
+      <!-- ⑤ Angie — Nutritionist Website — UX/UI + Frontend (single-link card: opens the
+           case-study hub page, which itself links out to Design System / Brand Book / Website) -->
+      <div class="project-item" data-category="uxdev"
+           data-url="projects/angie-case-study.html" data-title="Angie — Nutritionist Website">
+        <div class="project-card bg-gray-100">
+          <img src="projects/images/angie-hamasaki.webp" loading="lazy" decoding="async"
+               alt="Angie — Nutritionist Website" style="object-position: center 22%">
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">Angie — Nutritionist Website</h3>
+            <p class="text-white/65 text-sm mb-1">Case study · Design system · Website</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">UX / UI</span>
+          <div class="tool-icons" aria-label="Herramientas: Figma, Claude, Gemini">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="4.2" r="2.8"/><circle cx="8" cy="11.8" r="2.8" opacity=".5"/><circle cx="11.6" cy="8" r="2.8" opacity=".8"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="7.3" y="0" width="1.4" height="16" rx="0.7"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(45 8 8)"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(90 8 8)"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(135 8 8)"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1c.4 3.6 1.2 5.9 3 6.7v.6c-1.8.8-2.6 3.1-3 6.7-.4-3.6-1.2-5.9-3-6.7v-.6c1.8-.8 2.6-3.1 3-6.7z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑥ CATMI — Catsitter Brandbook — Graphic -->
       <div class="project-item" data-category="graphic"
            data-url="projects/catmi-brandbook.html" data-title="CATMI — Catsitter Brandbook">
         <div class="project-card bg-gray-100">
@@ -347,61 +391,29 @@
         </div>
       </div>
 
-      <!-- ⑤ Angie — Nutritionist Website — UX/UI (multi-link card: no data-url,
-           uses .project-links with 3 buttons instead of a single whole-card link) -->
-      <div class="project-item" data-category="ux ui" data-title="Angie — Nutritionist Website">
+      <!-- ⑦ GymStyle — Social Media Content -->
+      <div class="project-item" data-category="social"
+           data-url="projects/gymstyle-social.html" data-title="GymStyle — Contenido para Instagram">
         <div class="project-card bg-gray-100">
-          <img src="projects/images/angie-hamasaki.webp" loading="lazy" decoding="async"
-               alt="Angie — Nutritionist Website" style="object-position: center 22%">
+          <img src="projects/images/gymstyle/post-1-hoy-entrenas.png" loading="lazy" decoding="async"
+               alt="GymStyle — Contenido para Instagram" style="object-position: center top">
           <div class="card-overlay">
-            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI</span>
-            <h3 class="text-white text-lg font-semibold leading-snug">Angie — Nutritionist Website</h3>
-            <p class="text-white/65 text-sm mb-1">Brand book · Design system · Website</p>
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">Social Media</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">GymStyle — Contenido para Instagram</h3>
+            <p class="text-white/65 text-sm mb-1">Feed · Diseño de contenido · Identidad de marca</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
           </div>
-          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">UX / UI</span>
-          <div class="tool-icons" aria-label="Herramientas: Figma, Claude, Gemini">
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">Social</span>
+          <div class="tool-icons" aria-label="Herramientas: Illustrator, Photoshop, Canva, Figma">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 13.5 9 2l4.5 4.5L7 13z"/><circle cx="9" cy="2" r=".9" fill="currentColor" stroke="none"/><circle cx="2.5" cy="13.5" r=".9" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.5 14 5 8 8.5 2 5z"/><path d="M2 8l6 3.5L14 8"/><path d="M2 11l6 3.5L14 11"/></svg>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M8 1.3a6.7 6.7 0 000 13.4c.9 0 1.4-.7 1-1.4-.2-.4.1-.9.6-.9H11a3 3 0 003-3c0-4.5-2.7-8.1-6-8.1z"/><circle cx="5.3" cy="7.2" r=".7" fill="currentColor" stroke="none"/><circle cx="8" cy="4.4" r=".7" fill="currentColor" stroke="none"/><circle cx="10.7" cy="7.2" r=".7" fill="currentColor" stroke="none"/></svg>
             <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="4.2" r="2.8"/><circle cx="8" cy="11.8" r="2.8" opacity=".5"/><circle cx="11.6" cy="8" r="2.8" opacity=".8"/></svg>
-            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="7.3" y="0" width="1.4" height="16" rx="0.7"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(45 8 8)"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(90 8 8)"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(135 8 8)"/></svg>
-            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1c.4 3.6 1.2 5.9 3 6.7v.6c-1.8.8-2.6 3.1-3 6.7-.4-3.6-1.2-5.9-3-6.7v-.6c1.8-.8 2.6-3.1 3-6.7z"/></svg>
           </div>
-        </div>
-        <div class="project-links">
-          <a class="project-link-btn" href="projects/angie-design-system.html" target="_blank" rel="noopener">Design System</a>
-          <a class="project-link-btn" href="projects/angie-brand-book.html" target="_blank" rel="noopener">Brand Book</a>
-          <a class="project-link-btn" href="projects/angie-website.html" target="_blank" rel="noopener">Página Web</a>
-          <!-- TODO: reemplazar "#" con el link real del archivo de Figma cuando esté publicado -->
-          <a class="project-link-btn" href="https://shre.ink/jZrX" target="_blank" rel="noopener">Open in Figma</a>
         </div>
       </div>
 
-      <!-- ⑥ Amazon Redesign — UX/UI (multi-link card: no data-url,
-           uses .project-links with 3 buttons instead of a single whole-card link) -->
-      <div class="project-item" data-category="ux ui" data-title="Amazon — Home Redesign">
-        <div class="project-card bg-gray-100">
-          <img src="projects/images/amazon-redesign/hero-banner.jpg" loading="lazy" decoding="async"
-               alt="Amazon — Home Redesign" style="object-position: 35% 15%">
-          <div class="card-overlay">
-            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI</span>
-            <h3 class="text-white text-lg font-semibold leading-snug">Amazon — Home Redesign</h3>
-            <p class="text-white/65 text-sm mb-1">Brand book · Design system · Website</p>
-          </div>
-          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">UX / UI</span>
-          <div class="tool-icons" aria-label="Herramientas: Figma, Claude, Gemini">
-            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="4.2" r="2.8"/><circle cx="8" cy="11.8" r="2.8" opacity=".5"/><circle cx="11.6" cy="8" r="2.8" opacity=".8"/></svg>
-            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="7.3" y="0" width="1.4" height="16" rx="0.7"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(45 8 8)"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(90 8 8)"/><rect x="7.3" y="0" width="1.4" height="16" rx="0.7" transform="rotate(135 8 8)"/></svg>
-            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1c.4 3.6 1.2 5.9 3 6.7v.6c-1.8.8-2.6 3.1-3 6.7-.4-3.6-1.2-5.9-3-6.7v-.6c1.8-.8 2.6-3.1 3-6.7z"/></svg>
-          </div>
-        </div>
-        <div class="project-links">
-          <a class="project-link-btn" href="projects/amazon-redesign-design-system.html" target="_blank" rel="noopener">Design System</a>
-          <a class="project-link-btn" href="projects/amazon-redesign-brand-book.html" target="_blank" rel="noopener">Brand Book</a>
-          <a class="project-link-btn" href="projects/amazon-redesign-website.html" target="_blank" rel="noopener">Página Web</a>
-          <!-- TODO: reemplazar "#" con el link real del archivo de Figma cuando esté publicado -->
-          <a class="project-link-btn" href="#" target="_blank" rel="noopener">Open in Figma</a>
-        </div>
-      </div>
-
-      <!-- ⑦ Hero Reel — Motion / Video (showcase card: no data-url,
+      <!-- ⑧ Hero Reel — Motion / Video (showcase card: no data-url,
            plays inline instead of linking out — same clip used as the hero background) -->
       <div class="project-item" data-category="video motion" data-title="Hero Reel — Motion Video">
         <div class="project-card bg-gray-100">
@@ -416,6 +428,28 @@
           <div class="tool-icons" aria-label="Herramientas: Canva, CapCut">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M8 1.3a6.7 6.7 0 000 13.4c.9 0 1.4-.7 1-1.4-.2-.4.1-.9.6-.9H11a3 3 0 003-3c0-4.5-2.7-8.1-6-8.1z"/><circle cx="5.3" cy="7.2" r=".7" fill="currentColor" stroke="none"/><circle cx="8" cy="4.4" r=".7" fill="currentColor" stroke="none"/><circle cx="10.7" cy="7.2" r=".7" fill="currentColor" stroke="none"/></svg>
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="12" height="8" rx="1"/><path d="M2 6l1.5-3h3L5 6M8.5 6 10 3h3L11.5 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑨ Ylan Franco — Odontología Landing — UX/UI + Frontend (single-link card: opens the
+           case-study hub page; site not yet deployed, so it has no Página Web link out) -->
+      <div class="project-item" data-category="uxdev"
+           data-url="projects/ylan-franco-case-study.html" data-title="Ylan Franco — Odontología Landing">
+        <div class="project-card bg-gray-100">
+          <img src="projects/images/ylan-franco-thumb.png" loading="lazy" decoding="async"
+               alt="Ylan Franco — Odontología Landing" style="object-position: center 35%">
+          <div class="card-overlay">
+            <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">Frontend</span>
+            <h3 class="text-white text-lg font-semibold leading-snug">Ylan Franco — Odontología Landing</h3>
+            <p class="text-white/65 text-sm mb-1">Case study · Next.js · React · Framer Motion</p>
+            <div class="card-open-btn">Open project <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></div>
+          </div>
+          <span class="absolute top-4 left-4 px-3 py-1 bg-white/90 text-gray-700 text-xs font-semibold rounded-full">Frontend</span>
+          <div class="tool-icons" aria-label="Herramientas: React, Next.js, Framer Motion">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><ellipse cx="8" cy="8" rx="6.5" ry="2.6"/><ellipse cx="8" cy="8" rx="6.5" ry="2.6" transform="rotate(60 8 8)"/><ellipse cx="8" cy="8" rx="6.5" ry="2.6" transform="rotate(120 8 8)"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4 2 8l3 4M11 4l3 4-3 4M9.5 3l-3 10"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1c.4 3.6 1.2 5.9 3 6.7v.6c-1.8.8-2.6 3.1-3 6.7-.4-3.6-1.2-5.9-3-6.7v-.6c1.8-.8 2.6-3.1 3-6.7z"/></svg>
           </div>
         </div>
       </div>

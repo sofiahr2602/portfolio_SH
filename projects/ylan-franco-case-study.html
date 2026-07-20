@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ylan Franco — Case Study Frontend</title>
+<meta name="description" content="Case study de desarrollo frontend: landing page para el Dr. Ylan Franco, odontólogo. Next.js, React, Tailwind y Framer Motion. Proyecto por Sofia Hualpa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ylan-tokens.css">
+
+<style>
+  html { scroll-behavior: smooth; overflow-x: hidden; scroll-padding-top: 90px; }
+  body { position: relative; }
+  ::selection { background: var(--accent-blue); color: var(--bg-0); }
+
+  /* ── CONTINUOUS ANIMATED BACKDROP ── */
+  .page-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .page-bg .blob { position: absolute; border-radius: 50%; filter: blur(90px); will-change: transform; }
+  .page-bg .b1 { width: 46vw; height: 42vw; max-width: 620px; max-height: 560px; background: var(--accent-blue); opacity: .22; top: -12%; left: -10%; animation: driftA 24s ease-in-out infinite; }
+  .page-bg .b2 { width: 40vw; height: 38vw; max-width: 560px; max-height: 520px; background: var(--accent-lavender); opacity: .18; top: 46%; right: -12%; animation: driftB 28s ease-in-out infinite; }
+  .page-bg .b3 { width: 30vw; height: 28vw; max-width: 400px; max-height: 380px; background: var(--accent-gold); opacity: .16; bottom: -10%; left: 22%; animation: driftC 20s ease-in-out infinite; }
+  .page-bg .b4 { width: 24vw; height: 22vw; max-width: 320px; max-height: 300px; background: var(--accent-blue); opacity: .14; top: 6%; right: 18%; animation: driftA 26s ease-in-out infinite reverse; }
+  @keyframes driftA { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(4vw, 3vh) scale(1.08); } }
+  @keyframes driftB { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-3.5vw, 2.5vh) scale(1.06); } }
+  @keyframes driftC { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(2.5vw, -3vh) scale(1.1); } }
+  @media (prefers-reduced-motion: reduce) { .page-bg .blob { animation: none; } }
+
+  #proj-nav, .meta-strip, .hero-section, .cs-section, .closing { position: relative; z-index: 1; }
+
+  /* ── NAV ── */
+  #proj-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: var(--z-sticky);
+    padding: 22px 0; background: transparent;
+    transition: padding .4s var(--ease-out), background .4s ease, backdrop-filter .4s ease, box-shadow .4s ease;
+  }
+  #proj-nav.scrolled {
+    padding: 14px 0; background: rgba(248,251,255,0.82); backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-sm); border-bottom: 1px solid var(--border);
+  }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .nav-back { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-mid); text-decoration: none; transition: color .2s ease; flex-shrink: 0; }
+  .nav-back:hover { color: var(--accent-blue); }
+  .nav-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .nav-tab {
+    font-family: 'Geist', sans-serif; cursor: pointer; appearance: none;
+    font-size: 12.5px; font-weight: 600; letter-spacing: .01em; color: var(--text-mid); text-decoration: none;
+    padding: 8px 16px; border-radius: var(--radius-full); border: 1px solid var(--border-mid);
+    background: var(--color-surface); transition: color .2s ease, border-color .2s ease, transform .2s ease, background .2s ease;
+  }
+  .nav-tab:hover { color: var(--accent-blue); border-color: var(--accent-blue); transform: translateY(-1px); }
+  .nav-tab.active { color: var(--bg-0); background: var(--accent-blue); border-color: var(--accent-blue); }
+  .nav-tab.soon { opacity: .55; cursor: default; pointer-events: none; display: inline-flex; align-items: center; gap: 6px; }
+  .nav-tab.soon .soon-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-gold); }
+
+  /* ── CONTENT PANELS (case study content vs. embedded project page) ── */
+  #panel-frame { position: fixed; inset: 0; z-index: 10; background: var(--bg-0); display: none; }
+  #content-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #frame-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--text-mid); background: var(--bg-0); }
+
+  /* ── META STRIP ── */
+  .meta-strip { max-width: 1200px; margin: 0 auto; padding: 96px 32px 0; display: grid; grid-template-columns: repeat(4, auto); gap: 24px; justify-content: space-between; }
+  .meta-item .meta-label { font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 4px; }
+  .meta-item .meta-value { font-size: 13.5px; font-weight: 700; color: var(--text); }
+
+  /* ── HERO ── */
+  .hero-section { width: 100%; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 56px 24px 80px; }
+  .hero-content { position: relative; z-index: 2; max-width: 640px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent-blue); background: var(--color-action-bg); padding: 6px 16px; border-radius: var(--radius-full); margin-bottom: 26px;
+  }
+  .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold); }
+  .hero-logo-wordmark { font-family: var(--font-heading); font-weight: 700; font-size: clamp(38px, 6vw, 64px); letter-spacing: -2px; line-height: 1.02; color: var(--text); margin-bottom: 12px; }
+  .hero-logo-wordmark span { color: var(--accent-blue); }
+  .hero-desc { font-size: 16.5px; line-height: 1.7; color: var(--text-mid); max-width: 560px; margin: 0 auto; }
+  .hero-desc em { font-style: italic; color: var(--text); }
+
+  /* ── DEVICE MOCKUP (hand-built recreation — sitio aún no deployado) ── */
+  .device-stage { position: relative; z-index: 2; margin-top: 48px; width: 100%; display: flex; align-items: center; justify-content: center; }
+  .device-frame { position: relative; width: min(880px, 92vw); border-radius: 16px; background: var(--bg-0); box-shadow: var(--shadow-lg); overflow: hidden; border: 1px solid var(--border); }
+  .device-chrome { display: flex; align-items: center; gap: 6px; padding: 11px 14px; background: rgba(11,28,51,0.03); border-bottom: 1px solid var(--border); }
+  .device-chrome span { width: 9px; height: 9px; border-radius: 50%; background: rgba(11,28,51,0.14); }
+  .device-chrome .addr { margin-left: 10px; font-size: 11px; color: var(--text-light); background: rgba(255,255,255,0.7); padding: 4px 12px; border-radius: var(--radius-full); border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 6px; }
+  .device-chrome .addr .lock { opacity: .6; }
+  .device-viewport { position: relative; width: 100%; aspect-ratio: 16/10; overflow: hidden; background: radial-gradient(120% 90% at 50% 0%, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%); }
+
+  /* mini recreation of the real Hero section (copy real del proyecto) */
+  .mock-hero { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 5% 8%; }
+  .mock-badge { font-size: clamp(8px,1.1vw,11px); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-blue); background: var(--color-action-bg); padding: 5px 14px; border-radius: 999px; }
+  .mock-h1 { font-family: var(--font-heading); font-weight: 500; font-size: clamp(16px, 3vw, 34px); line-height: 1.1; color: var(--text); }
+  .mock-p { font-size: clamp(7px,1vw,13px); color: var(--text-mid); max-width: 70%; line-height: 1.5; }
+  .mock-btns { display: flex; gap: 10px; margin-top: 4px; }
+  .mock-btn { font-size: clamp(7px,0.9vw,11px); font-weight: 600; padding: 8px 16px; border-radius: 999px; }
+  .mock-btn.primary { background: var(--accent-blue); color: var(--bg-0); }
+  .mock-btn.glass { background: rgba(255,255,255,0.65); border: 1px solid var(--border-mid); color: var(--text); }
+  .mock-photo { position: absolute; border-radius: 14px; background: linear-gradient(135deg, rgba(63,127,224,0.22), rgba(168,147,224,0.16)); border: 1px solid var(--border); }
+  .mp1 { width: 13%; height: 46%; left: 5%; top: 16%; }
+  .mp2 { width: 17%; height: 22%; right: 6%; top: 12%; }
+  .mp3 { width: 14%; height: 24%; right: 4%; bottom: 16%; }
+
+  .device-dots { display: flex; gap: 6px; justify-content: center; margin-top: 16px; position: relative; z-index: 2; }
+  .device-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--border-mid); }
+  .device-dots span.active { background: var(--accent-blue); transform: scale(1.3); }
+
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; font-size: 12px; font-weight: 600;
+    color: var(--color-brand-dark); background: var(--color-brand-bg); border: 1px solid rgba(228,210,163,0.4);
+    padding: 8px 18px; border-radius: var(--radius-full);
+  }
+  .status-pill .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--color-brand-dark); animation: pulse 1.8s ease-in-out infinite; }
+  .status-pill.live { color: #2f9e5c; background: rgba(47,158,92,0.1); border-color: rgba(47,158,92,0.3); text-decoration: none; }
+  .status-pill.live .pulse { background: #2f9e5c; }
+  .status-pill.live:hover { border-color: #2f9e5c; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+  /* ── SECTION SHELLS ── */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .cs-section { max-width: 1100px; margin: 0 auto; padding: 88px 32px; }
+  .cs-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-blue); margin-bottom: 12px; }
+  .cs-h2 { font-family: var(--font-heading); font-size: clamp(28px, 3.4vw, 40px); font-weight: 600; letter-spacing: -1px; color: var(--text); margin-bottom: 16px; }
+  .cs-h2 em { font-style: italic; color: var(--accent-blue); }
+  .cs-lead { font-size: 15px; color: var(--text-mid); max-width: 640px; line-height: 1.7; margin-bottom: 44px; }
+
+  .glass-card { background: var(--color-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); backdrop-filter: blur(20px); }
+
+  /* ── CONTEXTO ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .stat-card { padding: 26px; }
+  .stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .stat-num { font-family: var(--font-heading); font-weight: 700; font-size: 30px; color: var(--text); }
+  .stat-icon { width: 38px; height: 38px; border-radius: 50%; background: var(--color-action-bg); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .stat-desc { font-size: 13.5px; color: var(--text-mid); line-height: 1.55; }
+
+  /* ── STACK TÉCNICO ── */
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .stack-card { padding: 22px; }
+  .stack-card h4 { font-family: var(--font-heading); font-weight: 600; font-size: 15px; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .stack-card p { font-size: 12.5px; color: var(--text-mid); line-height: 1.55; }
+  .stack-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── FEATURE GRID (recorrido por secciones) ── */
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .feature-card { overflow: hidden; }
+  .feature-preview { height: 140px; position: relative; background: radial-gradient(120% 100% at 50% 0%, var(--bg-2) 0%, var(--bg-1) 60%, var(--bg-0) 100%); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .feature-body { padding: 20px 22px; }
+  .feature-body .f-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-blue); margin-bottom: 6px; }
+  .feature-body h4 { font-family: var(--font-heading); font-weight: 600; font-size: 15.5px; color: var(--text); margin-bottom: 6px; }
+  .feature-body p { font-size: 12.5px; color: var(--text-mid); line-height: 1.55; }
+
+  /* mini previews per feature */
+  .fp-gallery { display: flex; gap: 6px; }
+  .fp-gallery .ph { width: 26px; height: 60px; border-radius: 6px; background: linear-gradient(135deg, rgba(63,127,224,0.35), rgba(168,147,224,0.22)); border: 1px solid var(--border); }
+  .fp-gallery .ph:nth-child(2) { height: 80px; margin-top: -10px; }
+  .fp-gallery .ph:nth-child(3) { height: 44px; margin-top: 18px; }
+  .fp-stats { display: flex; gap: 8px; }
+  .fp-stats .s { width: 44px; text-align: center; }
+  .fp-stats .s .n { font-family: var(--font-heading); font-weight: 700; font-size: 15px; color: var(--accent-blue); }
+  .fp-stats .s .l { font-size: 7px; color: var(--text-light); text-transform: uppercase; letter-spacing: .04em; }
+  .fp-masonry { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 70%; }
+  .fp-masonry div { border-radius: 4px; background: linear-gradient(135deg, rgba(63,127,224,0.3), rgba(228,210,163,0.22)); height: 22px; }
+  .fp-masonry div:nth-child(2) { height: 34px; }
+  .fp-masonry div:nth-child(5) { height: 30px; }
+  .fp-chips { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; width: 80%; }
+  .fp-chips span { font-size: 8px; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--border-mid); color: var(--text-mid); }
+  .fp-chips span.active { background: var(--accent-blue); color: var(--bg-0); border-color: var(--accent-blue); }
+  .fp-faq { width: 76%; display: flex; flex-direction: column; gap: 6px; }
+  .fp-faq div { height: 16px; border-radius: 6px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); }
+  .fp-contact { width: 40px; height: 40px; border-radius: 50%; background: var(--color-action-bg); display: flex; align-items: center; justify-content: center; color: var(--accent-blue); font-size: 16px; }
+
+  /* ── DEMO INTERACTIVO DE PROTOCOLOS (feature real del sitio) ── */
+  .protocols-demo { padding: 30px 26px; }
+  .pd-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .pd-chip {
+    font-family: inherit; font-size: 13px; font-weight: 600; color: var(--text-mid);
+    background: rgba(255,255,255,0.5); border: 1px solid var(--border-mid); border-radius: var(--radius-full);
+    padding: 8px 16px; cursor: pointer; transition: all .2s ease;
+  }
+  .pd-chip.active { background: var(--accent-blue); color: var(--white); border-color: var(--accent-blue); }
+  .pd-chip:hover:not(.active) { border-color: var(--accent-blue-soft); color: var(--text); }
+  .pd-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .pd-step { display: flex; flex-direction: column; gap: 8px; padding: 16px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: var(--radius-md); }
+  .pd-step .pd-num { font-size: 11px; font-weight: 600; color: var(--text-light); letter-spacing: .1em; }
+  .pd-step .pd-label { font-size: 12.5px; line-height: 1.45; color: var(--text); }
+
+  /* ── TOKENS SWATCHES (colores reales del código) ── */
+  .tokens-panel { padding: 32px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; }
+  .tk-row-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-light); margin-bottom: 12px; }
+  .tk-swatches { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+  .tk-swatch { width: 64px; }
+  .tk-swatch .chip { width: 64px; height: 50px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 6px; }
+  .tk-swatch .name { font-size: 9.5px; color: var(--text-mid); }
+  .tk-swatch .hex { font-size: 9px; color: var(--text-light); }
+  .tk-font-sample { font-family: var(--font-heading); font-size: 26px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .tk-font-sample.body { font-size: 15px; font-weight: 400; color: var(--text-mid); }
+  .tk-theme-toggle { display: flex; gap: 10px; margin-top: 20px; }
+  .tk-theme-pill { font-size: 11.5px; font-weight: 600; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border-mid); color: var(--text-mid); }
+  .tk-theme-pill.on { background: var(--color-action-bg); color: var(--accent-blue); border-color: var(--accent-blue); }
+
+  /* ── ESTADO DEL PROYECTO ── */
+  .status-panel { padding: 40px; text-align: center; }
+  .status-panel h3 { font-family: var(--font-heading); font-weight: 600; font-size: 20px; color: var(--text); margin-bottom: 10px; }
+  .status-panel p { font-size: 14px; color: var(--text-mid); max-width: 480px; margin: 0 auto; line-height: 1.6; }
+  .status-checklist { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 24px; }
+  .status-item { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border-mid); color: var(--text-mid); }
+  .status-item.done { color: #2f9e5c; border-color: rgba(47,158,92,0.3); background: rgba(47,158,92,0.08); }
+  .status-item.pending { color: var(--color-brand-dark); border-color: rgba(228,210,163,0.4); background: var(--color-brand-bg); }
+  .status-item .ico { font-size: 13px; }
+
+  /* ── CLOSING ── */
+  .closing { text-align: center; padding: 40px 32px 96px; }
+  .closing-btn {
+    display: inline-flex; align-items: center; gap: 8px; background: var(--accent-blue); color: var(--bg-0);
+    font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px 28px; border-radius: var(--radius-full);
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .closing-btn:hover { background: var(--color-action-hover); transform: scale(1.03); box-shadow: var(--shadow-md); }
+
+  @media (max-width: 860px) {
+    .meta-strip { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
+    .tokens-panel { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .nav-inner { padding: 0 20px; }
+    .nav-tabs { justify-content: flex-start; }
+    .meta-strip { padding: 88px 20px 0; }
+    .cs-section { padding: 64px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-bg" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+
+<nav id="proj-nav">
+  <div class="nav-inner">
+    <a href="../index.html#projects" class="nav-back">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M10 4L6 8l4 4"/></svg>
+      Volver al portafolio
+    </a>
+    <div class="nav-tabs">
+      <button type="button" class="nav-tab active" data-panel="case-study">Case Study</button>
+      <button type="button" class="nav-tab" data-src="https://ylan-franco-landing.vercel.app">Página Web ↗</button>
+    </div>
+  </div>
+</nav>
+
+<div id="panel-frame">
+  <div id="frame-loading">Cargando…</div>
+  <iframe id="content-frame" title="Contenido del proyecto"></iframe>
+</div>
+
+<div id="panel-casestudy">
+
+<div class="meta-strip reveal">
+  <div class="meta-item"><div class="meta-label">Diseñadora &amp; Desarrolladora</div><div class="meta-value">Sofia Hualpa</div></div>
+  <div class="meta-item"><div class="meta-label">Servicio</div><div class="meta-value">Frontend Development</div></div>
+  <div class="meta-item"><div class="meta-label">Stack</div><div class="meta-value">Next.js · React · Tailwind</div></div>
+  <div class="meta-item"><div class="meta-label">Año</div><div class="meta-value">2026</div></div>
+</div>
+
+<section class="hero-section">
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="dot"></span>Proyecto de Desarrollo</div>
+    <h1 class="hero-logo-wordmark">Ylan <span>Franco</span></h1>
+    <p class="hero-desc">
+      La experiencia digital del <em>Dr. Ylan Franco</em> — una landing page construida en código real
+      (no solo diseñada) que combina calma, precisión y una guía de cuidado post-consulta interactiva.
+    </p>
+  </div>
+
+  <div class="device-stage">
+    <div class="device-frame">
+      <div class="device-chrome">
+        <span></span><span></span><span></span>
+        <div class="addr"><span class="lock">🔒</span> ylan-franco-landing.vercel.app</div>
+      </div>
+      <div class="device-viewport">
+        <div class="mock-photo mp1"></div>
+        <div class="mock-photo mp2"></div>
+        <div class="mock-photo mp3"></div>
+        <div class="mock-hero">
+          <span class="mock-badge">Dr. Ylan Franco · Odontología</span>
+          <h2 class="mock-h1">Precisión que se siente como cuidado.</h2>
+          <p class="mock-p">Una experiencia clínica pensada al detalle — antes, durante y después de cada consulta.</p>
+          <div class="mock-btns">
+            <span class="mock-btn primary">Ver protocolos de cuidado</span>
+            <span class="mock-btn glass">Ver casos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="device-dots" id="hero-dots">
+    <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div style="text-align:center;">
+    <a href="https://ylan-franco-landing.vercel.app" target="_blank" rel="noopener" class="status-pill live"><span class="pulse"></span>Sitio en vivo — ver ylan-franco-landing.vercel.app</a>
+  </div>
+</section>
+
+<!-- ── CONTEXTO ── -->
+<section class="cs-section" id="contexto">
+  <div class="reveal">
+    <p class="cs-eyebrow">Contexto</p>
+    <h2 class="cs-h2">Un sitio que <em>cuida</em> antes y después de la consulta.</h2>
+    <p class="cs-lead">
+      El Dr. Ylan Franco necesitaba algo más que un sitio de presentación: una experiencia que transmitiera
+      confianza en el primer contacto y que acompañara al paciente durante la recuperación — sin depender
+      de una llamada telefónica para resolver dudas básicas de cuidado post-tratamiento.
+    </p>
+  </div>
+  <div class="stat-grid reveal">
+    <div class="glass-card stat-card">
+      <div class="stat-top"><div class="stat-num">6</div><div class="stat-icon">🧩</div></div>
+      <div class="stat-desc">Secciones construidas: Hero, Sobre, Casos, Protocolos, FAQ y Contacto.</div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="stat-top"><div class="stat-num">4</div><div class="stat-icon">🦷</div></div>
+      <div class="stat-desc">Protocolos de recuperación interactivos: extracción, endodoncia, blanqueamiento e implante.</div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="stat-top"><div class="stat-num">2</div><div class="stat-icon">🎨</div></div>
+      <div class="stat-desc">Temas visuales intercambiables — "Luxury" (oscuro) y "Friendly" (claro) — persistidos por paciente.</div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="stat-top"><div class="stat-num">100%</div><div class="stat-icon">⚛️</div></div>
+      <div class="stat-desc">Componentes propios en React — sin plantillas ni page builders.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STACK TÉCNICO ── -->
+<section class="cs-section" id="stack">
+  <div class="reveal">
+    <p class="cs-eyebrow">Enfoque técnico</p>
+    <h2 class="cs-h2">Construido con <em>código</em>, no solo diseñado.</h2>
+    <p class="cs-lead">
+      Este es mi primer proyecto real de frontend: pasar del diseño en Figma a una aplicación funcional,
+      aplicando lo que vengo aprendiendo de React directamente a un cliente real.
+    </p>
+  </div>
+  <div class="stack-grid reveal">
+    <div class="glass-card stack-card">
+      <h4><span class="stack-dot" style="background:var(--accent-blue)"></span>Next.js 16 + React 19</h4>
+      <p>App Router, componentes de servidor y cliente, y optimización de imágenes nativa.</p>
+    </div>
+    <div class="glass-card stack-card">
+      <h4><span class="stack-dot" style="background:var(--accent-lavender)"></span>Tailwind CSS v4</h4>
+      <p>Sistema de utilidades mapeado a los design tokens propios del proyecto (ver más abajo).</p>
+    </div>
+    <div class="glass-card stack-card">
+      <h4><span class="stack-dot" style="background:var(--accent-gold)"></span>Framer Motion</h4>
+      <p>Animaciones de entrada, parallax con física de resorte y transiciones entre estados.</p>
+    </div>
+    <div class="glass-card stack-card">
+      <h4><span class="stack-dot" style="background:#b6e3c6"></span>Lenis</h4>
+      <p>Smooth scroll para que el recorrido por las secciones se sienta continuo y premium.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEMO INTERACTIVO: PROTOCOLOS ── -->
+<section class="cs-section" id="protocolos-demo">
+  <div class="reveal">
+    <p class="cs-eyebrow">Funcionalidad destacada</p>
+    <h2 class="cs-h2">Protocolos de <em>recuperación</em>, explicados con claridad.</h2>
+    <p class="cs-lead">
+      La pieza central del sitio: un selector interactivo donde el paciente elige su tratamiento y ve,
+      paso a paso, cómo cuidarse en casa — reemplazando la típica hoja de instrucciones en papel.
+      Prueba el demo (misma data e interacción que el sitio real):
+    </p>
+  </div>
+  <div class="glass-card protocols-demo reveal">
+    <div class="pd-chips" id="pd-chips"></div>
+    <div class="pd-steps" id="pd-steps"></div>
+  </div>
+</section>
+
+<!-- ── RECORRIDO POR LAS SECCIONES ── -->
+<section class="cs-section" id="secciones">
+  <div class="reveal">
+    <p class="cs-eyebrow">Recorrido</p>
+    <h2 class="cs-h2">Cada sección, <em>a detalle</em>.</h2>
+    <p class="cs-lead">Recreación fiel de cada bloque del sitio real — los colores y textos son los del código.</p>
+  </div>
+  <div class="feature-grid reveal">
+    <div class="glass-card feature-card">
+      <div class="feature-preview"><div class="fp-gallery"><div class="ph"></div><div class="ph"></div><div class="ph"></div></div></div>
+      <div class="feature-body"><div class="f-eyebrow">Hero</div><h4>Galería flotante con parallax</h4><p>Fotos clínicas que reaccionan al mouse con física de resorte (spring physics) vía Framer Motion.</p></div>
+    </div>
+    <div class="glass-card feature-card">
+      <div class="feature-preview"><div class="fp-stats"><div class="s"><div class="n">+12</div><div class="l">años</div></div><div class="s"><div class="n">+3,200</div><div class="l">pacientes</div></div><div class="s"><div class="n">98%</div><div class="l">satisf.</div></div></div></div>
+      <div class="feature-body"><div class="f-eyebrow">Sobre</div><h4>Filosofía + estadísticas</h4><p>Especialidades y cifras clave que construyen confianza antes de la primera consulta.</p></div>
+    </div>
+    <div class="glass-card feature-card">
+      <div class="feature-preview"><div class="fp-masonry"><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+      <div class="feature-body"><div class="f-eyebrow">Casos</div><h4>Galería masonry editorial</h4><p>Selección de tratamientos con overlay de hover, organizada en columnas tipo Pinterest.</p></div>
+    </div>
+    <div class="glass-card feature-card">
+      <div class="feature-preview"><div class="fp-chips"><span class="active">Extracción</span><span>Endodoncia</span><span>Blanqueamiento</span><span>Implante</span></div></div>
+      <div class="feature-body"><div class="f-eyebrow">Protocolos</div><h4>Guía de recuperación interactiva</h4><p>La funcionalidad diferenciadora del sitio — demo interactivo arriba.</p></div>
+    </div>
+    <div class="glass-card feature-card">
+      <div class="feature-preview"><div class="fp-faq"><div></div><div></div><div></div></div></div>
+      <div class="feature-body"><div class="f-eyebrow">FAQ</div><h4>Acordeón de preguntas frecuentes</h4><p>Resuelve dudas comunes antes de que el paciente necesite escribir.</p></div>
+    </div>
+    <div class="glass-card feature-card">
+      <div class="feature-preview"><div class="fp-contact">💬</div></div>
+      <div class="feature-body"><div class="f-eyebrow">Contacto</div><h4>CTA directo a WhatsApp</h4><p>Un solo canal de contacto, sin fricción, para dudas fuera de los protocolos.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SISTEMA DE DISEÑO / TOKENS ── -->
+<section class="cs-section" id="tokens">
+  <div class="reveal">
+    <p class="cs-eyebrow">Sistema de diseño</p>
+    <h2 class="cs-h2">Tokens con <em>dos identidades</em>.</h2>
+    <p class="cs-lead">El sitio real tiene un selector de tema: "Luxury" (oscuro, por defecto) y "Friendly" (claro) — ambos comparten la misma estructura de tokens.</p>
+  </div>
+  <div class="glass-card tokens-panel reveal">
+    <div>
+      <div class="tk-row-label">Paleta — Friendly (activa en esta página)</div>
+      <div class="tk-swatches">
+        <div class="tk-swatch"><div class="chip" style="background:#f8fbff"></div><div class="name">bg-0</div><div class="hex">#f8fbff</div></div>
+        <div class="tk-swatch"><div class="chip" style="background:#dcedff"></div><div class="name">bg-1</div><div class="hex">#dcedff</div></div>
+        <div class="tk-swatch"><div class="chip" style="background:#aed3ff"></div><div class="name">bg-2</div><div class="hex">#aed3ff</div></div>
+        <div class="tk-swatch"><div class="chip" style="background:#3f7fe0"></div><div class="name">accent-blue</div><div class="hex">#3f7fe0</div></div>
+        <div class="tk-swatch"><div class="chip" style="background:#e4d2a3"></div><div class="name">accent-gold</div><div class="hex">#e4d2a3</div></div>
+        <div class="tk-swatch"><div class="chip" style="background:#a893e0"></div><div class="name">accent-lavender</div><div class="hex">#a893e0</div></div>
+      </div>
+      <div class="tk-theme-toggle">
+        <span class="tk-theme-pill">Luxury</span>
+        <span class="tk-theme-pill on">Friendly</span>
+      </div>
+    </div>
+    <div>
+      <div class="tk-row-label">Tipografía — Geist</div>
+      <div class="tk-font-sample">Precisión que se siente como cuidado.</div>
+      <div class="tk-font-sample body">Una experiencia clínica pensada al detalle, antes, durante y después de cada consulta.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ESTADO DEL PROYECTO ── -->
+<section class="cs-section" id="estado">
+  <div class="glass-card status-panel reveal">
+    <h3>El sitio está en producción.</h3>
+    <p>Código fuente en <a href="https://github.com/sofiahr2602/ylan-franco-landing" target="_blank" rel="noopener" style="color:var(--accent-blue)">GitHub</a> (repo privado), deployado en <a href="https://ylan-franco-landing.vercel.app" target="_blank" rel="noopener" style="color:var(--accent-blue)">Vercel</a> —
+      nav, hero, protocolos interactivos y todo lo demás funcionan end-to-end en el sitio real.</p>
+    <div class="status-checklist">
+      <span class="status-item done"><span class="ico">✓</span>Diseño de las 6 secciones</span>
+      <span class="status-item done"><span class="ico">✓</span>Componentes en React</span>
+      <span class="status-item done"><span class="ico">✓</span>Tema Luxury / Friendly</span>
+      <span class="status-item done"><span class="ico">✓</span>Protocolos interactivos</span>
+      <span class="status-item done"><span class="ico">✓</span>Deploy en producción</span>
+    </div>
+  </div>
+</section>
+
+<div class="closing reveal">
+  <a href="../index.html#projects" class="closing-btn">
+    Volver al portafolio
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+  </a>
+</div>
+
+</div><!-- /panel-casestudy -->
+
+<script>
+  const projNav = document.getElementById('proj-nav');
+  const heroEl = document.querySelector('.hero-section');
+  let frameOpen = false;
+  function updateNavBg() {
+    const threshold = heroEl.offsetTop + heroEl.offsetHeight * 0.6;
+    projNav.classList.toggle('scrolled', frameOpen || window.scrollY > threshold);
+  }
+  window.addEventListener('scroll', updateNavBg);
+  window.addEventListener('resize', updateNavBg);
+  updateNavBg();
+
+  /* ── Nav tabs: swap between the case-study content and an embedded
+       project page, without leaving this tab or opening a new one ── */
+  const navTabs = document.querySelectorAll('.nav-tab[data-src], .nav-tab[data-panel]');
+  const panelCaseStudy = document.getElementById('panel-casestudy');
+  const panelFrame = document.getElementById('panel-frame');
+  const contentFrame = document.getElementById('content-frame');
+  const frameLoading = document.getElementById('frame-loading');
+  let loadedSrc = null;
+
+  function syncFrameTop() {
+    if (frameOpen) panelFrame.style.top = projNav.getBoundingClientRect().height + 'px';
+  }
+
+  navTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      navTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const src = tab.dataset.src;
+      if (!src) {
+        panelFrame.style.display = 'none';
+        panelCaseStudy.style.display = '';
+        frameOpen = false;
+      } else {
+        panelCaseStudy.style.display = 'none';
+        panelFrame.style.display = 'block';
+        frameOpen = true;
+        if (loadedSrc !== src) {
+          frameLoading.style.display = 'flex';
+          contentFrame.src = src;
+          loadedSrc = src;
+        }
+      }
+      updateNavBg();
+      syncFrameTop();
+    });
+  });
+  window.addEventListener('resize', syncFrameTop);
+  contentFrame.addEventListener('load', () => { frameLoading.style.display = 'none'; });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ── Protocolos demo — misma data que el sitio real (data.ts) ── */
+  const PROTOCOLS = [
+    { id: 'extraccion', name: 'Extracción', steps: [
+      'Aplicar hielo las primeras 6 horas', 'Alimentos blandos y fríos', 'Evitar fumar 48 horas',
+      'Tomar la medicación indicada', 'Contactar si hay sangrado persistente' ] },
+    { id: 'endodoncia', name: 'Endodoncia', steps: [
+      'Evitar masticar del lado tratado', 'Medicación según indicación', 'Sensibilidad leve por 48 horas',
+      'Contactar si el dolor persiste' ] },
+    { id: 'blanqueamiento', name: 'Blanqueamiento', steps: [
+      'Evitar alimentos con color 48 horas', 'Sensibilidad leve esperada', 'Cepillado suave y constante',
+      'Resultado progresivo en días' ] },
+    { id: 'implante', name: 'Implante', steps: [
+      'Dieta blanda durante 1 semana', 'No fumar durante la cicatrización', 'Enjuague indicado dos veces al día',
+      'Control a los 7 días', 'Contactar ante inflamación excesiva' ] },
+  ];
+  const chipsEl = document.getElementById('pd-chips');
+  const stepsEl = document.getElementById('pd-steps');
+  function renderProtocol(id) {
+    const p = PROTOCOLS.find(p => p.id === id) || PROTOCOLS[0];
+    chipsEl.querySelectorAll('.pd-chip').forEach(c => c.classList.toggle('active', c.dataset.id === p.id));
+    stepsEl.innerHTML = p.steps.map((s, i) =>
+      `<div class="pd-step"><span class="pd-num">${String(i + 1).padStart(2, '0')}</span><span class="pd-label">${s}</span></div>`
+    ).join('');
+  }
+  PROTOCOLS.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'pd-chip' + (i === 0 ? ' active' : '');
+    btn.textContent = p.name;
+    btn.dataset.id = p.id;
+    btn.addEventListener('click', () => renderProtocol(p.id));
+    chipsEl.appendChild(btn);
+  });
+  renderProtocol(PROTOCOLS[0].id);
+</script>
+
+</body>
+</html>

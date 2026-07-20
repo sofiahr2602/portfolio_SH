@@ -1703,8 +1703,16 @@
     .sobre-text h2 { font-size: 30px; }
     .sobre-values { grid-template-columns: 1fr; }
 
+    .sobre-badge-overlay { bottom: 14px; left: 14px; }
+    .sobre-badge { padding: 9px 13px; border-radius: var(--radius-sm); }
+    .sobre-badge strong { font-size: 17px; }
+    .sobre-badge span { font-size: 10.5px; }
+
     #servicios h2 { font-size: 32px; }
     .servicios-grid { grid-template-columns: 1fr; }
+    .servicio-card { padding: 24px 20px; }
+    .servicio-card h3 { font-size: 17px; margin-bottom: 8px; }
+    .servicio-card p { font-size: 13.5px; line-height: 1.6; }
 
     .testimonios-grid { grid-template-columns: 1fr; }
     .testimonios-header h2 { font-size: 30px; }
@@ -1872,6 +1880,7 @@
 <body>
 
 <a href="../index.html#projects" style="position:fixed;bottom:28px;left:28px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:rgba(44,44,44,0.85);color:#fff;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:8px 16px;border-radius:999px;text-decoration:none;backdrop-filter:blur(4px);">&larr; Volver al portafolio</a>
+<script>if (window.self !== window.top) { document.currentScript.previousElementSibling.style.display = 'none'; }</script>
 
 <!-- NAV -->
 <nav id="main-nav" role="navigation" aria-label="Navegación principal">
@@ -1991,10 +2000,10 @@
   <div class="sobre-text reveal">
     <p class="section-eyebrow">Sobre mí</p>
     <h2 id="sobre-title">Una nutricionista que escucha antes de aconsejar.</h2>
-    <p>Con más de 10 años de experiencia en nutrición clínica, acompaño a personas en todas las etapas de la vida: embarazadas, adolescentes, adultos y adultos mayores. Cada etapa tiene sus propias necesidades, y me especializo en entenderlas.</p>
+    <p>Acompaño a personas en todas las etapas de la vida: embarazadas, adolescentes, adultos y adultos mayores. Cada etapa tiene sus propias necesidades, y me especializo en entenderlas.</p>
     <p>Creo que una buena alimentación no se construye desde la culpa, sino desde el conocimiento y el acompañamiento. Mi objetivo no es cambiar quién es usted, sino ayudarle a descubrir hábitos que realmente pueda mantener y disfrutar.</p>
     <div class="sobre-values" role="list" aria-label="Valores de trabajo">
-      <div class="value-item" role="listitem"><div class="value-dot" aria-hidden="true"></div><span>Planes 100% personalizados</span></div>
+      <div class="value-item" role="listitem"><div class="value-dot" aria-hidden="true"></div><span>Planes sin fórmulas genéricas</span></div>
       <div class="value-item" role="listitem"><div class="value-dot" aria-hidden="true"></div><span>Basada en evidencia científica</span></div>
       <div class="value-item" role="listitem"><div class="value-dot" aria-hidden="true"></div><span>Atiende embarazadas y adolescentes</span></div>
       <div class="value-item" role="listitem"><div class="value-dot" aria-hidden="true"></div><span>Acompañamiento sin juzgar</span></div>
@@ -2105,7 +2114,7 @@
           <text x="316" y="48" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#2a5a10" text-anchor="middle" pointer-events="none">Vegetales</text>
           <text x="348" y="352" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#8a6a00" text-anchor="middle" pointer-events="none">Grasas</text>
           <text x="56" y="352" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#8a5a00" text-anchor="middle" pointer-events="none">Carboh.</text>
-          <text x="56" y="48" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle" pointer-events="none">Proteínas</text>
+          <text x="56" y="48" font-family="DM Sans,sans-serif" font-size="12" font-weight="700" fill="#8a2f12" text-anchor="middle" pointer-events="none">Proteínas</text>
         </svg>
         <p class="plato-click-hint" aria-hidden="true">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" width="14" height="14"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l1.5 1.5"/></svg>

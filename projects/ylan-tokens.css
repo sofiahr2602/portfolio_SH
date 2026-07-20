@@ -1,0 +1,101 @@
+/* Ylan Franco — shared design tokens v1.1
+   Mirrors the real tokens from ilan-franco-landing/src/app/globals.css
+   (friendly/light theme — Sofia's preferred theme for the case study,
+   the site itself defaults to luxury/dark but ships both). Single
+   source of truth for ylan-franco-case-study.html. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+
+  /* ── COLORES PRIMITIVOS (idénticos al tema "friendly" del código real) ─── */
+  --bg-0:            #f8fbff;
+  --bg-1:            #dcedff;
+  --bg-2:            #aed3ff;
+  --white:           #ffffff;
+  --accent-blue:      #3f7fe0;
+  --accent-blue-soft: #7fb0f2;
+  --accent-gold:      #e4d2a3;
+  --accent-lavender:  #a893e0;
+  --text:            #0b1c33;
+  --text-mid:        rgba(11,28,51,0.64);
+  --text-light:      rgba(11,28,51,0.48);
+  --border:          rgba(11,28,51,0.12);
+  --border-mid:      rgba(11,28,51,0.2);
+
+  /* ── ROLES SEMÁNTICOS ───────────────────────────────────────────── */
+  --color-action:        var(--accent-blue);
+  --color-action-hover:  #2f68c4;
+  --color-action-bg:     rgba(63,127,224,0.12);
+  --color-brand:         var(--accent-gold);
+  --color-brand-dark:    #a6893f;
+  --color-brand-bg:      rgba(228,210,163,0.22);
+  --color-accent2:       var(--accent-lavender);
+  --color-accent2-bg:    rgba(168,147,224,0.14);
+  --color-surface:       rgba(255,255,255,0.72);
+  --color-surface-strong: rgba(255,255,255,0.9);
+  --color-page:          var(--bg-0);
+  --color-ink:           var(--text);
+  --color-ink-secondary: var(--text-mid);
+  --color-ink-tertiary:  var(--text-light);
+  --color-line:          var(--border);
+  --color-line-mid:      var(--border-mid);
+
+  /* ── TIPOGRAFÍA (Geist — la fuente real del proyecto) ────────────── */
+  --font-heading: 'Geist', 'Inter', sans-serif;
+  --font-body:    'Geist', 'Inter', sans-serif;
+
+  --text-xs:   0.6875rem;
+  --text-sm:   0.8125rem;
+  --text-base: 1rem;
+  --text-md:   1.0625rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.5rem;
+  --text-2xl:  1.75rem;
+  --text-3xl:  2.5rem;
+  --text-4xl:  3rem;
+  --text-5xl:  4rem;
+
+  --lh-tight:  1.05;
+  --lh-snug:   1.2;
+  --lh-normal: 1.5;
+  --lh-relaxed:1.7;
+
+  --ls-tight:  -1.5px;
+  --ls-snug:   -1px;
+  --ls-normal: 0;
+  --ls-wide:   0.04em;
+  --ls-wider:  0.08em;
+  --ls-widest: 0.12em;
+
+  /* ── ESPACIADO (base 8px) ─────────────────────────────────────── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px; --space-32: 128px;
+
+  /* ── RADIOS ───────────────────────────────────────────────────── */
+  --radius-sm: 8px; --radius-md: 16px; --radius-lg: 24px; --radius-full: 999px;
+
+  /* ── ELEVACIÓN (sombras azuladas suaves, sobre fondo claro) ───────── */
+  --shadow-sm: 0 10px 30px -12px rgba(40,80,150,0.22);
+  --shadow-md: 0 16px 40px -16px rgba(40,80,150,0.25);
+  --shadow-lg: 0 30px 80px -24px rgba(40,80,150,0.28);
+
+  /* ── MOTION (mismos valores que Framer Motion en el proyecto real) ── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms; --duration-base: 250ms; --duration-slow: 400ms; --duration-reveal: 700ms;
+
+  /* ── Z-INDEX ──────────────────────────────────────────────────── */
+  --z-base: 0; --z-raised: 10; --z-sticky: 100; --z-overlay: 200; --z-toast: 300;
+}
+
+body {
+  font-family: var(--font-body);
+  background: radial-gradient(120% 90% at 50% 0%, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}

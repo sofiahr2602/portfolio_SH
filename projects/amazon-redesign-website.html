@@ -433,9 +433,150 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 @media (max-width: 380px) {
   .az-product-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
 }
+
+/* ============ ONBOARDING QUIZ (React) ============
+   Only this widget is React — everything else on the page is vanilla JS.
+   applyAnswersToSite() in the quiz script talks to the existing filter bar
+   purely through its public DOM (values + .click()), so this block has no
+   dependency on the vanilla script's internals and vice versa.
+   Content/copy is a faithful port of the Figma "Preguntas para conocer al
+   usuario" flow (node 16:6410 / 16:6087 / 16:5772 / 16:5448 / 16:5127);
+   colors, radii, shadows, spacing, type and motion are pulled from the
+   site's own tokens (amazon-redesign-tokens.css) instead of the Figma
+   file's one-off blues, so the quiz reads as part of the same product —
+   see the design-system audit in this file's git history for why that
+   single-source-of-truth rule exists. */
+.az-quiz-overlay {
+  position: fixed; inset: 0; width: 100vw; background: rgba(19,25,33,.22); backdrop-filter: blur(18px) saturate(1.1);
+  /* .az-header is a sticky element pinned at z-index:50 (higher than the
+     --az-z-modal token, 40) — without beating that here the header rendered
+     sharp and on top of the blur instead of being blurred underneath it. */
+  z-index: 60; display: flex; align-items: center; justify-content: center;
+  box-sizing: border-box; padding: var(--az-space-5); opacity: 0; pointer-events: none;
+  transition: opacity var(--az-duration-slow) var(--az-ease-standard);
+}
+.az-quiz-overlay.is-open { opacity: 1; pointer-events: auto; }
+.az-quiz-modal {
+  background: #fff; border-radius: var(--az-radius-xl); box-shadow: var(--az-elevation-4), 0 0 0 1px rgba(11,117,251,.08);
+  box-sizing: border-box; width: min(680px, 100%); max-height: 88vh; overflow-y: auto; overflow-x: hidden;
+  padding: var(--az-space-7); margin: 0 auto; text-align: center;
+  position: relative; transform: translateY(12px) scale(.98);
+  transition: transform var(--az-duration-slow) var(--az-ease-standard);
+}
+.az-quiz-overlay.is-open .az-quiz-modal { transform: translateY(0) scale(1); }
+.az-quiz-close {
+  position: absolute; top: var(--az-space-4); right: var(--az-space-4); width: 44px; height: 44px;
+  border-radius: 50%; border: none; background: var(--az-gray-100); color: var(--az-text-mid);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background var(--az-duration-fast) var(--az-ease-standard);
+}
+.az-quiz-close:hover { background: var(--az-gray-200); }
+.az-quiz-close svg { width: 16px; height: 16px; }
+.az-quiz-progress { display: flex; align-items: center; justify-content: center; gap: var(--az-space-2); margin-bottom: var(--az-space-4); }
+.az-quiz-progress-track { display: flex; gap: 6px; width: 140px; }
+.az-quiz-progress-track span { height: 4px; flex: 1; border-radius: var(--az-radius-full); background: var(--az-gray-200); overflow: hidden; }
+.az-quiz-progress-track span i { display: block; height: 100%; width: 0; background: var(--az-blue); border-radius: inherit; transition: width var(--az-duration-slow) var(--az-ease-standard); }
+.az-quiz-progress-track span.is-done i, .az-quiz-progress-track span.is-current i { width: 100%; }
+.az-quiz-progress-label { font-size: var(--az-fs-xs); font-weight: var(--az-fw-semibold); color: var(--az-text-mid); }
+.az-quiz-title { font-size: clamp(19px, 2.1vw, 25px); font-weight: var(--az-fw-semibold); color: var(--az-text); letter-spacing: -0.01em; line-height: var(--az-lh-snug); margin-bottom: var(--az-space-2); }
+.az-quiz-subtitle { font-size: var(--az-fs-sm); color: var(--az-text-mid); line-height: var(--az-lh-normal); margin: 0 auto var(--az-space-4); max-width: 460px; }
+.az-quiz-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--az-space-2); margin-bottom: var(--az-space-4); }
+.az-quiz-option {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;
+  aspect-ratio: 1 / 1; padding: var(--az-space-2); border: 1.5px solid var(--az-gray-200);
+  border-radius: var(--az-radius-md); background: #fff; cursor: pointer; font-family: inherit;
+  box-shadow: var(--az-elevation-1);
+  font-size: 11.5px; font-weight: var(--az-fw-medium); color: var(--az-text); line-height: var(--az-lh-tight);
+  transition: background var(--az-duration-fast) var(--az-ease-standard), border-color var(--az-duration-fast) var(--az-ease-standard), box-shadow var(--az-duration-fast) var(--az-ease-standard), transform var(--az-duration-fast) var(--az-ease-standard);
+}
+.az-quiz-option:hover { border-color: var(--az-blue-tint); background: var(--az-blue-pale); box-shadow: var(--az-elevation-2); }
+.az-quiz-option:focus-visible { outline: 2.5px solid var(--az-blue); outline-offset: 2px; }
+.az-quiz-option.is-selected { border-color: var(--az-blue); background: var(--az-blue); color: #fff; box-shadow: var(--az-elevation-2); }
+.az-quiz-option.is-selected img { filter: brightness(0) invert(1); }
+.az-quiz-option:active { transform: scale(.97); }
+.az-quiz-option-icon { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.az-quiz-option-icon img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.az-quiz-actions { display: flex; flex-direction: column; align-items: center; gap: var(--az-space-3); }
+.az-quiz-next {
+  background: var(--az-blue); border: none; color: #fff; font-weight: var(--az-fw-bold); font-size: var(--az-fs-md);
+  padding: var(--az-space-3) var(--az-space-7); border-radius: var(--az-radius-full); cursor: pointer; font-family: inherit;
+  box-shadow: var(--az-elevation-2); transition: background var(--az-duration-fast) var(--az-ease-standard), opacity var(--az-duration-fast) var(--az-ease-standard);
+}
+.az-quiz-next:hover:not(:disabled) { background: var(--az-blue-dark); }
+.az-quiz-next:focus-visible { outline: 2.5px solid var(--az-blue-darker); outline-offset: 2px; }
+.az-quiz-next:disabled { opacity: .4; cursor: not-allowed; }
+.az-quiz-row { display: flex; align-items: center; gap: var(--az-space-4); }
+.az-quiz-back { background: none; border: none; color: var(--az-text-mid); font-size: var(--az-fs-xs); font-weight: var(--az-fw-semibold); cursor: pointer; font-family: inherit; }
+.az-quiz-back:hover { color: var(--az-text); }
+.az-quiz-skip { background: none; border: none; color: var(--az-text-mid); font-size: var(--az-fs-xs); font-weight: var(--az-fw-semibold); cursor: pointer; font-family: inherit; text-decoration: underline; }
+.az-quiz-skip:hover { color: var(--az-text); }
+.az-quiz-intro p { font-size: clamp(20px, 2.4vw, 28px); font-weight: var(--az-fw-medium); color: var(--az-text); line-height: var(--az-lh-snug); margin: 0 auto var(--az-space-6); max-width: 520px; }
+.az-quiz-start {
+  display: block; margin: 0 auto var(--az-space-3); background: var(--az-blue); border: none; color: #fff;
+  font-weight: var(--az-fw-bold); font-size: var(--az-fs-md); padding: var(--az-space-3) var(--az-space-7); border-radius: var(--az-radius-full); cursor: pointer;
+  font-family: inherit; box-shadow: var(--az-elevation-2); transition: background var(--az-duration-fast) var(--az-ease-standard);
+}
+.az-quiz-start:hover { background: var(--az-blue-dark); }
+.az-quiz-start:focus-visible { outline: 2.5px solid var(--az-blue-darker); outline-offset: 2px; }
+.az-quiz-reopen {
+  position: fixed; left: var(--az-space-6); bottom: var(--az-space-6); z-index: var(--az-z-sticky); display: inline-flex; align-items: center; gap: var(--az-space-2);
+  background: var(--az-navy); color: #fff; border: none; padding: var(--az-space-3) var(--az-space-5); border-radius: var(--az-radius-full);
+  font-weight: var(--az-fw-bold); font-size: var(--az-fs-sm); cursor: pointer; box-shadow: var(--az-elevation-3);
+  opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity var(--az-duration-base) var(--az-ease-standard), transform var(--az-duration-base) var(--az-ease-standard);
+  font-family: inherit;
+}
+/* Hidden while the modal itself is open — showing "personalize" mid-quiz is
+   redundant and was overlapping the modal's own CTA on short mobile screens. */
+.az-quiz-reopen.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.az-quiz-reopen:hover { background: var(--az-blue-darker); }
+.az-quiz-reopen svg { width: 16px; height: 16px; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 900px) {
+  .az-quiz-modal { padding: var(--az-space-6) var(--az-space-5); width: min(560px, 100%); }
+  .az-quiz-options { grid-template-columns: repeat(3, 1fr); gap: var(--az-space-3); }
+  .az-quiz-option { font-size: 12px; }
+  .az-quiz-option-icon { width: 32px; height: 32px; }
+  .az-quiz-intro p { font-size: clamp(19px, 3vw, 24px); margin-bottom: var(--az-space-5); }
+}
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+  .az-quiz-overlay { padding: var(--az-space-3); align-items: flex-end; }
+  .az-quiz-modal { padding: var(--az-space-5) var(--az-space-4) var(--az-space-4); border-radius: var(--az-radius-xl); max-height: 92vh; }
+  .az-quiz-close { top: var(--az-space-3); right: var(--az-space-3); width: 38px; height: 38px; }
+  .az-quiz-progress { margin-bottom: var(--az-space-4); }
+  .az-quiz-title { font-size: var(--az-fs-xl); margin-bottom: var(--az-space-2); }
+  .az-quiz-subtitle { font-size: var(--az-fs-sm); margin-bottom: var(--az-space-4); }
+  /* Icon-left / label-right cards instead of the desktop icon-on-top square —
+     8 stacked square cards on a small screen pushed "Siguiente" ~980px down,
+     off-screen below the fold. Rows are ~1/3 the height for the same 8 options. */
+  .az-quiz-options { grid-template-columns: 1fr 1fr; gap: var(--az-space-2); margin-bottom: var(--az-space-4); }
+  .az-quiz-option {
+    flex-direction: row; aspect-ratio: auto; justify-content: flex-start; text-align: left;
+    padding: var(--az-space-2) var(--az-space-3); border-radius: var(--az-radius-md); gap: var(--az-space-2);
+    font-size: 13px; min-height: 52px;
+  }
+  .az-quiz-option-icon { width: 28px; height: 28px; }
+  .az-quiz-next { width: 100%; padding: var(--az-space-4); font-size: var(--az-fs-md); }
+  .az-quiz-actions { gap: var(--az-space-3); }
+  .az-quiz-intro p { font-size: var(--az-fs-xl); margin-bottom: var(--az-space-6); }
+  .az-quiz-start { width: 100%; }
+  .az-quiz-row { flex-direction: column; gap: var(--az-space-2); }
+  .az-quiz-reopen span { display: none; }
+  .az-quiz-reopen { padding: var(--az-space-3); }
+}
+@media (max-width: 380px) {
+  .az-quiz-option { font-size: 12px; min-height: 48px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .az-quiz-overlay, .az-quiz-modal, .az-quiz-option, .az-quiz-reopen, .az-quiz-progress-track span i { transition: none !important; }
+}
 </style>
 </head>
 <body>
+
+<!-- React mounts the "onboarding quiz" here only — the product grid below
+     stays vanilla JS. See the script block near the end of the file. -->
+<div id="az-quiz-root"></div>
 
 <a class="az-skip" href="#main">Saltar al contenido</a>
 
@@ -561,6 +702,21 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
             <option>PetCare</option>
             <option>Natura</option>
             <option>CYM</option>
+            <option>GoPro</option>
+            <option>Logi</option>
+            <option>JBL</option>
+            <option>Gigabyte</option>
+            <option>Impact</option>
+            <option>Nutikausid</option>
+            <option>Misolo</option>
+            <option>Sesderma</option>
+            <option>Bioderma</option>
+            <option>Smerola</option>
+            <option>Milk</option>
+            <option>Ésika</option>
+            <option>The Green Brand</option>
+            <option>Nike</option>
+            <option>Loco Loco</option>
           </select>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
@@ -743,6 +899,276 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
         <h3>Cartera Negra CYM</h3>
         <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.6 <span class="az-reviews">(156)</span></div>
         <div class="az-price-row"><span class="az-price">$50.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller new" data-category="Tecnología" data-brand="GoPro" data-price="349" data-rating="4.8">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-9.jpg" alt="GoPro Hero 13 Black">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Tecnología, Cámaras</p>
+        <h3>GoPro Hero 13 Black</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.8 <span class="az-reviews">(211)</span></div>
+        <div class="az-price-row"><span class="az-price">$349.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller" data-category="Tecnología" data-brand="Logi" data-price="59.90" data-rating="4.6">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-10.jpg" alt="Combo Teclado y Mouse Logi Pop">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Tecnología, Accesorios</p>
+        <h3>Combo Teclado y Mouse Logi Pop</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.6 <span class="az-reviews">(389)</span></div>
+        <div class="az-price-row"><span class="az-price">$59.90</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="deal bestseller" data-category="Tecnología" data-brand="JBL" data-price="79" data-rating="4.7">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-11.jpg" alt="Audífonos JBL Tune 760BT">
+        <span class="az-deal-badge">-20%</span>
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Tecnología, Auriculares</p>
+        <h3>Audífonos JBL Tune 760BT</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.7 <span class="az-reviews">(523)</span></div>
+        <div class="az-price-row"><span class="az-price">$79.00</span><span class="az-price-old">$99.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="new bestseller" data-category="Tecnología" data-brand="Gigabyte" data-price="459" data-rating="4.9">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-12.jpg" alt="Tarjeta Gráfica Gigabyte RTX">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Tecnología, Componentes PC</p>
+        <h3>Tarjeta Gráfica Gigabyte RTX</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.9 <span class="az-reviews">(87)</span></div>
+        <div class="az-price-row"><span class="az-price">$459.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="peru" data-category="Mascotas" data-brand="Impact" data-price="18.50" data-rating="4.5">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-13.jpg" alt="Removedor de Manchas y Olores">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Mascotas, Limpieza</p>
+        <h3>Removedor de Manchas y Olores</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.5 <span class="az-reviews">(164)</span></div>
+        <div class="az-price-row"><span class="az-price">$18.50</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="new" data-category="Mascotas" data-brand="Impact" data-price="15" data-rating="4.4">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-14.jpg" alt="Spray Anti-Mordidas para Mascotas">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Mascotas, Cuidado</p>
+        <h3>Spray Anti-Mordidas para Mascotas</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.4 <span class="az-reviews">(98)</span></div>
+        <div class="az-price-row"><span class="az-price">$15.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller deal" data-category="Mascotas" data-brand="Nutikausid" data-price="89" data-rating="4.8">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-15.jpg" alt="Comedero Automático Inteligente">
+        <span class="az-deal-badge">-18%</span>
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Mascotas, Tecnología</p>
+        <h3>Comedero Automático Inteligente</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.8 <span class="az-reviews">(276)</span></div>
+        <div class="az-price-row"><span class="az-price">$89.00</span><span class="az-price-old">$109.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="new peru" data-category="Mascotas" data-brand="PetCare" data-price="24.90" data-rating="4.7">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-16.jpg" alt="Arnés Ajustable para Perro">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Mascotas, Accesorios</p>
+        <h3>Arnés Ajustable para Perro</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.7 <span class="az-reviews">(145)</span></div>
+        <div class="az-price-row"><span class="az-price">$24.90</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="peru" data-category="Mascotas" data-brand="Impact" data-price="12" data-rating="4.3">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-17.jpg" alt="Limpiador Multiusos Pet-Friendly">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Mascotas, Limpieza</p>
+        <h3>Limpiador Multiusos Pet-Friendly</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.3 <span class="az-reviews">(72)</span></div>
+        <div class="az-price-row"><span class="az-price">$12.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller" data-category="Skin care" data-brand="Misolo" data-price="22" data-rating="4.8">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-18.jpg" alt="Mascarilla Purificante Misolo">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Rostro</p>
+        <h3>Mascarilla Purificante Misolo</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.8 <span class="az-reviews">(198)</span></div>
+        <div class="az-price-row"><span class="az-price">$22.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller new" data-category="Skin care" data-brand="Sesderma" data-price="34" data-rating="4.9">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-19.jpg" alt="Crema Espumosa Salises">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Limpieza facial</p>
+        <h3>Crema Espumosa Salises</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.9 <span class="az-reviews">(267)</span></div>
+        <div class="az-price-row"><span class="az-price">$34.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="deal bestseller" data-category="Skin care" data-brand="Bioderma" data-price="39.90" data-rating="4.9">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-20.jpg" alt="Hydrabio Crème Hidratante">
+        <span class="az-deal-badge">-11%</span>
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Hidratación</p>
+        <h3>Hydrabio Crème Hidratante</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.9 <span class="az-reviews">(410)</span></div>
+        <div class="az-price-row"><span class="az-price">$39.90</span><span class="az-price-old">$45.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="new" data-category="Skin care" data-brand="Misolo" data-price="19" data-rating="4.6">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-21.jpg" alt="Limpiador Bifásico Misolo">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Desmaquillante</p>
+        <h3>Limpiador Bifásico Misolo</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.6 <span class="az-reviews">(132)</span></div>
+        <div class="az-price-row"><span class="az-price">$19.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="peru" data-category="Skin care" data-brand="Smerola" data-price="16.50" data-rating="4.5">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-22.jpg" alt="Hidratante Corporal Firmeza">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Corporal</p>
+        <h3>Hidratante Corporal Firmeza</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.5 <span class="az-reviews">(89)</span></div>
+        <div class="az-price-row"><span class="az-price">$16.50</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="new peru" data-category="Skin care" data-brand="Milk" data-price="28" data-rating="4.7">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-23.jpg" alt="Set Ultra Hidratante Milk">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Corporal</p>
+        <h3>Set Ultra Hidratante Milk</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.7 <span class="az-reviews">(156)</span></div>
+        <div class="az-price-row"><span class="az-price">$28.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller peru" data-category="Skin care" data-brand="Ésika" data-price="9.90" data-rating="4.4">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-24.jpg" alt="Labial Mate Rojo Clásico">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Maquillaje</p>
+        <h3>Labial Mate Rojo Clásico</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.4 <span class="az-reviews">(301)</span></div>
+        <div class="az-price-row"><span class="az-price">$9.90</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="new" data-category="Skin care" data-brand="The Green Brand" data-price="42" data-rating="4.6">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-25.jpg" alt="Aceite CBD 20% Relajante">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Skin care, Bienestar</p>
+        <h3>Aceite CBD 20% Relajante</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.6 <span class="az-reviews">(58)</span></div>
+        <div class="az-price-row"><span class="az-price">$42.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="bestseller" data-category="Deporte" data-brand="Nike" data-price="129" data-rating="4.9">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-26.jpg" alt="Nike Air Force 1 Aniversario">
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Deporte, Zapatillas</p>
+        <h3>Nike Air Force 1 Aniversario</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.9 <span class="az-reviews">(620)</span></div>
+        <div class="az-price-row"><span class="az-price">$129.00</span></div>
+        <button class="az-buy-btn">Agregar al carrito</button>
+      </div>
+    </article>
+
+    <article class="az-product-card az-reveal" data-tags="deal new" data-category="Deporte" data-brand="Loco Loco" data-price="189" data-rating="4.8">
+      <div class="az-product-img">
+        <img src="images/amazon-redesign/producto-27.jpg" alt="Tabla de Surf Loco Loco Beach">
+        <span class="az-deal-badge">-14%</span>
+        <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
+      </div>
+      <div class="az-product-info">
+        <p class="az-product-cat">Deporte, Acuático</p>
+        <h3>Tabla de Surf Loco Loco Beach</h3>
+        <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.8 <span class="az-reviews">(44)</span></div>
+        <div class="az-price-row"><span class="az-price">$189.00</span><span class="az-price-old">$220.00</span></div>
         <button class="az-buy-btn">Agregar al carrito</button>
       </div>
     </article>
@@ -1240,6 +1666,245 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
   });
 
+})();
+</script>
+
+<!-- ════════════════════════════════════════
+     ONBOARDING QUIZ — React (isolated to this widget only)
+     Mounts into #az-quiz-root (declared right after <body>). Talks to the
+     vanilla filter bar/tabs above purely through public DOM (element ids,
+     .value, .click()) — no shared state, no build step, no JSX (plain
+     React.createElement so no Babel is needed in the browser).
+════════════════════════════════════════ -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script>
+(function () {
+  var h = React.createElement;
+  var ICON_BASE = 'images/amazon-redesign/quiz-icons/';
+
+  var CLOSE_ICON = '<path d="M6 6l12 12M18 6L6 18"/>';
+  function CloseIcon() {
+    return h('svg', {
+      viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '1.8',
+      strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': 'true',
+      dangerouslySetInnerHTML: { __html: CLOSE_ICON }
+    });
+  }
+  function OptionIcon(file, label) {
+    return h('span', { className: 'az-quiz-option-icon' },
+      h('img', { src: ICON_BASE + file, alt: '', 'aria-hidden': 'true' })
+    );
+  }
+
+  /* Faithful port of the Figma "Preguntas para conocer al usuario" flow
+     (nodes 16:6410 intro, 16:6087 Q1, 16:5772 Q2, 16:5448 Q3, 16:5127 Q4) —
+     exact copy + 8 icon options per question. Only options tagged with
+     filterCategory / filterTag map onto the existing filter bar (via
+     applyAnswersToSite below); the rest (perfil, para quién compras) are
+     collected into the saved profile but don't drive a specific control —
+     the design asks them to build a fuller picture of the shopper, not to
+     mirror every field already in the filter bar. */
+  var QUESTIONS = [
+    {
+      key: 'perfil',
+      title: '¿Cuál es tu perfil principal?',
+      subtitle: 'Ayúdanos a entender un poco más sobre tu rutina para mostrarte productos y servicios útiles para tu día a día.',
+      options: [
+        { label: 'Estudiante', img: 'q1-estudiante.png' },
+        { label: 'Profesional', img: 'q1-profesional.png' },
+        { label: 'Freelancer', img: 'q1-freelancer.png' },
+        { label: 'Ama de casa', img: 'q1-amadecasa.png' },
+        { label: 'Emprendedor', img: 'q1-emprendedor.png' },
+        { label: 'Jubilado', img: 'q1-jubilado.png' },
+        { label: 'Padre o madre', img: 'q1-padres.png' },
+        { label: 'Otro', img: 'q1-otro.png' }
+      ]
+    },
+    {
+      key: 'intereses',
+      title: '¿Qué temas o categorías te interesan más?',
+      subtitle: 'Selecciona lo que más te gusta explorar. Así podemos organizar tu página con contenido que realmente te interesa.',
+      options: [
+        { label: 'Libros', img: 'q2-libros.png' },
+        { label: 'Moda', img: 'q2-moda.png' },
+        { label: 'Tecnología', img: 'q2-tecnologia.png', filterCategory: 'Tecnología' },
+        { label: 'Hogar', img: 'q2-hogar.png' },
+        { label: 'Cocina', img: 'q2-cocina.png' },
+        { label: 'Juguetes', img: 'q2-juguetes.png' },
+        { label: 'Deportes', img: 'q2-deportes.png', filterCategory: 'Deporte' },
+        { label: 'Belleza', img: 'q2-belleza.png', filterCategory: 'Skin care' }
+      ]
+    },
+    {
+      key: 'compras_para',
+      title: '¿Para quién sueles comprar más en Amazon?',
+      subtitle: 'Esto nos ayuda a mostrarte productos que se ajustan mejor a tu propósito al comprar.',
+      options: [
+        { label: 'Para mí', img: 'q3-paramipara.png' },
+        { label: 'Pareja', img: 'q3-pareja.png' },
+        { label: 'Familia', img: 'q3-familia.png' },
+        { label: 'Hijos', img: 'q3-hijos.png' },
+        { label: 'Amigos', img: 'q3-amigos.png' },
+        { label: 'Trabajo', img: 'q3-trabajo.png' },
+        { label: 'Regalos', img: 'q3-regalos.png' },
+        { label: 'Otro', img: 'q3-otro.png' }
+      ]
+    },
+    {
+      key: 'contenido',
+      title: '¿Qué tipo de contenido prefieres ver en tu inicio?',
+      subtitle: 'Queremos que tu página de inicio tenga lo que más te gusta. Elige el tipo de contenido que prefieres ver primero.',
+      options: [
+        { label: 'Recomendados', img: 'q4-recomendados.png' },
+        { label: 'Ofertas', img: 'q4-ofertas.png', filterTag: 'deal' },
+        { label: 'Novedades', img: 'q4-novedades.png', filterTag: 'new' },
+        { label: 'Tendencias', img: 'q4-tendencias.png' },
+        { label: 'Más vendidos', img: 'q4-masvendidos.png', filterTag: 'bestseller' },
+        { label: 'Para ti', img: 'q4-parati.png' },
+        { label: 'Inspiración', img: 'q4-inspiracion.png' },
+        { label: 'Todo mezclado', img: 'q4-todomezclado.png' }
+      ]
+    }
+  ];
+
+  function applyAnswersToSite(answers) {
+    var catEl = document.getElementById('fCategory');
+    if (catEl && answers.intereses && answers.intereses.filterCategory) {
+      catEl.value = answers.intereses.filterCategory;
+    }
+    if (answers.contenido && answers.contenido.filterTag) {
+      var tabBtn = document.querySelector('#azTabs button[data-tag="' + answers.contenido.filterTag + '"]');
+      if (tabBtn) tabBtn.click();
+    }
+    var applyBtn = document.getElementById('azFilterApply');
+    if (applyBtn) applyBtn.click();
+  }
+
+  function QuizApp() {
+    var openState = React.useState(false);
+    var open = openState[0], setOpen = openState[1];
+    var stageState = React.useState('intro'); // 'intro' | 0..QUESTIONS.length-1
+    var stage = stageState[0], setStage = stageState[1];
+    var answersState = React.useState({});
+    var answers = answersState[0], setAnswers = answersState[1];
+    var modalRef = React.useRef(null);
+
+    React.useEffect(function () {
+      if (localStorage.getItem('azQuizDone')) return;
+      var t = setTimeout(function () { setOpen(true); }, 1200);
+      return function () { clearTimeout(t); };
+    }, []);
+
+    React.useEffect(function () {
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (open && modalRef.current) modalRef.current.focus();
+    }, [open]);
+
+    React.useEffect(function () {
+      if (!open) return;
+      function onKey(e) { if (e.key === 'Escape') closeQuiz(true); }
+      window.addEventListener('keydown', onKey);
+      return function () { window.removeEventListener('keydown', onKey); };
+    });
+
+    function closeQuiz(markDone) {
+      setOpen(false);
+      if (markDone) localStorage.setItem('azQuizDone', '1');
+      setTimeout(function () { setStage('intro'); }, 250);
+    }
+
+    function selectOption(key, opt) {
+      var next = Object.assign({}, answers);
+      next[key] = opt;
+      setAnswers(next);
+    }
+
+    function goNext(qIndex) {
+      if (qIndex < QUESTIONS.length - 1) setStage(qIndex + 1);
+      else finishQuiz(answers);
+    }
+
+    function finishQuiz(finalAnswers) {
+      applyAnswersToSite(finalAnswers);
+      localStorage.setItem('azQuizDone', '1');
+      localStorage.setItem('azQuizProfile', JSON.stringify(finalAnswers));
+      closeQuiz(false);
+    }
+
+    function renderIntro() {
+      return h(React.Fragment, null,
+        h('div', { className: 'az-quiz-intro' },
+          h('p', null, 'Queremos conocerte para darte una mejor experiencia. Esto tomará menos de 1 minuto.')
+        ),
+        h('button', { className: 'az-quiz-start', type: 'button', onClick: function () { setStage(0); } }, 'Comenzar personalización'),
+        h('button', { className: 'az-quiz-skip', type: 'button', onClick: function () { closeQuiz(true); } }, 'Omitir y continuar sin personalización')
+      );
+    }
+
+    function renderQuestion(qIndex) {
+      var q = QUESTIONS[qIndex];
+      var selected = answers[q.key];
+      var isLast = qIndex === QUESTIONS.length - 1;
+      return h(React.Fragment, null,
+        h('div', { className: 'az-quiz-progress' },
+          h('div', { className: 'az-quiz-progress-track' },
+            QUESTIONS.map(function (_, i) {
+              return h('span', { key: i, className: i < qIndex ? 'is-done' : (i === qIndex ? 'is-current' : '') }, h('i'));
+            })
+          ),
+          h('span', { className: 'az-quiz-progress-label' }, (qIndex + 1) + ' de ' + QUESTIONS.length)
+        ),
+        h('h2', { className: 'az-quiz-title' }, q.title),
+        h('p', { className: 'az-quiz-subtitle' }, q.subtitle),
+        h('div', { className: 'az-quiz-options', role: 'radiogroup', 'aria-label': q.title },
+          q.options.map(function (opt) {
+            var isSelected = selected === opt;
+            return h('button', {
+              key: opt.label, type: 'button', role: 'radio', 'aria-checked': isSelected,
+              className: 'az-quiz-option' + (isSelected ? ' is-selected' : ''),
+              onClick: function () { selectOption(q.key, opt); }
+            }, OptionIcon(opt.img, opt.label), h('span', null, opt.label));
+          })
+        ),
+        h('div', { className: 'az-quiz-actions' },
+          h('button', {
+            className: 'az-quiz-next', type: 'button', disabled: !selected,
+            onClick: function () { goNext(qIndex); }
+          }, isLast ? 'Finalizar' : 'Siguiente'),
+          h('div', { className: 'az-quiz-row' },
+            qIndex > 0
+              ? h('button', { className: 'az-quiz-back', type: 'button', onClick: function () { setStage(qIndex - 1); } }, 'Atrás')
+              : null,
+            h('button', { className: 'az-quiz-skip', type: 'button', onClick: function () { closeQuiz(true); } }, 'Omitir y continuar sin personalización')
+          )
+        )
+      );
+    }
+
+    return h(React.Fragment, null,
+      /* Unmounted (not just faded/pointer-events:none) while the modal is
+         open — a CSS opacity transition here was intermittently getting
+         stuck visible, and showing "personalize" mid-quiz is redundant
+         anyway, so removing the node outright is the more robust fix. */
+      open ? null : h('button', {
+        type: 'button', className: 'az-quiz-reopen is-visible',
+        onClick: function () { setStage('intro'); setOpen(true); },
+        'aria-label': 'Personalizar recomendaciones'
+      }, h('span', null, 'Personalizar')),
+      h('div', {
+        className: 'az-quiz-overlay' + (open ? ' is-open' : ''),
+        onClick: function (e) { if (e.target === e.currentTarget) closeQuiz(true); }
+      },
+        h('div', { className: 'az-quiz-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Personaliza tu inicio', tabIndex: -1, ref: modalRef },
+          h('button', { className: 'az-quiz-close', type: 'button', 'aria-label': 'Cerrar', onClick: function () { closeQuiz(true); } }, CloseIcon()),
+          stage === 'intro' ? renderIntro() : renderQuestion(stage)
+        )
+      )
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('az-quiz-root')).render(h(QuizApp));
 })();
 </script>
 </body>

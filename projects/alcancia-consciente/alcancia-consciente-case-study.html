@@ -90,8 +90,17 @@ img { max-width: 100%; display: block; }
 .nav-back .label-full { }
 @media (max-width: 480px) { .nav-back .label-full { display: none; } }
 .nav-tabs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
-.nav-tab { font-size: 12px; font-weight: 600; letter-spacing: .01em; color: var(--ac-text-mid); text-decoration: none; padding: 7px 14px; border-radius: var(--ac-radius-full); border: 1px solid var(--ac-border-mid); background: #fff; transition: color .2s ease, border-color .2s ease, transform .2s ease; }
+.nav-tab { font-size: 12px; font-weight: 600; letter-spacing: .01em; color: var(--ac-text-mid); text-decoration: none; padding: 7px 14px; border-radius: var(--ac-radius-full); border: 1px solid var(--ac-border-mid); background: #fff; cursor: pointer; transition: color .2s ease, border-color .2s ease, transform .2s ease; }
 .nav-tab:hover { color: var(--ac-green-600); border-color: var(--ac-green-500); transform: translateY(-1px); }
+.nav-tab--external { display: inline-flex; align-items: center; gap: 5px; }
+.nav-dropdown { position: relative; }
+.nav-dropdown__trigger { display: inline-flex; align-items: center; gap: 6px; font-family: inherit; }
+.nav-dropdown__chevron { transition: transform .2s ease; flex-shrink: 0; }
+.nav-dropdown.is-open .nav-dropdown__chevron { transform: rotate(180deg); }
+.nav-dropdown__menu { position: absolute; top: calc(100% + 8px); right: 0; min-width: 200px; background: #fff; border: 1px solid var(--ac-border-mid); border-radius: var(--ac-radius-lg); box-shadow: var(--ac-shadow-3); padding: 8px; display: flex; flex-direction: column; gap: 2px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .18s ease, transform .18s ease, visibility .18s; z-index: 5; }
+.nav-dropdown.is-open .nav-dropdown__menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.nav-dropdown__menu a { font-size: 12.5px; font-weight: 600; color: var(--ac-text-mid); text-decoration: none; padding: 9px 12px; border-radius: var(--ac-radius-md); transition: background .15s ease, color .15s ease; }
+.nav-dropdown__menu a:hover { background: var(--ac-green-wash); color: var(--ac-green-700); }
 
 /* ── META STRIP ── */
 .meta-strip { max-width: 1200px; margin: 0 auto; padding: 92px 32px 0; display: grid; grid-template-columns: repeat(4, auto); gap: 24px; justify-content: space-between; }
@@ -124,8 +133,8 @@ img { max-width: 100%; display: block; }
 .device-stage { position: relative; z-index: 2; margin-top: 44px; width: 100%; display: flex; align-items: center; justify-content: center; }
 .frame-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
 .frame-slide.active { opacity: 1; }
-.hero-frames { position: relative; width: min(720px, 92vw); height: 578px; }
-.hero-frames .device-viewport { height: 540px; }
+.hero-frames { position: relative; width: min(720px, 92vw); height: 730px; }
+.hero-frames .device-viewport { height: 692px; }
 .device-dots { display: flex; gap: 6px; justify-content: center; margin-top: 20px; position: relative; z-index: 2; }
 .device-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--ac-border-mid); transition: background .3s ease, transform .3s ease; }
 .device-dots span.active { background: var(--ac-green-500); transform: scale(1.3); }
@@ -286,9 +295,39 @@ img { max-width: 100%; display: block; }
 .taskflow-step.risk { background: var(--ac-amber-wash); color: var(--ac-amber-600); border-color: rgba(217,140,15,.3); }
 .taskflow-arrow { color: var(--ac-border-mid); font-size: 13px; }
 
+/* ── SUMMARY (capa de lectura rápida) ── */
+.summary-section { padding-top: 56px; }
+.summary-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 40px; }
+.summary-card { border-radius: var(--ac-radius-lg); padding: 24px 26px; box-shadow: var(--ac-shadow-2); border: 1px solid var(--ac-border); background: #fff; }
+.summary-card--solution { background: var(--ac-green-wash); border-color: rgba(0,155,58,.22); }
+.summary-card__tag { display: inline-block; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--ac-text-light); margin-bottom: 10px; }
+.summary-card__tag--accent { color: var(--ac-green-700); }
+.summary-card p { font-size: 14.5px; line-height: 1.6; color: var(--ac-text-mid); }
+.summary-card--solution p { color: var(--ac-text); }
+
+.summary-before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+.ba-col { background: #fff; border: 1px solid var(--ac-border); border-radius: var(--ac-radius-lg); padding: 22px; box-shadow: var(--ac-shadow-2); display: flex; flex-direction: column; }
+.ba-col__title { font-family: var(--font-heading); font-weight: 700; font-size: 15px; margin-bottom: 14px; }
+.ba-col--before .ba-col__title { color: var(--ac-text-mid); }
+.ba-col--after .ba-col__title { color: var(--ac-green-700); }
+.ba-list { list-style: none; margin-bottom: 18px; }
+.ba-list li { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 600; padding: 7px 0; color: var(--ac-text-mid); }
+.ba-list li::before { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+.ba-list--before li::before { content: '✕'; background: var(--ac-amber-wash); color: var(--ac-amber-600); }
+.ba-list--after li::before { content: '✓'; background: var(--ac-green-wash); color: var(--ac-green-700); }
+.ba-shot { margin-top: auto; }
+.ba-shot .device-viewport.research { height: 300px; }
+
+.summary-cta { text-align: center; margin-top: 40px; }
+
+@media (max-width: 700px) {
+  .summary-compare { grid-template-columns: 1fr; }
+  .summary-before-after { grid-template-columns: 1fr; }
+}
+
 /* ── PROTOTIPO EN VIVO ── */
 .live-proto-frame { max-width: 960px; margin: 0 auto 8px; }
-.live-proto-frame .device-viewport.live { height: 900px; }
+.live-proto-frame .device-viewport.live { height: 760px; }
 
 .research-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 8px; }
 .research-gallery .device-viewport.research { height: 320px; }
@@ -318,7 +357,7 @@ img { max-width: 100%; display: block; }
   .research-gallery { grid-template-columns: 1fr 1fr; }
   .dt-steps { flex-wrap: wrap; }
   .dt-steps::before { display: none; }
-  .live-proto-frame .device-viewport.live { height: 640px; }
+  .live-proto-frame .device-viewport.live { height: 560px; }
 }
 @media (max-width: 700px) {
   .nav-inner { padding: 0 20px; }
@@ -326,8 +365,8 @@ img { max-width: 100%; display: block; }
   .cs-section { padding: 60px 20px; }
   .research-gallery { grid-template-columns: 1fr; }
   .persona-card { flex-direction: column; }
-  .hero-frames { height: 500px; }
-  .hero-frames .device-viewport { height: 462px; }
+  .hero-frames { height: 640px; }
+  .hero-frames .device-viewport { height: 602px; }
 }
 </style>
 </head>
@@ -347,14 +386,27 @@ img { max-width: 100%; display: block; }
       <span class="label-full">Volver al portafolio</span>
     </a>
     <div class="nav-tabs">
-      <a href="#problema" class="nav-tab">Problema</a>
-      <a href="#research" class="nav-tab">Research</a>
-      <a href="#hallazgos" class="nav-tab">Hallazgos</a>
-      <a href="#journey" class="nav-tab">Journey</a>
-      <a href="#oportunidades" class="nav-tab">Oportunidades</a>
-      <a href="#solucion" class="nav-tab">Solución</a>
-      <a href="#prototipo-en-vivo" class="nav-tab">Prototipo en vivo</a>
-      <a href="#reflexion" class="nav-tab">Reflexión</a>
+      <a href="#top" class="nav-tab">Resumen</a>
+      <a href="https://www.figma.com/design/CQk5F3kK48A1g9JNA8gaOl/Interbank--Case-Study?node-id=0-1&t=8kTicY9Qy61f5RCt-1" target="_blank" rel="noopener" class="nav-tab nav-tab--external">
+        Ver en Figma
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+      </a>
+      <div class="nav-dropdown" id="case-study-dropdown">
+        <button type="button" class="nav-tab nav-dropdown__trigger" aria-expanded="false" aria-haspopup="true">
+          Caso de estudio
+          <svg class="nav-dropdown__chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav-dropdown__menu">
+          <a href="#problema">Problema</a>
+          <a href="#research">Research</a>
+          <a href="#hallazgos">Hallazgos</a>
+          <a href="#journey">Journey</a>
+          <a href="#oportunidades">Oportunidades</a>
+          <a href="#solucion">Solución</a>
+          <a href="#prototipo-en-vivo">Prototipo en vivo</a>
+          <a href="#reflexion">Reflexión</a>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
@@ -367,7 +419,7 @@ img { max-width: 100%; display: block; }
 </div>
 
 <!-- ── HERO ── -->
-<section class="hero-section">
+<section class="hero-section" id="top">
   <div class="hero-content">
     <div class="hero-eyebrow"><span class="dot"></span>Caso de Estudio</div>
     <h1 class="hero-logo-wordmark">Alcancía <span>Consciente</span></h1>
@@ -388,13 +440,13 @@ img { max-width: 100%; display: block; }
       <div class="frame-slide active" data-slide="0">
         <div class="device-frame">
           <div class="device-chrome"><span></span><span></span><span></span><div class="addr">alcancia-consciente-app</div></div>
-          <div class="device-viewport"><iframe src="app/dist/index.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+          <div class="device-viewport"><iframe src="app/dist/index.html?hero=1" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
         </div>
       </div>
       <div class="frame-slide" data-slide="1">
         <div class="device-frame">
           <div class="device-chrome"><span></span><span></span><span></span><div class="addr">alcancia-consciente-app/#meta</div></div>
-          <div class="device-viewport"><iframe src="app/dist/index.html#meta" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
+          <div class="device-viewport"><iframe src="app/dist/index.html?hero=1#meta" loading="lazy" tabindex="-1" aria-hidden="true"></iframe></div>
         </div>
       </div>
     </div>
@@ -409,6 +461,65 @@ img { max-width: 100%; display: block; }
   </div>
   <div class="device-dots" id="hero-dots">
     <span class="active"></span><span></span>
+  </div>
+</section>
+
+<!-- ── RESUMEN DEL PROYECTO (capa de lectura rápida) ── -->
+<section class="cs-section summary-section" id="resumen">
+  <div class="reveal">
+    <p class="cs-eyebrow">Resumen del proyecto</p>
+    <h2 class="cs-h2">El conflicto y la propuesta, <em>en 30 segundos</em>.</h2>
+  </div>
+
+  <div class="summary-compare reveal">
+    <div class="summary-card summary-card--problem">
+      <span class="summary-card__tag">Problema</span>
+      <p>El retiro no tiene fricción real ni compromiso progresivo — la Alcancía es un saldo plano, con incentivos basados en sorteos inciertos.</p>
+    </div>
+    <div class="summary-card summary-card--solution">
+      <span class="summary-card__tag summary-card__tag--accent">Solución</span>
+      <p>Fricción contextual en el retiro + recompensas garantizadas por hitos, para que el dinero se quede más tiempo dentro de la meta.</p>
+    </div>
+  </div>
+
+  <div class="summary-before-after reveal">
+    <div class="ba-col ba-col--before">
+      <h3 class="ba-col__title">Antes</h3>
+      <ul class="ba-list ba-list--before">
+        <li>Retiro inmediato</li>
+        <li>Sin compromiso progresivo</li>
+        <li>Sorteos inciertos</li>
+        <li>Poco progreso visible</li>
+      </ul>
+      <div class="ba-shot">
+        <figure class="device-frame">
+          <div class="device-chrome"><span></span><span></span><span></span><div class="addr">Interbank · app real</div></div>
+          <div class="device-viewport research"><img src="images/Retiro-slider.jpg" alt="Slider real de Interbank: Ahorrar y Retirar son el mismo gesto, sin fricción ni distinción"></div>
+        </figure>
+      </div>
+    </div>
+    <div class="ba-col ba-col--after">
+      <h3 class="ba-col__title">Después</h3>
+      <ul class="ba-list ba-list--after">
+        <li>Fricción contextual</li>
+        <li>Hitos visibles</li>
+        <li>Recompensas garantizadas</li>
+        <li>Progreso constante</li>
+      </ul>
+      <div class="ba-shot">
+        <figure class="device-frame">
+          <div class="device-chrome"><span></span><span></span><span></span><div class="addr">alcancia-consciente-app</div></div>
+          <div class="device-viewport research"><img src="images/meta-despues.png" alt="Prototipo Alcancía Consciente: progreso visible, comparación de incentivos y sistema de hitos"></div>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-cta reveal">
+    <a href="#problema" class="closing-btn">
+      Ver caso de estudio completo
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 5l7 7-7 7M4 12h16"/></svg>
+    </a>
   </div>
 </section>
 
@@ -511,7 +622,7 @@ img { max-width: 100%; display: block; }
     </figure>
     <figure class="device-frame">
       <div class="device-chrome"><span></span><span></span><span></span><div class="addr">Interbank · app real</div></div>
-      <div class="device-viewport research"><img src="images/Retiro.jpg" alt="Bottom sheet de retiro genérico"></div>
+      <div class="device-viewport research"><img src="images/Retiro-real.jpg" alt="Aviso genérico al retirar, sin mencionar la meta"></div>
       <figcaption>La fricción real al retirar: genérica, sin mencionar la meta ni el monto faltante.</figcaption>
     </figure>
   </div>
@@ -764,6 +875,26 @@ img { max-width: 100%; display: block; }
   window.addEventListener('scroll', updateNavBg);
   window.addEventListener('resize', updateNavBg);
   updateNavBg();
+
+  const csDropdown = document.getElementById('case-study-dropdown');
+  const csDropdownTrigger = csDropdown.querySelector('.nav-dropdown__trigger');
+  csDropdownTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = csDropdown.classList.toggle('is-open');
+    csDropdownTrigger.setAttribute('aria-expanded', String(isOpen));
+  });
+  csDropdown.querySelectorAll('.nav-dropdown__menu a').forEach((a) => {
+    a.addEventListener('click', () => {
+      csDropdown.classList.remove('is-open');
+      csDropdownTrigger.setAttribute('aria-expanded', 'false');
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if (!csDropdown.contains(e.target)) {
+      csDropdown.classList.remove('is-open');
+      csDropdownTrigger.setAttribute('aria-expanded', 'false');
+    }
+  });
 
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {

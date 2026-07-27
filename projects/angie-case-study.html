@@ -68,6 +68,7 @@
   }
   .nav-tab:hover { color: var(--color-action); border-color: var(--coral); transform: translateY(-1px); }
   .nav-tab.active { color: var(--white); background: var(--coral); border-color: var(--coral); }
+  .nav-tab--external { display: inline-flex; align-items: center; gap: 5px; }
 
   /* ── CONTENT PANELS (case study content vs. embedded project page) ── */
   #panel-frame { position: fixed; inset: 0; z-index: 10; background: var(--bg); display: none; }
@@ -384,6 +385,23 @@
   }
   .closing-btn:hover { background: var(--color-action-hover); transform: scale(1.03); box-shadow: var(--shadow-md); }
 
+  /* ── RESUMEN (capa de lectura rápida) ── */
+  .summary-section { padding-top: 40px; }
+  .summary-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+  .summary-card { border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow-md); border: 1px solid var(--border); background: var(--white); }
+  .summary-card--solution { background: var(--green-light); border-color: rgba(90,158,47,.25); }
+  .summary-card__tag { display: inline-block; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--text-light); margin-bottom: 10px; }
+  .summary-card__tag--accent { color: var(--green-dark); }
+  .summary-card p { font-size: 14.5px; line-height: 1.6; color: var(--text-mid); }
+  .summary-card--solution p { color: var(--text); }
+  .summary-result { font-size: 15px; line-height: 1.7; color: var(--text-mid); max-width: 720px; }
+  .summary-result strong { color: var(--text); }
+  .summary-cta { text-align: center; margin-top: 36px; }
+
+  @media (max-width: 700px) {
+    .summary-compare { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 860px) {
     .meta-strip { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
     .usability-mid { grid-template-columns: 1fr; }
@@ -422,6 +440,10 @@
     </a>
     <div class="nav-tabs">
       <button type="button" class="nav-tab active" data-panel="case-study">Case Study</button>
+      <a href="https://www.figma.com/design/6cJLL6fl5IwvecC9PqyKcc/Nutrici%C3%B3n-Emp%C3%A1tica-%E2%80%94-Angie-Hamasaki-%C2%B7-UX-Case-Study?node-id=0-1&t=wUEacCkSJWTFTnXE-1" target="_blank" rel="noopener" class="nav-tab nav-tab--external">
+        Ver en Figma
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+      </a>
       <button type="button" class="nav-tab" data-src="angie-design-system.html">Design System</button>
       <button type="button" class="nav-tab" data-src="angie-brand-book.html">Brand Book</button>
       <button type="button" class="nav-tab" data-src="angie-website.html">Página Web</button>
@@ -483,6 +505,34 @@
   </div>
   <div class="device-dots" id="hero-dots">
     <span class="active"></span><span></span><span></span><span></span>
+  </div>
+</section>
+
+<!-- ── RESUMEN DEL PROYECTO (capa de lectura rápida) ── -->
+<section class="cs-section summary-section" id="resumen">
+  <div class="reveal">
+    <p class="cs-eyebrow">Resumen del proyecto</p>
+    <h2 class="cs-h2">El conflicto y la propuesta, <em>en 30 segundos</em>.</h2>
+  </div>
+
+  <div class="summary-compare reveal">
+    <div class="summary-card summary-card--problem">
+      <span class="summary-card__tag">Problema</span>
+      <p>Las pacientes potenciales llegaban por recomendación o redes sociales, pero no tenían dónde validar la especialidad, cercanía y experiencia de Angie antes de escribirle directamente.</p>
+    </div>
+    <div class="summary-card summary-card--solution">
+      <span class="summary-card__tag summary-card__tag--accent">Solución</span>
+      <p>Un sitio cálido y personal con secciones por etapa de vida, un elemento educativo interactivo (el plato saludable) y un flujo de agendamiento sin fricción.</p>
+    </div>
+  </div>
+
+  <p class="summary-result reveal"><strong>Resultado:</strong> una web que convierte la primera visita en la primera consulta — resolviendo dudas de especialidad y confianza con contenido educativo, antes de pedir una cita.</p>
+
+  <div class="summary-cta reveal">
+    <a href="#contexto" class="closing-btn">
+      Ver caso de estudio completo
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 5l7 7-7 7M4 12h16"/></svg>
+    </a>
   </div>
 </section>
 

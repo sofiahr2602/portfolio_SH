@@ -46,6 +46,7 @@
   .nav-tab { font-family: 'Rubik', sans-serif; cursor: pointer; appearance: none; font-size: 12.5px; font-weight: 600; letter-spacing: .01em; color: var(--az-text-mid); text-decoration: none; padding: 8px 16px; border-radius: var(--az-radius-full); border: 1px solid var(--az-gray-300); background: #fff; transition: color .2s ease, border-color .2s ease, transform .2s ease, background .2s ease; }
   .nav-tab:hover { color: var(--az-blue); border-color: var(--az-blue); transform: translateY(-1px); }
   .nav-tab.active { color: #fff; background: var(--az-blue); border-color: var(--az-blue); }
+  .nav-tab--external { display: inline-flex; align-items: center; gap: 5px; }
 
   /* ── CONTENT PANELS (case study content vs. embedded project page) ── */
   #panel-frame { position: fixed; inset: 0; z-index: 10; background: var(--az-bg-light); display: none; }
@@ -264,6 +265,38 @@
   .closing-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--az-blue); color: #fff; font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px 28px; border-radius: var(--az-radius-full); transition: background .2s ease, transform .2s ease, box-shadow .2s ease; }
   .closing-btn:hover { background: var(--az-blue-dark); transform: scale(1.03); box-shadow: var(--az-elevation-2); }
 
+  /* ── RESUMEN (capa de lectura rápida) ── */
+  .summary-section { padding-top: 40px; }
+  .summary-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 40px; }
+  .summary-card { border-radius: var(--az-radius-lg); padding: 24px 26px; box-shadow: var(--az-elevation-2); border: 1px solid var(--az-gray-200); background: #fff; }
+  .summary-card--solution { background: rgba(23,134,79,.07); border-color: rgba(23,134,79,.22); }
+  .summary-card__tag { display: inline-block; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: rgba(26,32,44,.45); margin-bottom: 10px; }
+  .summary-card__tag--accent { color: var(--az-success); }
+  .summary-card p { font-size: 14.5px; line-height: 1.6; color: var(--az-text-mid); }
+  .summary-card--solution p { color: var(--az-text); }
+
+  .summary-before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+  .ba-col { background: #fff; border: 1px solid var(--az-gray-200); border-radius: var(--az-radius-lg); padding: 22px; box-shadow: var(--az-elevation-2); display: flex; flex-direction: column; }
+  .ba-col__title { font-family: var(--font-heading); font-weight: 700; font-size: 15px; margin-bottom: 14px; }
+  .ba-col--before .ba-col__title { color: var(--az-text-mid); }
+  .ba-col--after .ba-col__title { color: var(--az-success); }
+  .ba-list { list-style: none; margin-bottom: 18px; }
+  .ba-list li { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 600; padding: 7px 0; color: var(--az-text-mid); }
+  .ba-list li::before { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+  .ba-list--before li::before { content: '✕'; background: rgba(207,47,52,.10); color: var(--az-deal); }
+  .ba-list--after li::before { content: '✓'; background: rgba(23,134,79,.10); color: var(--az-success); }
+  .ba-shot { margin-top: auto; }
+  .ba-shot .device-frame { width: 100%; }
+  .ba-shot .device-viewport { aspect-ratio: auto; height: 200px; }
+  .ba-shot .device-viewport img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+
+  .summary-cta { text-align: center; margin-top: 40px; }
+
+  @media (max-width: 700px) {
+    .summary-compare { grid-template-columns: 1fr; }
+    .summary-before-after { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 860px) {
     .meta-strip { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
     .usability-mid { grid-template-columns: 1fr; }
@@ -300,6 +333,10 @@
     </a>
     <div class="nav-tabs">
       <button type="button" class="nav-tab active" data-panel="case-study">Case Study</button>
+      <a href="https://www.figma.com/design/Ujnp8gP3xDAswg7WquxEDz/Amazon-Re-desing?node-id=20-2035&t=5yqicYR42q7WKxzF-1" target="_blank" rel="noopener" class="nav-tab nav-tab--external">
+        Ver en Figma
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+      </a>
       <button type="button" class="nav-tab" data-src="amazon-redesign-design-system.html">Design System</button>
       <button type="button" class="nav-tab" data-src="amazon-redesign-brand-book.html">Brand Book</button>
       <button type="button" class="nav-tab" data-src="amazon-redesign-website.html">Página Web</button>
@@ -357,6 +394,65 @@
   </div>
   <div class="device-dots" id="hero-dots">
     <span class="active"></span><span></span>
+  </div>
+</section>
+
+<!-- ── RESUMEN DEL PROYECTO (capa de lectura rápida) ── -->
+<section class="cs-section summary-section" id="resumen">
+  <div class="reveal">
+    <p class="cs-eyebrow">Resumen del proyecto</p>
+    <h2 class="cs-h2">El conflicto y la propuesta, <em>en 30 segundos</em>.</h2>
+  </div>
+
+  <div class="summary-compare reveal">
+    <div class="summary-card summary-card--problem">
+      <span class="summary-card__tag">Problema</span>
+      <p>El home original acumula banners, carruseles y promociones compitiendo por atención, sin ninguna capa de personalización real para quien llega por primera vez.</p>
+    </div>
+    <div class="summary-card summary-card--solution">
+      <span class="summary-card__tag summary-card__tag--accent">Solución</span>
+      <p>Un home simplificado en paleta y tipografía, con un quiz de personalización de 4 preguntas y una barra de filtros clara y flotante sobre el hero.</p>
+    </div>
+  </div>
+
+  <div class="summary-before-after reveal">
+    <div class="ba-col ba-col--before">
+      <h3 class="ba-col__title">Antes</h3>
+      <ul class="ba-list ba-list--before">
+        <li>Docenas de banners y carruseles</li>
+        <li>Catálogo genérico para todos</li>
+        <li>Filtros escondidos entre el ruido</li>
+        <li>Cero personalización</li>
+      </ul>
+      <div class="ba-shot">
+        <figure class="device-frame">
+          <div class="device-chrome"><span></span><span></span><span></span><div class="addr">amazon.com · original</div></div>
+          <div class="device-viewport"><img src="images/amazon-redesign/Home original.png" alt="Home real de Amazon: decenas de carruseles y banners compitiendo por atención"></div>
+        </figure>
+      </div>
+    </div>
+    <div class="ba-col ba-col--after">
+      <h3 class="ba-col__title">Después</h3>
+      <ul class="ba-list ba-list--after">
+        <li>Un solo hero, jerarquía clara</li>
+        <li>Quiz de 4 preguntas personaliza el inicio</li>
+        <li>Filtros visibles y accesibles</li>
+        <li>Recomendaciones específicas por perfil</li>
+      </ul>
+      <div class="ba-shot">
+        <figure class="device-frame">
+          <div class="device-chrome"><span></span><span></span><span></span><div class="addr">amazon-redesign.com</div></div>
+          <div class="device-viewport"><img src="images/amazon-redesign/despues-home.png" alt="Redesign de Amazon: hero único, filtros claros sobre el hero y quiz de personalización"></div>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-cta reveal">
+    <a href="#contexto" class="closing-btn">
+      Ver caso de estudio completo
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 5l7 7-7 7M4 12h16"/></svg>
+    </a>
   </div>
 </section>
 

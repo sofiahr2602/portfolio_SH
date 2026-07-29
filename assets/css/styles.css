@@ -572,8 +572,10 @@ body { font-family: 'Inter', sans-serif; }
   /* Narrower than before on purpose — the wide 2-column spread read as
      pinned-left / edge-to-edge instead of one centered composition.
      Keeping this tighter pulls text + avatar into a single grouped unit
-     that sits centered in the viewport, closer to the reference. */
-  max-width: 1060px;
+     that sits centered in the viewport, closer to the reference. Widened
+     from 1060 to 1220 to give the (bigger) statement enough room without
+     wrapping — still far short of the original 1360 edge-to-edge spread. */
+  max-width: 1220px;
   margin: 0 auto;
 }
 .hero-grid {
@@ -584,10 +586,10 @@ body { font-family: 'Inter', sans-serif; }
   /* Tightened — text and avatar were reading as two separate blocks
      instead of one scene. Less gap + avatar hugging the near edge of its
      column (see .hero-avatar-col) closes most of that dead space. */
-  gap: clamp(0.75rem, 1.4vw, 1rem);
+  gap: clamp(0.5rem, 1vw, 0.7rem);
 }
 @media (min-width: 900px) {
-  .hero-grid { grid-template-columns: 1.3fr 0.7fr; }
+  .hero-grid { grid-template-columns: 1.42fr 0.58fr; }
 }
 
 .hero-text-col { text-align: left; }
@@ -601,15 +603,15 @@ body { font-family: 'Inter', sans-serif; }
 }
 .hero-statement {
   font-weight: 600;
-  /* Sized to fit its 3 hard-broken lines within the (now narrower,
-     more centered) text column without forcing an extra wrap — a
-     bigger cap here looked good in isolation but overflowed the column
-     and silently wrapped into 5-6 lines, breaking the fold-fit. */
-  font-size: clamp(30px, 4.3vw, 66px);
-  line-height: 1.24;
+  /* Sized to fit its 3 hard-broken lines within the text column without
+     forcing an extra wrap (tested empirically — see the gap/ratio/avatar
+     numbers below, all tuned together as one system). Pushed as large as
+     that constraint allows. */
+  font-size: clamp(32px, 5.6vw, 82px);
+  line-height: 1.2;
   letter-spacing: -0.01em;
   color: var(--ink-soft);
-  margin: 0 0 1.75rem;
+  margin: 0 0 1.5rem;
 }
 .hero-statement .serif-italic { color: var(--lilac-dark); }
 
@@ -649,7 +651,7 @@ body { font-family: 'Inter', sans-serif; }
      share on very wide screens, which forces the grid to steal width
      from the text column and silently wraps the headline onto an extra
      line (found by testing at 1872px). */
-  width: clamp(220px, 24vw, 360px);
+  width: clamp(220px, 22vw, 340px);
   aspect-ratio: 864 / 1238;
   border: none;
   background: none;

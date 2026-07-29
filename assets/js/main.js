@@ -211,10 +211,24 @@
     }
     function kick() { if (!running) { running = true; requestAnimationFrame(tick); } }
 
+    // While the cursor is actively moving, the waves ripple harder
+    // (shorter animation-duration, see .is-warping in styles.css) on top
+    // of their constant baseline flow — released back to normal speed
+    // shortly after the cursor stops.
+    let warpTimer;
+    function warp() {
+      meshLayers.forEach(layer => layer.classList.add('is-warping'));
+      clearTimeout(warpTimer);
+      warpTimer = setTimeout(() => {
+        meshLayers.forEach(layer => layer.classList.remove('is-warping'));
+      }, 500);
+    }
+
     heroSection.addEventListener('mousemove', e => {
       const r = heroSection.getBoundingClientRect();
       targetX = ((e.clientX - r.left) / r.width  - 0.5) * TRAVEL;
       targetY = ((e.clientY - r.top)  / r.height - 0.5) * TRAVEL;
+      warp();
       kick();
     }, { passive: true });
 

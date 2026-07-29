@@ -53,48 +53,40 @@
 </head>
 <body class="bg-white text-gray-900">
 
-<!-- Toast -->
-<div id="toast" role="alert" aria-live="polite">
-  <span class="toast-dot"></span>
-  <span id="toast-msg">Message sent!</span>
-</div>
-
-
 <!-- ════════════════════════════════════════
-     STICKY SITE NAV (hidden at top, slides in on scroll)
+     FLOATING NAV — single glass pill, present over every section.
+     Hides on scroll-down, reappears on scroll-up (see main.js).
 ════════════════════════════════════════ -->
-<header id="site-nav" class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md">
-  <div class="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
-    <a href="#hero" class="text-gray-900 font-bold text-lg tracking-widest uppercase select-none">
+<header id="floating-nav">
+  <div class="nav-shell flex items-center gap-1 sm:gap-2 pl-6 pr-2.5 sm:pr-3 py-2.5">
+    <a href="#hero" class="nav-wordmark pr-5">
       Sofia<span style="color:var(--lilac)">.</span>
     </a>
-    <nav class="hidden md:flex items-center gap-8">
-      <a href="#projects"     class="site-nav-link">Projects</a>
-      <a href="#services"     class="site-nav-link">Services</a>
-      <a href="#about"        class="site-nav-link">About</a>
-      <a href="#contact"      class="site-nav-link">Contact</a>
-      <div class="flex items-center gap-2 pl-1">
-        <a href="https://www.linkedin.com/in/sofia-hualpa/" target="_blank" rel="noopener" class="social-icon social-icon-sm" aria-label="LinkedIn">
-          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/sof_ia.ro/" target="_blank" rel="noopener" class="social-icon social-icon-sm" aria-label="Instagram">
-          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </a>
-      </div>
-      <a href="#contact" class="btn-lilac px-5 py-2 rounded-full text-sm font-semibold inline-block">Hire me</a>
+    <nav class="hidden md:flex items-center gap-7 px-2">
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#about"    class="nav-link">About</a>
+      <a href="#contact"  class="nav-link">Contact</a>
     </nav>
-    <button id="site-menu-toggle" aria-label="Open menu"
-      class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200">
-      <svg id="site-ham"   class="w-5 h-5 text-gray-700"        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      <svg id="site-close" class="w-5 h-5 text-gray-700 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    <div class="hidden md:flex items-center gap-2 pl-3 ml-2 nav-divider">
+      <a href="https://www.linkedin.com/in/sofia-hualpa/" target="_blank" rel="noopener" class="social-icon social-icon-sm" aria-label="LinkedIn">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/sof_ia.ro/" target="_blank" rel="noopener" class="social-icon social-icon-sm" aria-label="Instagram">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+    </div>
+    <a href="#contact" class="hidden md:inline-block btn-lilac px-6 py-2.5 rounded-full text-sm font-semibold ml-3">Hire me</a>
+    <button id="nav-menu-toggle" aria-label="Open menu"
+      class="md:hidden w-10 h-10 flex items-center justify-center rounded-full">
+      <svg id="nav-ham"   class="w-5 h-5 text-gray-800"        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <svg id="nav-close" class="w-5 h-5 text-gray-800 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
     </button>
   </div>
-  <div id="site-mobile-menu" class="mobile-menu md:hidden absolute top-16 left-0 w-full bg-white shadow-lg py-4 opacity-0 invisible -translate-y-2">
+  <div id="nav-mobile-menu" class="mobile-menu glass md:hidden absolute top-full mt-2 left-1/2 -translate-x-1/2 w-60 rounded-3xl py-3 opacity-0 invisible -translate-y-2">
     <a href="#projects" class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">Projects</a>
-    <a href="#services"  class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">Services</a>
-    <a href="#about"     class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">About</a>
-    <a href="#contact"   class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">Contact</a>
-    <div class="px-6 pt-3">
+    <a href="#about"    class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">About</a>
+    <a href="#contact"  class="block px-6 py-3 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors">Contact</a>
+    <div class="px-5 pt-2">
       <a href="#contact" class="btn-lilac block text-center px-5 py-2.5 rounded-full text-sm font-semibold">Hire me</a>
       <div class="flex items-center justify-center gap-3 mt-4">
         <a href="https://www.linkedin.com/in/sofia-hualpa/" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn">
@@ -113,96 +105,59 @@
      HERO
 ════════════════════════════════════════ -->
 <section id="hero">
-  <div class="stagger-item delay-0 relative w-full min-h-screen overflow-hidden bg-black">
+  <div class="hero-canvas stagger-item delay-0">
 
-    <div id="hero-glow"></div>
+    <!-- Interactive gradient mesh — NOT discrete blobs. Each layer is a
+         full-bleed multi-gradient wash; the layers slide across each other
+         at different rates/directions (main.js), so the colour field
+         stretches and re-blends instead of moving as separate circles. -->
+    <div class="hero-mesh" aria-hidden="true">
+      <span class="mesh-layer mesh-a" data-mesh></span>
+      <span class="mesh-layer mesh-b" data-mesh></span>
+      <span class="mesh-layer mesh-c" data-mesh></span>
+      <span class="mesh-cursor" id="mesh-cursor"></span>
+    </div>
 
-    <!-- Video bg — hidden on error so a load failure falls back to the bg-black + gradient below instead of a broken video frame -->
-    <video autoplay loop muted playsinline
-      class="absolute inset-0 w-full h-full object-cover opacity-75"
-      src="assets/videos/video-hero-background.mp4"
-      poster="assets/videos/hero-poster.jpg"
-      onerror="this.style.display='none'">
-    </video>
-    <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/65"></div>
+    <!-- Text left, avatar right — both large, co-equal columns. -->
+    <div class="hero-inner">
+      <div class="hero-grid">
 
-    <!-- Hero nav (only visible in hero) -->
-    <nav class="stagger-item delay-1 absolute top-0 left-0 w-full px-6 md:px-10 py-6 flex justify-between items-center z-20">
-      <span class="text-white text-xl font-bold tracking-[0.2em] uppercase select-none">
-        Sofia<span style="color:var(--lilac-light)">.</span>
-      </span>
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#projects"  class="nav-link">Projects</a>
-        <a href="#services"  class="nav-link">Services</a>
-        <a href="#about"     class="nav-link">About</a>
-        <a href="#contact"   class="nav-link">Contact</a>
-        <div class="flex items-center gap-2 pl-1">
-          <a href="https://www.linkedin.com/in/sofia-hualpa/" target="_blank" rel="noopener" class="social-icon social-icon-sm social-icon-nav-light" aria-label="LinkedIn">
-            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-          <a href="https://www.instagram.com/sof_ia.ro/" target="_blank" rel="noopener" class="social-icon social-icon-sm social-icon-nav-light" aria-label="Instagram">
-            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          </a>
-        </div>
-        <a href="#contact"
-          class="ml-2 px-5 py-2 rounded-full text-sm font-semibold border border-white/60 text-white transition-colors hover:bg-white/15"
-          style="letter-spacing:0.02em;">Hire me</a>
-      </div>
-      <!-- mobile btn same as site-nav but white version -->
-      <div class="relative md:hidden">
-        <button id="hero-menu-toggle" aria-label="Open menu"
-          class="w-11 h-11 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/25 rounded-xl transition-colors">
-          <svg id="hero-ham"   class="w-5 h-5 text-white"        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-          <svg id="hero-close" class="w-5 h-5 text-white hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-        <div id="hero-mobile-menu"
-          class="mobile-menu absolute top-14 right-0 w-56 bg-white rounded-2xl shadow-2xl py-2 opacity-0 invisible scale-95 -translate-y-2">
-          <a href="#projects" class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50">Projects</a>
-          <a href="#services"  class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50">Services</a>
-          <a href="#about"     class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50">About</a>
-          <a href="#contact"   class="block px-5 py-3 text-sm font-medium text-gray-800 hover:bg-gray-50">Contact</a>
-          <div class="mx-4 mt-2 pt-2 border-t border-gray-100">
-            <a href="#contact" class="btn-lilac block text-center px-5 py-2.5 rounded-full text-sm font-semibold">Hire me</a>
-            <div class="flex items-center justify-center gap-3 mt-4">
-              <a href="https://www.linkedin.com/in/sofia-hualpa/" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-              </a>
-              <a href="https://www.instagram.com/sof_ia.ro/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-              </a>
-            </div>
+        <div class="hero-text-col">
+          <p class="hero-kicker stagger-item delay-1">Hi, I'm Sofia.</p>
+
+          <h1 class="hero-statement stagger-item delay-2">
+            I design experiences,<br>
+            stories and systems<br>
+            for <span class="serif-italic">curious humans.</span>
+          </h1>
+
+          <p class="hero-tags stagger-item delay-3">UX/UI · Motion · Brand · Creative Systems</p>
+
+          <div class="hero-ctas stagger-item delay-4">
+            <a href="#projects" class="btn-lilac inline-flex items-center gap-2 font-semibold text-[15px] px-8 py-4 rounded-full">
+              View my work
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+            <a href="#contact" class="btn-outline inline-flex items-center gap-2 font-semibold text-[15px] px-8 py-4 rounded-full">
+              Get in touch
+            </a>
           </div>
         </div>
-      </div>
-    </nav>
 
-    <!-- Hero content -->
-    <div class="hero-content relative z-10 min-h-screen min-h-[100svh] flex flex-col items-center justify-end pt-28 pb-28 md:pt-0 md:pb-32 text-center px-6">
-      <div class="stagger-item delay-1 mb-4 inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white/75 text-xs font-medium tracking-widest uppercase">
-        <span class="section-dot" style="background:var(--lilac-light)"></span>
-        Multidisciplinary Designer
-      </div>
-      <h1 class="stagger-item delay-2 text-[50px] md:text-[74px] leading-[1.04] font-semibold text-white mb-5 tracking-[-0.025em]">
-        Design that<br><span class="serif-italic">moves</span> people
-      </h1>
-      <p class="stagger-item delay-3 text-white/75 text-lg md:text-xl leading-relaxed mb-10 max-w-md">
-        UX UI · Front-End · Motion · Brand · Social Media
-      </p>
-      <div class="stagger-item delay-4 flex flex-col sm:flex-row gap-4 items-center">
-        <a href="#projects" class="btn-lilac inline-flex items-center gap-2 font-semibold text-[15px] px-8 py-4 rounded-full">
-          View my work
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-        <a href="#contact" class="btn-ghost-white inline-flex items-center gap-2 font-semibold text-[15px] px-8 py-4 rounded-full">
-          Get in touch
-        </a>
+        <div class="hero-avatar-col stagger-item delay-2">
+          <button type="button" class="hero-avatar" id="hero-avatar" aria-label="Say hi to Sofia's character">
+            <img id="avatar-frame" src="assets/images/avatar/avatar-sentada-laptop-paz.svg"
+                 alt="Sofia, personaje pixel art" width="864" height="1238" fetchpriority="high" decoding="async">
+          </button>
+        </div>
+
       </div>
     </div>
 
     <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 stagger-item delay-4">
-      <span class="text-white/35 text-[10px] tracking-[0.2em] uppercase">Scroll</span>
-      <div class="w-px h-10 bg-gradient-to-b from-white/30 to-transparent"></div>
+    <div class="hero-scroll stagger-item delay-4">
+      <span class="hero-scroll-label">Scroll</span>
+      <div class="hero-scroll-line"></div>
     </div>
   </div>
 </section>
@@ -219,12 +174,129 @@
 
 
 <!-- ════════════════════════════════════════
+     TOOLKIT — interactive "piñata" reveal
+     Replaces a traditional tools/skills list. Click (or tap/Enter) the
+     blob to burst it open — 12 tool badges + candy pieces scatter out
+     with a spring-easing settle (see toolkit.js). "Break again" resets.
+════════════════════════════════════════ -->
+<section id="toolkit" class="py-24 px-6 md:px-10 bg-white overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="reveal mb-4 text-center">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color:var(--lilac)">
+        <span class="lilac-line"></span>My Toolkit
+      </p>
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
+        Not just software.<br><span class="serif-italic">My creative playground.</span>
+      </h2>
+    </div>
+
+    <div id="toolkit-stage" class="toolkit-stage reveal">
+
+      <!-- Sofia's avatar — a witness/participant in the burst, not a
+           bystander. One <img>, src swapped between two existing poses
+           (see toolkit.js) — never more than one avatar instance. -->
+      <div class="toolkit-avatar" id="toolkit-avatar">
+        <div class="toolkit-speech-bubble" id="toolkit-speech-bubble" aria-hidden="true">CHAAA!</div>
+        <img id="toolkit-avatar-frame" src="assets/images/avatar/avatar-base-sin-sonrisa.svg"
+             alt="Sofia reacting to her toolkit" width="864" height="1238" loading="lazy" decoding="async">
+      </div>
+
+      <div class="pinata-zone" id="pinata-zone">
+        <button type="button" id="pinata-blob" class="pinata-blob" aria-label="Break open the toolkit and reveal the tools I use">
+          <span class="pinata-glow" aria-hidden="true"></span>
+          <span class="pinata-blob-inner"></span>
+          <span class="pinata-hint">Click me ✦</span>
+        </button>
+
+      <!-- Tool badges (12) — glass capsule, monogram swatch + name, tooltip
+           on hover/focus. Positions are hand-authored via --dx/--dy/--rot
+           (final resting offset from center) and --delay (burst stagger). -->
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-260px;--dy:-120px;--rot:-8deg;--delay:0.00s">
+        <span class="tool-swatch" style="background:#A259FF">Fi</span>
+        <span class="tool-name">Figma</span>
+        <span class="tool-tooltip" role="tooltip">UI Design · Design Systems · Prototyping</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-180px;--dy:-190px;--rot:6deg;--delay:0.035s">
+        <span class="tool-swatch" style="background:#FFC700">FJ</span>
+        <span class="tool-name">FigJam</span>
+        <span class="tool-tooltip" role="tooltip">Workshops · Ideation · Visual Collaboration</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-60px;--dy:-230px;--rot:-4deg;--delay:0.07s">
+        <span class="tool-swatch" style="background:#FF9A00">Ai</span>
+        <span class="tool-name">Illustrator</span>
+        <span class="tool-tooltip" role="tooltip">Vector Art · Logos · Iconography</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:70px;--dy:-225px;--rot:5deg;--delay:0.105s">
+        <span class="tool-swatch" style="background:#31A8FF">Ps</span>
+        <span class="tool-name">Photoshop</span>
+        <span class="tool-tooltip" role="tooltip">Photo Editing · Compositing · Retouching</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:190px;--dy:-175px;--rot:-6deg;--delay:0.14s">
+        <span class="tool-swatch" style="background:#9999FF">Ae</span>
+        <span class="tool-name">After Effects</span>
+        <span class="tool-tooltip" role="tooltip">Motion · Animation · Storytelling</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:270px;--dy:-90px;--rot:8deg;--delay:0.175s">
+        <span class="tool-swatch" style="background:#7C4DFF">Pr</span>
+        <span class="tool-name">Premiere Pro</span>
+        <span class="tool-tooltip" role="tooltip">Video Editing · Pacing · Post-Production</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:290px;--dy:40px;--rot:-5deg;--delay:0.21s">
+        <span class="tool-swatch" style="background:#EA7600">Bl</span>
+        <span class="tool-name">Blender</span>
+        <span class="tool-tooltip" role="tooltip">3D · Visual Experimentation</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:230px;--dy:150px;--rot:7deg;--delay:0.245s">
+        <span class="tool-swatch" style="background:#00B4AA">Rv</span>
+        <span class="tool-name">Rive</span>
+        <span class="tool-tooltip" role="tooltip">Interactive Animation · Micro-interactions</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:110px;--dy:210px;--rot:-6deg;--delay:0.28s">
+        <span class="tool-swatch" style="background:#0055FF">Fr</span>
+        <span class="tool-name">Framer</span>
+        <span class="tool-tooltip" role="tooltip">Interactive Prototypes · Web Motion</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-30px;--dy:230px;--rot:4deg;--delay:0.315s">
+        <span class="tool-swatch" style="background:#007ACC">Vs</span>
+        <span class="tool-name">VS Code</span>
+        <span class="tool-tooltip" role="tooltip">Front-End Craft · Building Ideas</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-160px;--dy:195px;--rot:-7deg;--delay:0.35s">
+        <span class="tool-swatch" style="background:#DA7756">Cl</span>
+        <span class="tool-name">Claude</span>
+        <span class="tool-tooltip" role="tooltip">AI-assisted workflows · Creative exploration</span>
+      </button>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-270px;--dy:90px;--rot:6deg;--delay:0.385s">
+        <span class="tool-swatch" style="background:#10A37F">Ch</span>
+        <span class="tool-name">ChatGPT</span>
+        <span class="tool-tooltip" role="tooltip">Ideation · Research · Rapid Iteration</span>
+      </button>
+
+      <!-- Candy pieces (5) — decorative filler, no tooltip -->
+      <span class="toolkit-particle candy-piece candy-1" style="--dx:-140px;--dy:-40px;--rot:15deg;--delay:0.42s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-2" style="--dx:140px;--dy:-30px;--rot:-12deg;--delay:0.455s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-3" style="--dx:0px;--dy:140px;--rot:10deg;--delay:0.49s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-4" style="--dx:-90px;--dy:60px;--rot:-18deg;--delay:0.525s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-5" style="--dx:100px;--dy:90px;--rot:20deg;--delay:0.56s" aria-hidden="true"></span>
+
+      </div><!-- /pinata-zone -->
+    </div>
+
+    <div class="text-center mt-6">
+      <button type="button" id="toolkit-replay" class="toolkit-replay-btn">Break again ✦</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
      PROJECTS
 ════════════════════════════════════════ -->
 <section id="projects" class="py-24 px-6 md:px-10 bg-white">
   <div class="max-w-7xl mx-auto">
 
-    <div class="reveal mb-14">
+    <div class="reveal mb-12">
       <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color:var(--lilac)">
         <span class="lilac-line"></span>Selected Work
       </p>
@@ -233,35 +305,36 @@
           Projects that<br><span class="serif-italic">speak for themselves</span>
         </h2>
         <p class="text-gray-400 text-sm max-w-xs md:text-right leading-relaxed">
-          Click any project to open it — links to Behance, live sites, or case study pages.
+          Four favorites by default — browse a category on the left to see more.
         </p>
       </div>
     </div>
 
-    <!-- Filter bar -->
-    <div class="reveal mb-10 flex flex-wrap gap-2" id="filter-bar" role="group" aria-label="Filter projects by category">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="uxdev">UX/UI + Frontend</button>
-      <button class="filter-btn" data-filter="graphic">Graphic</button>
-      <button class="filter-btn" data-filter="social">Social Media</button>
-      <button class="filter-btn" data-filter="video">Video</button>
-      <button class="filter-btn" data-filter="motion">Motion</button>
-    </div>
+    <div class="projects-layout">
+      <!-- Category sidebar — hover previews on desktop, click/tap locks it in -->
+      <div class="reveal category-sidebar" id="filter-bar" role="group" aria-label="Filter projects by category">
+        <button class="category-item active" data-filter="all">All</button>
+        <button class="category-item" data-filter="uxdev">UX · UI</button>
+        <button class="category-item" data-filter="graphic">Brand</button>
+        <button class="category-item" data-filter="motion">Motion</button>
+        <button class="category-item" data-filter="social">Social</button>
+      </div>
 
-    <!-- Grid — all cards equal height, 3 cols desktop -->
-    <!--
-      HOW TO ADD A PROJECT:
-      1. Add a new <div class="project-item" data-category="uxdev"> block below
-      2. Set data-url to: an external URL (https://behance.net/...), or a local file (projects/my-project.html)
-      3. Set data-category to one or more of: uxdev, graphic, social, video, motion
-      4. Replace the img src with your project image
-    -->
-    <div id="projects-grid">
+      <div>
+      <!--
+        HOW TO ADD A PROJECT:
+        1. Add a new <div class="project-item" data-category="uxdev"> block below
+        2. Set data-url to: an external URL (https://behance.net/...), or a local file (projects/my-project.html)
+        3. Set data-category to one or more of: uxdev, graphic, social, video, motion
+        4. Add data-featured="true" if it should be one of the 4 default cards under "All"
+        5. Replace the img src with your project image
+      -->
+      <div id="projects-grid">
 
       <!-- ① Alcancía Consciente — UX/UI + Frontend (single-link card: opens the
            case-study hub page; project lives in its own folder since it embeds
            its own React prototype build under app/dist/) -->
-      <div class="project-item" data-category="uxdev"
+      <div class="project-item" data-category="uxdev" data-featured="true"
            data-url="projects/alcancia-consciente/alcancia-consciente-case-study.html" data-title="Alcancía Consciente — Interbank (concepto)">
         <div class="project-card bg-gray-100">
           <img src="projects/images/alcancia-consciente/cover.jpg" loading="lazy" decoding="async"
@@ -305,7 +378,7 @@
 
       <!-- ③ Amazon Redesign — UX/UI + Frontend (single-link card: opens the
            case-study hub page, which itself links out to Design System / Brand Book / Website) -->
-      <div class="project-item" data-category="uxdev"
+      <div class="project-item" data-category="uxdev" data-featured="true"
            data-url="projects/amazon-redesign-case-study.html" data-title="Amazon — Home Redesign">
         <div class="project-card bg-gray-100">
           <img src="projects/images/amazon-redesign/hero-banner.jpg" loading="lazy" decoding="async"
@@ -349,7 +422,7 @@
 
       <!-- ⑤ Angie — Nutritionist Website — UX/UI + Frontend (single-link card: opens the
            case-study hub page, which itself links out to Design System / Brand Book / Website) -->
-      <div class="project-item" data-category="uxdev"
+      <div class="project-item" data-category="uxdev" data-featured="true"
            data-url="projects/angie-case-study.html" data-title="Angie — Nutritionist Website">
         <div class="project-card bg-gray-100">
           <img src="projects/images/angie-hamasaki.webp" loading="lazy" decoding="async"
@@ -370,7 +443,7 @@
       </div>
 
       <!-- ⑥ CATMI — Catsitter Brandbook — Graphic -->
-      <div class="project-item" data-category="graphic"
+      <div class="project-item" data-category="graphic" data-featured="true"
            data-url="projects/catmi-brandbook.html" data-title="CATMI — Catsitter Brandbook">
         <div class="project-card bg-gray-100">
           <img src="projects/images/catmi/catmi-01.webp" loading="lazy" decoding="async"
@@ -463,107 +536,8 @@
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
       </a>
     </div>
-  </div>
-</section>
-
-
-<!-- ════════════════════════════════════════
-     SERVICES
-════════════════════════════════════════ -->
-<section id="services" class="py-24 px-6 md:px-10 bg-gray-50">
-  <div class="max-w-7xl mx-auto">
-
-    <div class="reveal mb-14 text-center">
-      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color:var(--lilac)">
-        <span class="lilac-line"></span>What I do
-      </p>
-      <h2 class="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
-        Services built to<br><span class="serif-italic">grow your brand</span>
-      </h2>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-6">
-
-      <div class="reveal service-card">
-        <div class="service-icon">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-          </svg>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">UX / UI Design</h3>
-        <p class="text-gray-400 text-sm leading-relaxed mb-4">
-          Research-driven experiences that convert. From wireframes to pixel-perfect interfaces — for web, mobile, and SaaS products.
-        </p>
-        <ul class="space-y-1.5">
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>User research &amp; personas</li>
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Wireframing &amp; prototyping</li>
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Design systems in Figma</li>
-        </ul>
-      </div>
-
-      <div class="reveal service-card" style="transition-delay:0.1s">
-        <div class="service-icon">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-          </svg>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">Motion &amp; Video</h3>
-        <p class="text-gray-400 text-sm leading-relaxed mb-4">
-          Animations and videos that communicate, engage, and stop the scroll. For brands, apps, and social media.
-        </p>
-        <ul class="space-y-1.5">
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Motion graphics (After Effects)</li>
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Brand reels &amp; showreels</li>
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Video editing &amp; post-production</li>
-        </ul>
-      </div>
-
-      <div class="reveal service-card" style="transition-delay:0.2s">
-        <div class="service-icon">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-          </svg>
-        </div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">Brand &amp; Social</h3>
-        <p class="text-gray-400 text-sm leading-relaxed mb-4">
-          Visual identities that are memorable and consistent across every platform — from logo to Instagram grid.
-        </p>
-        <ul class="space-y-1.5">
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Logo &amp; brand identity</li>
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Social media strategy &amp; content</li>
-          <li class="text-sm text-gray-500 flex items-center gap-2"><span class="section-dot" style="width:5px;height:5px;"></span>Graphic design &amp; print</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ════════════════════════════════════════
-     CTA BAND
-════════════════════════════════════════ -->
-<section class="cta-band py-20 px-6 md:px-10">
-  <div class="max-w-4xl mx-auto text-center reveal">
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-widest uppercase mb-6">
-      <span class="section-dot" style="background:var(--lilac-light)"></span>
-      Available for new projects
-    </div>
-    <h2 class="text-4xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">
-      Ready to bring your<br><span class="serif-italic">vision to life?</span>
-    </h2>
-    <p class="text-white/55 text-lg mb-10 max-w-lg mx-auto leading-relaxed">
-      Whether you're a startup building your brand or a company refreshing its digital presence — let's create something great.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="#contact" class="btn-lilac inline-flex items-center justify-center gap-2 font-semibold text-[15px] px-9 py-4 rounded-full">
-        Start a project
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-      </a>
-      <a href="#projects" class="btn-ghost-white inline-flex items-center justify-center gap-2 font-semibold text-[15px] px-9 py-4 rounded-full">
-        See my work first
-      </a>
-    </div>
+      </div><!-- /projects-layout right column -->
+    </div><!-- /projects-layout -->
   </div>
 </section>
 
@@ -585,7 +559,7 @@
 
     <div class="grid md:grid-cols-3 gap-6">
 
-      <div class="reveal testimonial-card">
+      <div class="reveal testimonial-card glass">
         <div class="flex gap-1 mb-4">
           <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
           <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -605,7 +579,7 @@
         </div>
       </div>
 
-      <div class="reveal testimonial-card" style="transition-delay:0.1s">
+      <div class="reveal testimonial-card glass" style="transition-delay:0.1s">
         <div class="flex gap-1 mb-4">
           <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
           <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -625,7 +599,7 @@
         </div>
       </div>
 
-      <div class="reveal testimonial-card" style="transition-delay:0.2s">
+      <div class="reveal testimonial-card glass" style="transition-delay:0.2s">
         <div class="flex gap-1 mb-4">
           <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
           <svg class="w-4 h-4" style="color:var(--lilac)" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -670,19 +644,19 @@
         I care about the person on the other side of the screen as much as the pixels. That empathy is the part of my process I never skip.
       </p>
       <div class="grid grid-cols-3 gap-4 mb-8">
-        <div class="text-center p-4 bg-white rounded-2xl shadow-sm flex flex-col items-center justify-center">
+        <div class="text-center p-4 glass rounded-2xl flex flex-col items-center justify-center">
           <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-2" style="background:var(--lilac-pale)">
             <svg class="w-4 h-4" style="color:var(--lilac)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/></svg>
           </div>
           <div class="text-xs text-gray-500 font-medium uppercase tracking-wider leading-snug">Multidisciplinary</div>
         </div>
-        <div class="text-center p-4 bg-white rounded-2xl shadow-sm flex flex-col items-center justify-center">
+        <div class="text-center p-4 glass rounded-2xl flex flex-col items-center justify-center">
           <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-2" style="background:var(--lilac-pale)">
             <svg class="w-4 h-4" style="color:var(--lilac)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
           </div>
           <div class="text-xs text-gray-500 font-medium uppercase tracking-wider leading-snug">Empathetic process</div>
         </div>
-        <div class="text-center p-4 bg-white rounded-2xl shadow-sm flex flex-col items-center justify-center">
+        <div class="text-center p-4 glass rounded-2xl flex flex-col items-center justify-center">
           <div class="w-8 h-8 rounded-lg flex items-center justify-center mb-2" style="background:var(--lilac-pale)">
             <svg class="w-4 h-4" style="color:var(--lilac)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
           </div>
@@ -701,14 +675,12 @@
           <img src="assets/images/about-photo.webp" loading="lazy" decoding="async"
                alt="Sofia — designer" class="w-full h-full object-cover" style="object-position: center 20%">
         </div>
-        <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl px-5 py-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--lilac-pale)">
-            <svg class="w-5 h-5" style="color:var(--lilac)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-            </svg>
+        <div class="absolute -bottom-4 -left-4 glass rounded-2xl shadow-xl px-5 py-4 flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0" style="background:var(--lilac-pale)">
+            <img src="assets/images/avatar/avatar-sentada-laptop-sonriendo.svg" alt="" aria-hidden="true" class="w-full h-full object-contain" loading="lazy">
           </div>
           <div>
-            <div class="text-xs text-gray-400">Available for</div>
+            <div class="text-xs text-gray-500">Available for</div>
             <div class="text-sm font-semibold text-gray-900">Freelance work</div>
           </div>
         </div>
@@ -722,73 +694,37 @@
 
 
 <!-- ════════════════════════════════════════
-     CONTACT
+     CONTACT CTA — direct links, no fake form (brief §15)
 ════════════════════════════════════════ -->
-<section id="contact" class="py-24 px-6 md:px-10 bg-white">
-  <div class="max-w-4xl mx-auto">
-
-    <div class="reveal text-center mb-14">
-      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color:var(--lilac)">
-        <span class="lilac-line"></span>Contact
-      </p>
-      <h2 class="text-4xl md:text-5xl font-semibold tracking-tight leading-tight mb-4">
-        Let's create something<br><span class="serif-italic">great together</span>
-      </h2>
-      <p class="text-gray-400 text-lg max-w-md mx-auto leading-relaxed">
-        Have a project in mind? I'd love to hear about it.
-      </p>
+<section id="contact" class="cta-band py-28 px-6 md:px-10">
+  <div class="max-w-3xl mx-auto text-center reveal">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-widest uppercase mb-6">
+      <span class="section-dot" style="background:var(--violet-light)"></span>
+      Available for new projects
     </div>
-
-    <div class="reveal bg-gray-50 rounded-3xl p-8 md:p-12">
-      <form id="contact-form" class="space-y-5" novalidate>
-        <div class="grid md:grid-cols-2 gap-5">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-1.5">Name <span class="text-red-400">*</span></label>
-            <input id="name" name="name" type="text" required class="form-input" placeholder="Your name" autocomplete="name">
-          </div>
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">Email <span class="text-red-400">*</span></label>
-            <input id="email" name="email" type="email" required class="form-input" placeholder="your@email.com" autocomplete="email">
-          </div>
-        </div>
-        <div>
-          <label for="project-type" class="block text-sm font-medium text-gray-700 mb-1.5">Project type</label>
-          <select id="project-type" name="project_type" class="form-input">
-            <option value="" disabled selected>Select a category…</option>
-            <option value="ux">UX Design</option>
-            <option value="ui">UI Design</option>
-            <option value="motion">Motion / Video</option>
-            <option value="brand">Brand Identity</option>
-            <option value="social">Social Media</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div>
-          <label for="message" class="block text-sm font-medium text-gray-700 mb-1.5">Message <span class="text-red-400">*</span></label>
-          <textarea id="message" name="message" required class="form-input resize-none" rows="5"
-            placeholder="Tell me about your project…"></textarea>
-        </div>
-        <button type="submit" id="submit-btn"
-          class="btn-lilac w-full py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-2">
-          Send message
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </button>
-      </form>
-
-      <div class="mt-8 pt-8 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4">
-        <span class="text-sm text-gray-400">Or find me on</span>
-        <div class="flex gap-3">
-          <a href="https://www.behance.net/sofiahualpa" target="_blank" rel="noopener" class="social-icon" aria-label="Behance">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7.443 5.35c.639 0 1.23.05 1.77.198.541.099.984.297 1.377.544.394.247.689.594.886 1.039.198.445.297.98.297 1.583 0 .693-.148 1.287-.493 1.731-.297.445-.74.79-1.328 1.088.791.247 1.385.693 1.779 1.336.394.643.591 1.386.591 2.227 0 .692-.148 1.286-.395 1.78-.246.494-.591.939-1.03 1.286-.445.347-.935.594-1.525.742-.59.148-1.18.247-1.82.247H1V5.35h6.443zm-.346 5.448c.542 0 .984-.148 1.328-.395.345-.297.493-.742.493-1.336 0-.297-.05-.594-.148-.791-.099-.247-.247-.444-.444-.593-.198-.148-.395-.248-.643-.297a3.37 3.37 0 00-.788-.1H3.744v3.512h3.353zm.148 5.745c.296 0 .591-.049.887-.099.295-.099.541-.198.787-.396.198-.148.395-.395.493-.643.099-.247.198-.593.198-.989 0-.791-.197-1.385-.64-1.78-.444-.396-1.033-.544-1.773-.544H3.744v4.45h3.501zm9.728-7.177c.74 0 1.377.148 1.968.395.59.247 1.08.593 1.475 1.039.394.444.69.988.886 1.582.198.593.296 1.285.296 2.028v.593H14.6v.099c0 .692.197 1.237.591 1.632.395.395.935.593 1.574.593.494 0 .935-.099 1.28-.346.346-.247.591-.544.74-.89h2.707c-.395 1.039-1.032 1.83-1.87 2.374-.838.544-1.87.84-3.055.84-.887 0-1.674-.148-2.412-.395a5.38 5.38 0 01-1.82-1.14c-.493-.494-.886-1.088-1.131-1.83-.247-.741-.395-1.582-.395-2.52 0-.89.148-1.731.395-2.473.296-.742.64-1.385 1.13-1.88.494-.494 1.082-.89 1.77-1.138.69-.247 1.426-.363 2.265-.363zm-.05 2.027c-.59 0-1.08.198-1.427.544-.345.346-.59.84-.69 1.484h4.209c-.05-.593-.247-1.088-.59-1.434-.345-.397-.84-.594-1.502-.594zm-1.475-4.845h4.7v1.335h-4.7V6.548z"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/sofia-hualpa/" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-          <a href="https://www.instagram.com/sof_ia.ro/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          </a>
-        </div>
-      </div>
+    <h2 class="text-4xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">
+      Let's build something<br><span class="serif-italic">weird together ✦</span>
+    </h2>
+    <p class="text-white/55 text-lg mb-4 max-w-lg mx-auto leading-relaxed">
+      Have a project in mind? Skip the form — just reach out directly.
+    </p>
+    <div class="contact-cta-links flex flex-wrap gap-3 justify-center mt-10">
+      <a href="mailto:sofiartc02@gmail.com" class="contact-cta-link glass-dark">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Email
+      </a>
+      <a href="https://www.linkedin.com/in/sofia-hualpa/" target="_blank" rel="noopener" class="contact-cta-link glass-dark">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://www.behance.net/sofiahualpa" target="_blank" rel="noopener" class="contact-cta-link glass-dark">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7.443 5.35c.639 0 1.23.05 1.77.198.541.099.984.297 1.377.544.394.247.689.594.886 1.039.198.445.297.98.297 1.583 0 .693-.148 1.287-.493 1.731-.297.445-.74.79-1.328 1.088.791.247 1.385.693 1.779 1.336.394.643.591 1.386.591 2.227 0 .692-.148 1.286-.395 1.78-.246.494-.591.939-1.03 1.286-.445.347-.935.594-1.525.742-.59.148-1.18.247-1.82.247H1V5.35h6.443zm-.346 5.448c.542 0 .984-.148 1.328-.395.345-.297.493-.742.493-1.336 0-.297-.05-.594-.148-.791-.099-.247-.247-.444-.444-.593-.198-.148-.395-.248-.643-.297a3.37 3.37 0 00-.788-.1H3.744v3.512h3.353zm.148 5.745c.296 0 .591-.049.887-.099.295-.099.541-.198.787-.396.198-.148.395-.395.493-.643.099-.247.198-.593.198-.989 0-.791-.197-1.385-.64-1.78-.444-.396-1.033-.544-1.773-.544H3.744v4.45h3.501zm9.728-7.177c.74 0 1.377.148 1.968.395.59.247 1.08.593 1.475 1.039.394.444.69.988.886 1.582.198.593.296 1.285.296 2.028v.593H14.6v.099c0 .692.197 1.237.591 1.632.395.395.935.593 1.574.593.494 0 .935-.099 1.28-.346.346-.247.591-.544.74-.89h2.707c-.395 1.039-1.032 1.83-1.87 2.374-.838.544-1.87.84-3.055.84-.887 0-1.674-.148-2.412-.395a5.38 5.38 0 01-1.82-1.14c-.493-.494-.886-1.088-1.131-1.83-.247-.741-.395-1.582-.395-2.52 0-.89.148-1.731.395-2.473.296-.742.64-1.385 1.13-1.88.494-.494 1.082-.89 1.77-1.138.69-.247 1.426-.363 2.265-.363zm-.05 2.027c-.59 0-1.08.198-1.427.544-.345.346-.59.84-.69 1.484h4.209c-.05-.593-.247-1.088-.59-1.434-.345-.397-.84-.594-1.502-.594zm-1.475-4.845h4.7v1.335h-4.7V6.548z"/></svg>
+        Behance
+      </a>
+      <a href="https://wa.me/51914407091" target="_blank" rel="noopener" class="contact-cta-link glass-dark">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.986.583 3.836 1.588 5.392L2 22l4.735-1.564A9.947 9.947 0 0012.001 22C17.524 22 22 17.523 22 12S17.524 2 12.001 2zm0 18.16c-1.786 0-3.44-.53-4.828-1.44l-.346-.22-3.15 1.04 1.06-3.07-.226-.353A8.13 8.13 0 013.84 12c0-4.5 3.66-8.16 8.161-8.16 4.5 0 8.16 3.66 8.16 8.16 0 4.501-3.66 8.16-8.16 8.16z"/></svg>
+        Book a call
+      </a>
     </div>
   </div>
 </section>
@@ -824,20 +760,17 @@
         <ul class="space-y-2.5">
           <li><a href="#hero"     class="footer-link">Home</a></li>
           <li><a href="#projects" class="footer-link">Projects</a></li>
-          <li><a href="#services" class="footer-link">Services</a></li>
           <li><a href="#about"    class="footer-link">About</a></li>
           <li><a href="#contact"  class="footer-link">Contact</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-gray-500 mb-4">Services</h4>
+        <h4 class="text-xs font-semibold tracking-[0.15em] uppercase text-gray-500 mb-4">Disciplines</h4>
         <ul class="space-y-2.5">
-          <li><a href="#services" class="footer-link">UX Design</a></li>
-          <li><a href="#services" class="footer-link">UI Design</a></li>
-          <li><a href="#services" class="footer-link">Motion &amp; Video</a></li>
-          <li><a href="#services" class="footer-link">Brand Identity</a></li>
-          <li><a href="#services" class="footer-link">Social Media</a></li>
+          <li class="footer-link" style="cursor:default">UX / UI Design</li>
+          <li class="footer-link" style="cursor:default">Motion &amp; Video</li>
+          <li class="footer-link" style="cursor:default">Brand &amp; Social</li>
         </ul>
       </div>
     </div>
@@ -855,6 +788,34 @@
   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.986.583 3.836 1.588 5.392L2 22l4.735-1.564A9.947 9.947 0 0012.001 22C17.524 22 22 17.523 22 12S17.524 2 12.001 2zm0 18.16c-1.786 0-3.44-.53-4.828-1.44l-.346-.22-3.15 1.04 1.06-3.07-.226-.353A8.13 8.13 0 013.84 12c0-4.5 3.66-8.16 8.161-8.16 4.5 0 8.16 3.66 8.16 8.16 0 4.501-3.66 8.16-8.16 8.16z"/></svg>
 </a>
 
+<!-- Custom pixel-art cursor — a chubby orange cat companion with a big
+     white belly, replaces the default pointer on fine-pointer (mouse)
+     devices only (see main.js). Positioned/shown via JS; idle animation
+     (bounce/wag/blink) is pure CSS so it keeps running independent of
+     mouse position. -->
+<svg id="pixel-cursor" class="pixel-cursor" width="56" height="56" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+  <g class="cat-bounce">
+    <g class="cat-tail">
+      <rect x="24.5" y="14" width="4.5" height="12" rx="2.2" fill="#F2994A"/>
+    </g>
+    <path d="M7 8 L9.8 1.5 L12 8 Z" fill="#F2994A"/>
+    <path d="M20 8 L22.2 1.5 L25 8 Z" fill="#F2994A"/>
+    <path d="M8.4 6.4 L9.8 3.2 L11.2 6.4 Z" fill="#FFD9B8"/>
+    <path d="M20.8 6.4 L22.2 3.2 L23.6 6.4 Z" fill="#FFD9B8"/>
+    <rect x="6" y="6.5" width="20" height="13.5" rx="6" fill="#F2994A"/>
+    <rect x="3.5" y="17" width="25" height="14" rx="7" fill="#F2994A"/>
+    <ellipse cx="16" cy="25.2" rx="9.5" ry="7" fill="#FFF3E6"/>
+    <rect x="6.5" y="28.6" width="5" height="3.2" rx="1.5" fill="#FFF3E6"/>
+    <rect x="20.5" y="28.6" width="5" height="3.2" rx="1.5" fill="#FFF3E6"/>
+    <g class="cat-eyes">
+      <rect x="10.4" y="11.4" width="2.7" height="3.1" rx="0.8" fill="#2D2A45"/>
+      <rect x="18.9" y="11.4" width="2.7" height="3.1" rx="0.8" fill="#2D2A45"/>
+    </g>
+    <path d="M14.6 15.6 L17.4 15.6 L16 17.3 Z" fill="#C2410C"/>
+  </g>
+</svg>
+
 <script src="assets/js/main.js"></script>
+<script src="assets/js/toolkit.js"></script>
 </body>
 </html>

@@ -15,18 +15,20 @@
     track.innerHTML = html;
   }
 
-  /* ── Sticky nav: hidden at hero, slides in on scroll ── */
-  const siteNav = document.getElementById('site-nav');
-  const heroEl  = document.getElementById('hero');
+  /* ── Floating nav: hides on scroll-down, reappears on scroll-up ── */
+  const floatingNav = document.getElementById('floating-nav');
+  let lastScrollY = window.scrollY;
   function updateNav() {
-    if (!siteNav || !heroEl) return;
-    const heroBottom = heroEl.getBoundingClientRect().bottom;
-    siteNav.classList.toggle('nav-visible', heroBottom < 80);
+    if (!floatingNav) return;
+    const y = window.scrollY;
+    const goingDown = y > lastScrollY && y > 80;
+    floatingNav.classList.toggle('nav-hidden', goingDown);
+    lastScrollY = y;
   }
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
 
-  /* ── Mobile menu factory ── */
+  /* ── Mobile menu ── */
   function initMenu(toggleId, menuId, hamId, closeId) {
     const toggle = document.getElementById(toggleId);
     const menu   = document.getElementById(menuId);
@@ -52,8 +54,7 @@
     });
     menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
   }
-  initMenu('site-menu-toggle', 'site-mobile-menu', 'site-ham',  'site-close');
-  initMenu('hero-menu-toggle', 'hero-mobile-menu', 'hero-ham',  'hero-close');
+  initMenu('nav-menu-toggle', 'nav-mobile-menu', 'nav-ham', 'nav-close');
 
   /* ── Scroll reveal ── */
   const revealEls = document.querySelectorAll('.reveal, .reveal-left');
@@ -66,8 +67,7 @@
 
   /* ── Lazy-play project card videos ──
      Only plays while scrolled into view instead of autoplaying immediately
-     on load — avoids a second video competing with the hero background
-     video for bandwidth/decode on page load. */
+     on load — avoids decoding video the visitor hasn't scrolled to yet. */
   const cardVideos = document.querySelectorAll('.project-card-video');
   if (cardVideos.length) {
     const videoIo = new IntersectionObserver(entries => {
@@ -79,20 +79,68 @@
     cardVideos.forEach(v => videoIo.observe(v));
   }
 
-  /* ── Project filter ── */
-  const filterBtns   = document.querySelectorAll('.filter-btn');
-  const projectItems = document.querySelectorAll('.project-item');
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const f = btn.dataset.filter;
-      projectItems.forEach(item => {
-        const cats = (item.dataset.category || '').split(' ');
-        item.classList.toggle('hidden-item', f !== 'all' && !cats.includes(f));
-      });
+  /* ── Projects: category sidebar ──────────────────────────────
+     "All" shows only the 4 data-featured="true" cards (curated set);
+     picking a category shows every project in it. On devices that
+     support hover, hovering a category previews it without committing;
+     click/tap always locks a category in — this covers touch devices
+     and is what actually applies the filter everywhere else.
+  ─────────────────────────────────────────────────────────── */
+  const categoryBtns  = document.querySelectorAll('.category-item');
+  const projectItems  = document.querySelectorAll('.project-item');
+  const projectsGrid  = document.getElementById('projects-grid');
+  const supportsHover = window.matchMedia('(hover: hover)').matches;
+
+  // Swap which cards are shown. Also numbers the visible ones so CSS can
+  // stagger them on the way back in (see --i in styles.css).
+  function applyFilter(f) {
+    let visible = 0;
+    projectItems.forEach(item => {
+      const cats = (item.dataset.category || '').split(' ');
+      const show = f === 'all' ? item.dataset.featured === 'true' : cats.includes(f);
+      item.classList.toggle('hidden-item', !show);
+      if (show) item.style.setProperty('--i', visible++);
     });
+  }
+
+  /* Morph between categories instead of hard-swapping the contents:
+     fade + lift the grid out (200ms), change what's hidden while nothing
+     is visible, then let it settle back in with a per-card stagger. */
+  const prefersReducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let currentFilter = null, morphTimer = null;
+  function showFilter(f) {
+    if (f === currentFilter) return;   // no-op re-entry (hover fires a lot)
+    currentFilter = f;
+
+    if (!projectsGrid || prefersReducedMotionQuery.matches) {
+      applyFilter(f);
+      return;
+    }
+    clearTimeout(morphTimer);
+    projectsGrid.classList.add('is-morphing');
+    morphTimer = setTimeout(() => {
+      applyFilter(f);
+      // Next frame, so the browser paints the new set at opacity 0 first
+      // and actually transitions in rather than appearing instantly.
+      requestAnimationFrame(() => projectsGrid.classList.remove('is-morphing'));
+    }, 200);
+  }
+
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      categoryBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      showFilter(btn.dataset.filter);
+    });
+    if (supportsHover) {
+      btn.addEventListener('mouseenter', () => showFilter(btn.dataset.filter));
+      btn.addEventListener('mouseleave', () => {
+        const active = document.querySelector('.category-item.active');
+        if (active) showFilter(active.dataset.filter);
+      });
+    }
   });
+  showFilter('all');
 
   /* ── Project card click → open URL ──────────────────────────
      HOW TO UPDATE A PROJECT LINK:
@@ -119,83 +167,149 @@
     });
   });
 
-  /* ── Hero cursor glow ── */
-  const heroSection = document.getElementById('hero');
-  const glow        = document.getElementById('hero-glow');
-  if (heroSection && glow) {
-    heroSection.addEventListener('mouseenter', () => { glow.style.opacity = '1'; });
-    heroSection.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+  /* ── Hero: interactive gradient mesh ─────────────────────────
+     The three mesh layers are full-bleed multi-gradient washes, not
+     discrete blobs. Sliding them across each other at different rates
+     (and opposite signs) makes the colour field stretch and re-blend —
+     the surface behaves as one fluid, never as separate circles.
+
+     Only `transform` is written here, so the browser composites on the
+     GPU without repainting the (blurred, expensive) gradients. The
+     autonomous rotate/scale drift lives on each layer's ::before in
+     styles.css, so the two channels never fight over one property.
+
+     Smoothing is deliberately light (0.55) and travel is large: the
+     response has to read as immediate, like stirring liquid under glass.
+  ─────────────────────────────────────────────────────────── */
+  const heroSection   = document.getElementById('hero');
+  const meshLayers    = document.querySelectorAll('[data-mesh]');
+  const meshCursor    = document.getElementById('mesh-cursor');
+  const reduceMotion  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (heroSection && meshLayers.length && !reduceMotion) {
+    // Per-layer [x, y] factors — opposing signs shear the colour field
+    // instead of sliding it as one rigid block.
+    const DRIFT = [[1, 1], [-0.78, 0.86], [0.52, -1.15]];
+    const TRAVEL = 210;               // px of travel at the viewport edge
+    let targetX = 0, targetY = 0, curX = 0, curY = 0, running = false;
+
+    function tick() {
+      curX += (targetX - curX) * 0.7;
+      curY += (targetY - curY) * 0.7;
+      meshLayers.forEach((layer, i) => {
+        const [fx, fy] = DRIFT[i % DRIFT.length];
+        layer.style.transform =
+          `translate3d(${(curX * fx).toFixed(1)}px, ${(curY * fy).toFixed(1)}px, 0)`;
+      });
+      // Keep animating only while there's meaningful movement left, so an
+      // idle hero isn't burning a rAF slot forever.
+      if (Math.abs(targetX - curX) > 0.2 || Math.abs(targetY - curY) > 0.2) {
+        requestAnimationFrame(tick);
+      } else {
+        running = false;
+      }
+    }
+    function kick() { if (!running) { running = true; requestAnimationFrame(tick); } }
+
     heroSection.addEventListener('mousemove', e => {
       const r = heroSection.getBoundingClientRect();
-      glow.style.left = (e.clientX - r.left) + 'px';
-      glow.style.top  = (e.clientY - r.top)  + 'px';
-    }, { passive: true });
-  }
-
-  /* ── Contact form validation + feedback ─────────────────────
-     Current behavior: opens the visitor's email client via mailto:
-     as a zero-backend stopgap (CONTACT_EMAIL below).
-
-     To upgrade to a real inbox form (recommended once you have an
-     endpoint — e.g. formspree.io, free, no code needed), replace
-     the mailto redirect below with a fetch() call:
-       fetch('https://formspree.io/f/YOUR_FORM_ID', {
-         method: 'POST',
-         body: new FormData(form),
-         headers: { 'Accept': 'application/json' }
-       }).then(r => r.ok ? showToast('Sent!', false) : showToast('Error.', true));
-  ─────────────────────────────────────────────────────────── */
-  const CONTACT_EMAIL = 'sofiartc02@gmail.com';
-  const form     = document.getElementById('contact-form');
-  const toast    = document.getElementById('toast');
-  const toastMsg = document.getElementById('toast-msg');
-  let toastTimer;
-
-  function showToast(msg, isError) {
-    if (!toast || !toastMsg) return;
-    toastMsg.textContent = msg;
-    toast.style.background = isError ? '#dc2626' : '#111827';
-    clearTimeout(toastTimer);
-    toast.classList.add('show');
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
-  }
-
-  if (form) {
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const name        = form.querySelector('#name').value.trim();
-      const email       = form.querySelector('#email').value.trim();
-      const message     = form.querySelector('#message').value.trim();
-      const projectType = form.querySelector('#project-type').value;
-      if (!name)    { showToast('Please enter your name.', true);              form.querySelector('#name').focus();    return; }
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showToast('Please enter a valid email address.', true);
-        form.querySelector('#email').focus(); return;
+      targetX = ((e.clientX - r.left) / r.width  - 0.5) * TRAVEL;
+      targetY = ((e.clientY - r.top)  / r.height - 0.5) * TRAVEL;
+      // The light pool tracks the pointer with no smoothing at all.
+      if (meshCursor) {
+        meshCursor.style.transform =
+          `translate3d(${e.clientX - r.left}px, ${e.clientY - r.top}px, 0)`;
       }
-      if (!message) { showToast('Please write a message.', true);              form.querySelector('#message').focus(); return; }
+      kick();
+    }, { passive: true });
 
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = true;
-      btn.textContent = 'Opening your email app…';
-
-      const bodyLines = [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        projectType ? `Project type: ${projectType}` : null,
-        '',
-        message
-      ].filter(line => line !== null).join('\n');
-      const subject = encodeURIComponent(`New project inquiry from ${name}`);
-      const body    = encodeURIComponent(bodyLines);
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-
-      setTimeout(() => {
-        form.reset();
-        btn.disabled = false;
-        btn.innerHTML = 'Send message <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>';
-        showToast("Opening your email app to finish sending…", false);
-      }, 600);
+    heroSection.addEventListener('mouseenter', () => {
+      if (meshCursor) meshCursor.classList.add('active');
     });
+    heroSection.addEventListener('mouseleave', () => {
+      targetX = 0; targetY = 0;
+      if (meshCursor) meshCursor.classList.remove('active');
+      kick();
+    });
+  }
+
+  /* ── Hero: pixel-art avatar — two-frame sprite loop ─────────────
+     ONE <img> element whose `src` alternates between two frames. Because
+     there is only ever a single element and we never insert another one,
+     duplicated or stacked sprites are structurally impossible.
+
+       frame 1 → frame 2 → frame 1 → frame 2 …   (forever)
+
+     Clicking doesn't change the character or spawn anything — it just
+     runs the same two frames faster for a moment and blooms a glow
+     (see .hero-avatar.is-excited). No float, sway, rotation or bounce.
+  ─────────────────────────────────────────────────────────── */
+  const avatarBtn   = document.getElementById('hero-avatar');
+  const avatarFrame = document.getElementById('avatar-frame');
+  const AVATAR_FRAMES = [
+    'assets/images/avatar/avatar-sentada-laptop-paz.svg',   // frame 1 — ✌️ + laptop
+    'assets/images/avatar/avatar-sentada-laptop-puno.svg'   // frame 2 — 👊 + laptop
+  ];
+  const FRAME_IDLE_MS = 720, FRAME_FAST_MS = 220, EXCITED_MS = 1400;
+
+  if (avatarFrame) {
+    let frame = 0, frameTimer = null, currentMs = FRAME_IDLE_MS, excitedTimer = null;
+
+    function step() {
+      frame = (frame + 1) % AVATAR_FRAMES.length;
+      avatarFrame.src = AVATAR_FRAMES[frame];
+    }
+    function runAt(ms) {
+      clearInterval(frameTimer);
+      currentMs = ms;
+      frameTimer = setInterval(step, ms);
+    }
+
+    // Both frames are heavy SVG-wrapped rasters — decode them up front so
+    // the very first swap doesn't flash an empty box.
+    Promise.all(AVATAR_FRAMES.map(src => new Promise(resolve => {
+      const img = new Image();
+      img.onload = img.onerror = resolve;
+      img.src = src;
+    }))).then(() => runAt(FRAME_IDLE_MS));
+
+    if (avatarBtn) {
+      avatarBtn.addEventListener('click', () => {
+        avatarBtn.classList.add('is-excited');
+        runAt(FRAME_FAST_MS);
+        clearTimeout(excitedTimer);
+        excitedTimer = setTimeout(() => {
+          avatarBtn.classList.remove('is-excited');
+          runAt(FRAME_IDLE_MS);
+        }, EXCITED_MS);
+      });
+    }
+
+    // Don't burn swaps while the tab is in the background.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) clearInterval(frameTimer);
+      else runAt(currentMs);
+    });
+  }
+
+  /* ── Custom pixel-art cat cursor ──────────────────────────────
+     Only on devices with a real mouse (fine pointer + hover) — touch and
+     hybrid coarse-pointer devices keep the native cursor untouched, since
+     hiding it there would leave no visible pointer at all. The cat tracks
+     the real cursor directly (no lerp) so it never feels laggy; its idle
+     bounce/wag/blink run as independent CSS animations in styles.css.
+  ─────────────────────────────────────────────────────────── */
+  const canUseCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const pixelCursor = document.getElementById('pixel-cursor');
+  if (canUseCustomCursor && pixelCursor) {
+    document.documentElement.classList.add('pixel-cursor-on');
+    let shown = false;
+    document.addEventListener('mousemove', e => {
+      pixelCursor.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 18}px)`;
+      if (!shown) { shown = true; pixelCursor.classList.add('active'); }
+    }, { passive: true });
+    document.addEventListener('mouseleave', () => pixelCursor.classList.remove('active'));
+    document.addEventListener('mouseenter', () => { if (shown) pixelCursor.classList.add('active'); });
   }
 
 })();

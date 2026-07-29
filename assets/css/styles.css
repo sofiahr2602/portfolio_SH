@@ -8,6 +8,48 @@
   --lilac-light: #C4A8E8;
   --lilac-pale:  #F3EDFF;
   --lilac-dark:  #7C4FA8;
+
+  /* Playful Future palette — glass system (nav, cards, contact CTA) */
+  --violet-mid:   #9B6CF2;
+  --violet-light: #DABEFF;
+  --violet-bright:#B98CF8;
+  --violet-deep:  #4C1D95;
+  --ink:          #181A29;
+
+  /* Hero — bright, airy pastel palette (brief: "at least 80-90% of the
+     composition should remain bright"; no dark hero background). The
+     "-strong" variants (iteration 2) are more saturated so the gradient
+     blobs read as clearly distinct colors instead of "too close to white". */
+  --pastel-white:  #FFFFFF;
+  --pastel-lav:    #F9F6FF;
+  --pastel-violet: #EFDFFF;
+  --pastel-pink:   #FDEEFF;
+  --pastel-blue:   #EAF3FF;
+  --pastel-violet-strong: #DDB8FF;
+  --pastel-pink-strong:   #FFDDF6;
+  --pastel-blue-strong:   #D6E8FF;
+  --ink-soft:      #2D2A45;
+
+  --glass-bg:        rgba(255,255,255,0.55);
+  --glass-border:    rgba(255,255,255,0.4);
+  --glass-bg-dark:   rgba(24,26,41,0.4);
+  --glass-border-dark: rgba(255,255,255,0.16);
+}
+
+/* ── Liquid glass utility ──
+   Apply sparingly (nav, hero badges/pills, floating cards) — the brief is
+   explicit about not overusing it. */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--glass-border);
+}
+.glass-dark {
+  background: var(--glass-bg-dark);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--glass-border-dark);
 }
 
 html { scroll-behavior: smooth; }
@@ -48,40 +90,86 @@ body { font-family: 'Inter', sans-serif; }
 }
 .reveal-left.visible { opacity: 1; transform: none; }
 
-/* ── Sticky nav ── */
-#site-nav {
-  transform: translateY(-100%);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+/* ── Floating glass nav ──
+   Single pill, fixed and centered, present over every section (hero's dark
+   gradient and the white sections below) — replaces the old dual
+   sticky-header + in-hero-nav setup. */
+#floating-nav {
+  position: fixed;
+  top: 1.35rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 50;
+  border-radius: 9999px;
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
 }
-#site-nav.nav-visible {
-  transform: translateY(0);
-  box-shadow: 0 2px 20px rgba(0,0,0,0.07);
-}
+#floating-nav.nav-hidden { transform: translate(-50%, -160%); }
 
-.site-nav-link {
+/* Liquid glass shell — layered rather than a flat white pill:
+   · base    : frosted, saturated backdrop blur
+   · ::before: top-edge specular highlight (light catching the rim)
+   · ::after : inner hairline ring for refracted glass depth
+   · shadow  : two-stage, so it reads as suspended above the page */
+.nav-shell {
   position: relative;
-  color: #374151;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.46) 100%);
+  backdrop-filter: blur(26px) saturate(190%);
+  -webkit-backdrop-filter: blur(26px) saturate(190%);
+  border: 1px solid rgba(255,255,255,0.75);
+  box-shadow:
+    0 2px 8px rgba(45,42,69,0.06),
+    0 18px 48px -12px rgba(76,29,149,0.28),
+    inset 0 1px 1px rgba(255,255,255,0.9);
+  overflow: hidden;
+  transition: box-shadow 0.35s ease;
 }
-.site-nav-link::after {
+.nav-shell::before {
   content: '';
   position: absolute;
-  left: 0; bottom: -3px;
-  width: 0; height: 2px;
-  background: var(--lilac);
-  transition: width 0.25s ease;
+  top: 0; left: 8%; right: 8%;
+  height: 45%;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0) 100%);
+  pointer-events: none;
 }
-.site-nav-link:hover { color: var(--lilac); }
-.site-nav-link:hover::after { width: 100%; }
+.nav-shell::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.4);
+  pointer-events: none;
+}
+#floating-nav:hover .nav-shell {
+  box-shadow:
+    0 2px 8px rgba(45,42,69,0.07),
+    0 24px 60px -12px rgba(76,29,149,0.36),
+    inset 0 1px 1px rgba(255,255,255,0.95);
+}
+.nav-shell > * { position: relative; z-index: 1; }
+/* Just above the md breakpoint the pill runs out of room and flex would
+   shrink the CTA until "Hire me" wrapped onto two lines (which stretched
+   the whole nav). Nothing in the bar should wrap or be squeezed. */
+.nav-shell { white-space: nowrap; }
+.nav-shell .btn-lilac,
+.nav-wordmark { flex-shrink: 0; white-space: nowrap; }
 
-/* ── Hero nav links ── */
+.nav-wordmark {
+  color: #1f1d2e;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  user-select: none;
+  text-decoration: none;
+}
+.nav-divider { border-left: 1px solid rgba(45,42,69,0.14); }
+
 .nav-link {
   position: relative;
-  color: rgba(255,255,255,0.85);
-  font-size: 0.875rem;
+  color: #2d2a3d;
+  font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.2s;
@@ -89,28 +177,16 @@ body { font-family: 'Inter', sans-serif; }
 .nav-link::after {
   content: '';
   position: absolute;
-  left: 0; bottom: -2px;
-  width: 0; height: 1px;
-  background: var(--lilac-light);
+  left: 0; bottom: -3px;
+  width: 0; height: 2px;
+  background: var(--lilac);
   transition: width 0.25s ease;
 }
-.nav-link:hover { color: white; }
+.nav-link:hover { color: var(--lilac); }
 .nav-link:hover::after { width: 100%; }
 
 .mobile-menu { transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s; }
 
-/* ── Hero content safety net for short viewports ──
-   .hero-content is bottom-anchored on desktop (justify-end) and centered on
-   mobile. On short viewports (small phones, or any phone with the browser's
-   address bar reducing visible height) the stacked badge/heading/paragraph/
-   buttons could still be taller than the space below the top nav, pushing
-   the "Multidisciplinary Designer" badge up into the logo/hamburger. This
-   shrinks the stack further so it always clears the nav's ~92px height. */
-@media (max-height: 700px) and (max-width: 767px) {
-  .hero-content { padding-top: 5.5rem !important; padding-bottom: 2rem !important; }
-  .hero-content h1 { font-size: clamp(30px, 9vw, 42px) !important; margin-bottom: 0.75rem !important; }
-  .hero-content p { margin-bottom: 1.5rem !important; }
-}
 
 /* ── Typography ── */
 .serif-italic {
@@ -144,16 +220,6 @@ body { font-family: 'Inter', sans-serif; }
   transform: scale(1.04);
 }
 
-.btn-ghost-white {
-  border: 2px solid rgba(255,255,255,0.6);
-  color: white;
-  transition: background 0.2s, transform 0.2s;
-}
-.btn-ghost-white:hover {
-  background: rgba(255,255,255,0.12);
-  transform: scale(1.04);
-}
-
 /* ── Section accents ── */
 .section-dot {
   width: 7px; height: 7px;
@@ -179,34 +245,89 @@ body { font-family: 'Inter', sans-serif; }
 }
 .marquee-track:hover { animation-play-state: paused; }
 
-/* ── Filter buttons ── */
-.filter-btn {
-  padding: 0.4rem 1.1rem;
-  border-radius: 9999px;
+/* ── Category sidebar (replaces the old top filter-pill bar) ──
+   Desktop: sticky column to the left of the grid. Mobile: horizontal
+   scroll strip above the grid. Hover previews a category on desktop
+   (no click needed); click/tap locks it in on any device. */
+.projects-layout {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+@media (max-width: 900px) { .projects-layout { grid-template-columns: 1fr; } }
+
+.category-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  position: sticky;
+  top: 6rem;
+}
+@media (max-width: 900px) {
+  .category-sidebar {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
+}
+
+.category-item {
+  text-align: left;
+  padding: 0.65rem 1rem;
+  border-radius: 0.9rem;
   font-size: 0.78rem;
   font-weight: 600;
-  border: 1.5px solid #d1d5db;
-  color: #6b7280;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  color: #9ca3af;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s ease, background 0.2s ease;
 }
-.filter-btn:hover  { border-color: var(--lilac); color: var(--lilac); }
-.filter-btn.active { background: var(--lilac); border-color: var(--lilac); color: white; }
+.category-item:hover  { color: var(--lilac); background: var(--lilac-pale); }
+.category-item.active { color: var(--lilac-dark); background: var(--lilac-pale); }
 
-/* ── Project grid ── */
+/* ── Project grid ── fewer, bigger cards ("less projects, more presence") */
 #projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
 }
-@media (max-width: 1024px) { #projects-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px)  { #projects-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { #projects-grid { grid-template-columns: 1fr; } }
 
-.project-item { display: block; }
+/* Category changes morph rather than snap: main.js fades/lifts the grid
+   out, swaps which cards are hidden while they're invisible, then fades
+   them back in with a per-card stagger (--i). The delay only applies on
+   the way IN — going out, everything leaves together. */
+.project-item {
+  display: block;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.4s cubic-bezier(0.22,1,0.36,1),
+              transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  transition-delay: calc(var(--i, 0) * 45ms);
+}
 .project-item.hidden-item { display: none; }
+
+#projects-grid.is-morphing .project-item {
+  opacity: 0;
+  transform: translateY(14px) scale(0.975);
+  transition-duration: 0.2s;
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-item, #projects-grid.is-morphing .project-item {
+    transition: opacity 0.15s ease !important;
+    transform: none !important;
+    transition-delay: 0s !important;
+  }
+}
 
 /* ── Tool icons ── always-visible pill (mirrors the category tag on the
    opposite corner) showing which software was used on a project. Icons
@@ -221,12 +342,13 @@ body { font-family: 'Inter', sans-serif; }
 
 .project-card {
   position: relative;
-  height: 300px;
-  border-radius: 1.25rem;
+  height: 440px;
+  border-radius: 1.5rem;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
 }
+@media (max-width: 640px) { .project-card { height: 340px; } }
 .project-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 24px 56px rgba(0,0,0,0.13);
@@ -287,31 +409,6 @@ body { font-family: 'Inter', sans-serif; }
 }
 .project-link-btn:hover { background: var(--lilac); color: white; }
 
-/* ── Services ── */
-.service-card {
-  background: white;
-  border: 1.5px solid #f3f4f6;
-  border-radius: 1.5rem;
-  padding: 2rem;
-  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
-}
-.service-card:hover {
-  border-color: var(--lilac-light);
-  box-shadow: 0 12px 40px rgba(155,111,204,0.1);
-  transform: translateY(-4px);
-}
-.service-icon {
-  width: 52px; height: 52px;
-  border-radius: 14px;
-  background: var(--lilac-pale);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 1.25rem;
-  transition: background 0.25s;
-}
-.service-card:hover .service-icon { background: var(--lilac); }
-.service-icon svg { color: var(--lilac); transition: color 0.25s; }
-.service-card:hover .service-icon svg { color: white; }
-
 /* ── Testimonials ── */
 .testimonial-card {
   background: white;
@@ -321,26 +418,7 @@ body { font-family: 'Inter', sans-serif; }
   transition: box-shadow 0.25s;
 }
 .testimonial-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.06); }
-
-/* ── Form ── */
-.form-input {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 0.75rem;
-  font-size: 0.9rem;
-  font-family: 'Inter', sans-serif;
-  color: #111827;
-  background: white;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  outline: none;
-  -webkit-appearance: none;
-}
-.form-input:focus {
-  border-color: var(--lilac);
-  box-shadow: 0 0 0 3px rgba(155,111,204,0.15);
-}
-.form-input::placeholder { color: #9ca3af; }
+.testimonial-card.glass { border-color: var(--glass-border); }
 
 /* ── Social icons ── */
 .social-icon {
@@ -368,15 +446,6 @@ body { font-family: 'Inter', sans-serif; }
   background: rgba(155,111,204,0.15);
 }
 .social-icon-sm { width: 34px; height: 34px; }
-.social-icon-nav-light {
-  border-color: rgba(255,255,255,0.35);
-  color: rgba(255,255,255,0.85);
-}
-.social-icon-nav-light:hover {
-  border-color: var(--lilac-light);
-  color: white;
-  background: rgba(255,255,255,0.12);
-}
 
 /* ── WhatsApp floating button ── */
 .whatsapp-float {
@@ -407,36 +476,644 @@ body { font-family: 'Inter', sans-serif; }
 }
 .footer-link:hover { color: var(--lilac); }
 
-/* ── Cursor glow ── */
-#hero-glow {
-  pointer-events: none;
+/* ── Hero V2: bright interactive gradient ──
+   White/pastel base — the brief is explicit that the hero must read as
+   80-90% bright, no dark background. Blobs use `multiply` (not `screen`,
+   which was tuned for a dark base) so pastel color shows through cleanly
+   against white and overlaps deepen slightly instead of washing out.
+   No CSS transition on transform: the JS rAF loop (main.js) already lerps
+   the position every frame — stacking a transition on top of that made the
+   motion feel laggy/passive instead of responsive. Autonomous drift still
+   comes from the keyframes below, which animate `margin` (a different
+   property), so the two channels don't fight. */
+.hero-mesh {
   position: absolute;
-  width: 400px; height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(155,111,204,0.28) 0%, transparent 70%);
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  opacity: 0;
-  transition: left 0.12s ease, top 0.12s ease, opacity 0.4s ease;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-/* ── CTA band ── */
+/* Each layer is a FULL-BLEED wash of several very soft, very large
+   ellipses — never a discrete circle. Layers are heavily overscanned
+   (inset -45%) so they can slide a long way without ever revealing an
+   edge, and the blur lives on the ::before so the JS can own `transform`
+   on the layer itself (GPU-composited = instant, no repaint per frame). */
+.mesh-layer {
+  position: absolute;
+  inset: -45%;
+  will-change: transform;
+}
+.mesh-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  filter: blur(50px);
+  mix-blend-mode: multiply;
+  animation: meshDrift 26s ease-in-out infinite;
+}
+.mesh-a::before {
+  background:
+    radial-gradient(ellipse 70% 62% at 22% 26%, var(--pastel-violet-strong) 0%, transparent 62%),
+    radial-gradient(ellipse 66% 56% at 76% 16%, var(--pastel-blue-strong) 0%, transparent 62%),
+    radial-gradient(ellipse 62% 60% at 48% 84%, var(--pastel-violet) 0%, transparent 62%);
+}
+.mesh-b::before {
+  background:
+    radial-gradient(ellipse 74% 64% at 80% 62%, var(--pastel-pink-strong) 0%, transparent 60%),
+    radial-gradient(ellipse 62% 56% at 14% 68%, var(--lilac-light) 0%, transparent 60%),
+    radial-gradient(ellipse 56% 52% at 58% 12%, var(--pastel-pink) 0%, transparent 60%);
+  animation-duration: 31s;
+  animation-direction: reverse;
+}
+.mesh-c::before {
+  background:
+    radial-gradient(ellipse 58% 52% at 40% 46%, var(--violet-light) 0%, transparent 58%),
+    radial-gradient(ellipse 52% 48% at 88% 86%, var(--pastel-blue-strong) 0%, transparent 58%),
+    radial-gradient(ellipse 50% 46% at 8% 14%, var(--pastel-pink-strong) 0%, transparent 58%);
+  animation-duration: 22s;
+  opacity: 0.85;
+}
+@keyframes meshDrift {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50%      { transform: rotate(7deg) scale(1.1); }
+}
+
+/* Light pooling under the cursor — tracks the pointer with zero smoothing
+   so the connection between hand and surface is unmistakable. */
+.mesh-cursor {
+  position: absolute;
+  top: 0; left: 0;
+  width: 560px; height: 560px;
+  margin: -280px 0 0 -280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.35) 38%, rgba(255,255,255,0) 66%);
+  filter: blur(26px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  will-change: transform;
+}
+.mesh-cursor.active { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mesh-layer::before { animation: none !important; }
+  .mesh-cursor { display: none; }
+}
+
+/* ── Hero: text left, avatar right ──────────────────────────
+   Two co-equal columns — the statement carries the message, the avatar
+   carries the identity, side by side at comparable visual scale. Stacks
+   on narrow viewports (text first, avatar below). */
+.hero-canvas {
+  position: relative;
+  min-height: 88vh;
+  min-height: 88svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 7rem 1.5rem 3.5rem;   /* top padding clears the floating nav */
+  background: linear-gradient(160deg, var(--pastel-white) 0%, var(--pastel-lav) 55%, var(--pastel-white) 100%);
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  /* Narrower than before on purpose — the wide 2-column spread read as
+     pinned-left / edge-to-edge instead of one centered composition.
+     Keeping this tighter pulls text + avatar into a single grouped unit
+     that sits centered in the viewport, closer to the reference. */
+  max-width: 1060px;
+  margin: 0 auto;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-content: center;
+  /* Tightened — text and avatar were reading as two separate blocks
+     instead of one scene. Less gap + avatar hugging the near edge of its
+     column (see .hero-avatar-col) closes most of that dead space. */
+  gap: clamp(0.75rem, 1.4vw, 1rem);
+}
+@media (min-width: 900px) {
+  .hero-grid { grid-template-columns: 1.3fr 0.7fr; }
+}
+
+.hero-text-col { text-align: left; }
+
+.hero-kicker {
+  font-size: clamp(17px, 1.7vw, 24px);
+  font-weight: 500;
+  color: var(--lilac-dark);
+  letter-spacing: 0.01em;
+  margin-bottom: 0.7rem;
+}
+.hero-statement {
+  font-weight: 600;
+  /* Sized to fit its 3 hard-broken lines within the (now narrower,
+     more centered) text column without forcing an extra wrap — a
+     bigger cap here looked good in isolation but overflowed the column
+     and silently wrapped into 5-6 lines, breaking the fold-fit. */
+  font-size: clamp(30px, 4.3vw, 66px);
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  color: var(--ink-soft);
+  margin: 0 0 1.75rem;
+}
+.hero-statement .serif-italic { color: var(--lilac-dark); }
+
+.hero-tags {
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6483;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: flex-start; }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.hero-scroll-label { color: rgba(45,42,69,0.4); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
+.hero-scroll-line { width: 1px; height: 32px; background: linear-gradient(to bottom, rgba(45,42,69,0.3), transparent); }
+
+/* ── Hero: pixel-art avatar ──
+   A single <img> whose `src` is swapped between two frames (main.js) —
+   one element, one animation system, so duplicate/stacked sprites are
+   structurally impossible. Deliberately NO float, sway, rotation or
+   bounce: the only motion is the two-frame sprite cycle itself. */
+.hero-avatar-col { display: flex; justify-content: flex-start; }
+.hero-avatar {
+  position: relative;
+  /* Capped at 360px, not higher — past that it outgrows its 0.7fr grid
+     share on very wide screens, which forces the grid to steal width
+     from the text column and silently wraps the headline onto an extra
+     line (found by testing at 1872px). */
+  width: clamp(220px, 24vw, 360px);
+  aspect-ratio: 864 / 1238;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+.hero-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 20px 34px rgba(45,42,69,0.18));
+}
+/* Click response: a soft bloom behind the character (plus a faster frame
+   rate, handled in JS). No transform — motion stays sprite-only. */
+.hero-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -14% -22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(155,111,204,0.4), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+.hero-avatar.is-excited::after { opacity: 1; }
+
+@media (max-width: 899px) {
+  .hero-canvas { padding: 4.5rem 1.25rem 1.5rem; }
+  .hero-grid { gap: 1rem; }
+  .hero-text-col { text-align: center; }
+  .hero-kicker { margin-bottom: 0.4rem; }
+  /* Keep some of the extra breathing room on mobile too, just not the
+     full desktop amount — there isn't enough vertical space to spare. */
+  .hero-statement { line-height: 1.16; margin-bottom: 1rem; }
+  .hero-tags { margin-bottom: 1rem; }
+  .hero-ctas { justify-content: center; }
+  .hero-avatar { width: clamp(140px, 36vw, 260px); margin: 0 auto; }
+}
+
+/* Short-viewport safety net — small phones, or any screen whose browser
+   chrome eats into the visible height. Must stay AFTER the hero rules
+   above: these carry the same specificity, so source order decides. */
+@media (max-height: 700px) {
+  .hero-canvas { padding: 5rem 1.25rem 1.75rem; }
+  .hero-kicker { font-size: 14px; margin-bottom: 0.25rem; }
+  .hero-statement { font-size: clamp(26px, 5vw, 40px); line-height: 1.14; margin-bottom: 0.9rem; }
+  .hero-tags { font-size: 0.72rem; margin-bottom: 1rem; }
+  .hero-ctas a { padding: 0.75rem 1.5rem !important; font-size: 14px !important; }
+  .hero-scroll { display: none; }
+}
+@media (max-height: 700px) and (max-width: 899px) {
+  .hero-avatar { width: clamp(130px, 30vw, 190px); }
+}
+
+/* ── CTA band ── (also used on the Contact section, see index.html) */
 .cta-band {
   background: linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 50%, #1a1a2e 100%);
 }
 
-/* ── Toast ── */
-#toast {
-  position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
-  background: #111827; color: white;
-  padding: 1rem 1.5rem; border-radius: 1rem;
-  font-size: 0.875rem; font-weight: 500;
-  transform: translateY(120%); opacity: 0;
-  transition: transform 0.35s ease, opacity 0.35s ease;
-  display: flex; align-items: center; gap: 0.75rem;
+/* ── Contact CTA links ── */
+.contact-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: white;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
-#toast.show { transform: translateY(0); opacity: 1; }
-#toast .toast-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--lilac); flex-shrink: 0;
+.contact-cta-link:hover { transform: translateY(-3px); background: rgba(255,255,255,0.14); }
+
+/* ── Custom pixel-art cursor: chubby orange cat companion ──
+   Only enabled on fine-pointer devices with real hover (main.js gates
+   this) — touch/coarse-pointer devices keep the native cursor untouched,
+   `html.pixel-cursor-on` is only ever added there. */
+html.pixel-cursor-on,
+html.pixel-cursor-on * {
+  cursor: none !important;
+}
+.pixel-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 56px; height: 56px;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-20px, -18px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.pixel-cursor.active { opacity: 1; }
+
+.cat-bounce { animation: catBounce 1.8s ease-in-out infinite; transform-origin: 16px 18px; }
+@keyframes catBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+.cat-tail { transform-origin: 26.5px 20px; animation: catWag 1.3s ease-in-out infinite; }
+@keyframes catWag {
+  0%, 100% { transform: rotate(-10deg); }
+  50%      { transform: rotate(16deg); }
+}
+.cat-eyes { transform-origin: 15.4px 13px; animation: catBlink 4.5s ease-in-out infinite; }
+@keyframes catBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%           { transform: scaleY(0.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cat-bounce, .cat-tail, .cat-eyes { animation: none !important; }
+}
+
+/* ── Toolkit "piñata" section ──────────────────────────────────
+   Sofia's avatar (left) and the piñata blob (right) share one scene.
+   --dx/--dy/--rot/--delay per particle (set inline in index.html) define
+   its hand-authored resting position relative to the blob's own center
+   (.pinata-zone is the positioning root for the blob + particles, not
+   the whole stage, so adding the avatar alongside it never shifts their
+   math); --toolkit-scale pulls that offset in on mobile so nothing
+   overflows without shrinking touch targets. */
+.toolkit-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 6vw, 4.5rem);
+  width: 100%;
+  max-width: 1020px;
+  margin: 2rem auto 0;
+  --toolkit-scale: 1;
+}
+.pinata-zone {
+  position: relative;
+  width: 780px;
+  max-width: 100%;
+  height: 620px;
+  flex-shrink: 0;
+}
+@media (max-width: 900px) {
+  .toolkit-stage { flex-direction: column; gap: 1.5rem; }
+}
+@media (max-width: 640px) {
+  .pinata-zone { height: 480px; --toolkit-scale: 0.56; }
+}
+
+/* ── Avatar — calm before the burst, no bounce/float/sway. A very slight
+   breathing scale is the only idle motion, so the scene never feels
+   fully static without being distracting. ── */
+.toolkit-avatar {
+  position: relative;
+  width: clamp(130px, 15vw, 210px);
+  aspect-ratio: 864 / 1238;
+  flex-shrink: 0;
+}
+.toolkit-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 16px 26px rgba(45,42,69,0.16));
+  animation: toolkitAvatarBreathe 4.5s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+.toolkit-avatar.is-reacting img {
+  animation: toolkitAvatarBreathe 4.5s ease-in-out infinite, avatarPop 0.5s ease;
+}
+@keyframes toolkitAvatarBreathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.018); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toolkit-avatar img { animation: none !important; }
+}
+
+/* Retro-game speech bubble — chunky border, small pointer tail toward the
+   avatar's head, "CHAAA!" only readable while `.visible` (JS-timed). */
+.toolkit-speech-bubble {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translate(-50%, 6px) scale(0.85);
+  white-space: nowrap;
+  background: #FFFDF6;
+  color: var(--ink-soft);
+  border: 3px solid var(--ink-soft);
+  border-radius: 14px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  box-shadow: 3px 3px 0 rgba(45,42,69,0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 8;
+}
+.toolkit-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 28%;
+  width: 14px; height: 14px;
+  background: #FFFDF6;
+  border-right: 3px solid var(--ink-soft);
+  border-bottom: 3px solid var(--ink-soft);
+  transform: rotate(45deg);
+}
+.toolkit-speech-bubble.visible {
+  opacity: 1;
+  transform: translate(-50%, -0.65rem) scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .toolkit-speech-bubble { transition: opacity 0.2s ease !important; transform: translate(-50%, -0.65rem) !important; }
+}
+
+/* Blob */
+.pinata-blob {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 190px; height: 190px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 6;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.toolkit-stage.is-burst .pinata-blob {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.3);
+  pointer-events: none;
+}
+.pinata-glow {
+  position: absolute;
+  inset: -34px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(155,111,204,0.55), transparent 70%);
+  opacity: var(--proximity, 0.25);
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.pinata-blob-inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: linear-gradient(135deg, var(--pastel-violet-strong) 0%, var(--pastel-pink-strong) 45%, var(--pastel-blue-strong) 100%);
+  border-radius: 62% 38% 55% 45% / 55% 45% 60% 40%;
+  backdrop-filter: blur(6px) saturate(160%);
+  -webkit-backdrop-filter: blur(6px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.65);
+  box-shadow: 0 20px 60px rgba(155,111,204,0.28), inset 0 2px 24px rgba(255,255,255,0.6);
+  animation: pinataFloat 6s ease-in-out infinite, pinataMorph 9s ease-in-out infinite;
+  transition: box-shadow 0.3s ease;
+}
+/* Hover: "click me" anticipation — a combined float+wiggle keyframe
+   (transform is a single property, so this replaces pinataFloat for the
+   duration of the hover rather than stacking a second transform
+   animation on top of it) plus a brighter glow. Subtle on purpose. */
+.pinata-blob:hover .pinata-blob-inner,
+.pinata-blob:focus-visible .pinata-blob-inner {
+  animation: pinataFloatHover 1.7s ease-in-out infinite, pinataMorph 4.5s ease-in-out infinite;
+  box-shadow: 0 26px 70px rgba(155,111,204,0.42), inset 0 2px 24px rgba(255,255,255,0.7);
+}
+/* Click: brief scale-up + micro shake before the actual burst (JS adds
+   this class for ~260ms, then swaps to .is-burst — see toolkit.js). */
+.toolkit-stage.is-anticipating .pinata-blob-inner {
+  animation: pinataAnticipate 0.26s ease-in-out;
+}
+@keyframes pinataFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  50%      { transform: translateY(-12px) rotate(4deg) scale(1.02); }
+}
+@keyframes pinataFloatHover {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg) scale(1.04); }
+  50%      { transform: translateY(-8px) rotate(1.5deg) scale(1.06); }
+}
+@keyframes pinataAnticipate {
+  0%   { transform: scale(1) rotate(0deg); }
+  30%  { transform: scale(1.1) rotate(-4deg); }
+  60%  { transform: scale(1.12) rotate(4deg); }
+  100% { transform: scale(1.05) rotate(0deg); }
+}
+@keyframes pinataMorph {
+  0%, 100% { border-radius: 62% 38% 55% 45% / 55% 45% 60% 40%; }
+  33%      { border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
+  66%      { border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%; }
+}
+.pinata-hint {
+  position: absolute;
+  bottom: -2.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--lilac-dark);
+  white-space: nowrap;
+  animation: pinataHintPulse 2.4s ease-in-out infinite;
+}
+@keyframes pinataHintPulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .pinata-blob-inner, .pinata-hint { animation: none !important; }
+}
+
+/* Particles — collapsed at center until .is-burst, then spring out to
+   their --dx/--dy/--rot resting offset with a staggered --delay. */
+.toolkit-particle {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) translate(0, 0) scale(0.3) rotate(0deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+  z-index: 4;
+}
+.toolkit-stage.is-burst .toolkit-particle {
+  transform: translate(-50%, -50%) translate(calc(var(--dx) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale))) scale(1) rotate(var(--rot));
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: var(--delay);
+}
+@media (prefers-reduced-motion: reduce) {
+  .toolkit-particle { transition: opacity 0.25s ease !important; transition-delay: 0s !important; }
+  .toolkit-stage.is-burst .toolkit-particle {
+    transform: translate(-50%, -50%) translate(calc(var(--dx) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale))) scale(1) rotate(var(--rot));
+  }
+}
+
+/* Tool badges */
+.tool-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  border-radius: 9999px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 24px rgba(45,42,69,0.1);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tool-badge:hover, .tool-badge:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(45,42,69,0.16);
+}
+.tool-swatch {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-size: 0.66rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.tool-name { font-size: 0.82rem; font-weight: 600; color: var(--ink-soft); }
+.tool-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--ink-soft);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.45rem 0.8rem;
+  border-radius: 0.6rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 20;
+}
+.tool-badge:hover .tool-tooltip,
+.tool-badge:focus-visible .tool-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Candy pieces — decorative, wrapped-candy silhouette via pseudo-element
+   twists, pastel gradient body with a soft inset shine. */
+.candy-piece {
+  width: 34px; height: 18px;
+  border-radius: 9999px;
+  box-shadow: inset -2px -2px 4px rgba(0,0,0,0.08), inset 2px 2px 4px rgba(255,255,255,0.65);
+}
+.candy-piece::before, .candy-piece::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 0; height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  transform: translateY(-50%);
+}
+.candy-piece::before { left: -6px; border-right: 8px solid; }
+.candy-piece::after  { right: -6px; border-left: 8px solid; }
+.candy-1 { background: var(--pastel-violet-strong); }
+.candy-1::before, .candy-1::after { border-right-color: var(--pastel-violet-strong); border-left-color: var(--pastel-violet-strong); }
+.candy-2 { background: var(--pastel-pink-strong); }
+.candy-2::before, .candy-2::after { border-right-color: var(--pastel-pink-strong); border-left-color: var(--pastel-pink-strong); }
+.candy-3 { background: var(--pastel-blue-strong); }
+.candy-3::before, .candy-3::after { border-right-color: var(--pastel-blue-strong); border-left-color: var(--pastel-blue-strong); }
+.candy-4 { background: var(--lilac-light); }
+.candy-4::before, .candy-4::after { border-right-color: var(--lilac-light); border-left-color: var(--lilac-light); }
+.candy-5 { background: var(--violet-light); }
+.candy-5::before, .candy-5::after { border-right-color: var(--violet-light); border-left-color: var(--violet-light); }
+
+/* Replay */
+.toolkit-replay-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 9999px;
+  background: transparent;
+  border: 1.5px solid var(--lilac);
+  color: var(--lilac);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease, color 0.2s ease;
+}
+.toolkit-replay-btn.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.toolkit-replay-btn:hover { background: var(--lilac); color: white; }
+
+/* Cat-cursor claw swipe — triggered on blob click (see toolkit.js). Only
+   ever visible when the custom cursor is active (fine-pointer devices). */
+.pixel-cursor.claw-swipe .cat-bounce { animation: catClawSwipe 0.35s ease; }
+@keyframes catClawSwipe {
+  0%   { transform: rotate(0deg) scale(1); }
+  35%  { transform: rotate(-25deg) scale(1.15); }
+  70%  { transform: rotate(18deg) scale(1.08); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.claw-mark {
+  position: fixed;
+  width: 46px; height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, transparent, rgba(45,42,69,0.55), transparent);
+  pointer-events: none;
+  z-index: 9998;
+  transform: rotate(var(--mark-rot, 0deg));
+  animation: clawMarkFlash 0.4s ease forwards;
+}
+@keyframes clawMarkFlash {
+  0%   { opacity: 0; transform: rotate(var(--mark-rot, 0deg)) scaleX(0.3); }
+  30%  { opacity: 1; transform: rotate(var(--mark-rot, 0deg)) scaleX(1); }
+  100% { opacity: 0; transform: rotate(var(--mark-rot, 0deg)) scaleX(1); }
 }

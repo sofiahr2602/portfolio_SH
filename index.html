@@ -210,74 +210,80 @@
 
       <!-- Tool badges (12) — glass capsule, monogram swatch + name, tooltip
            on hover/focus. Positions are hand-authored via --dx/--dy/--rot
-           (final resting offset from center) and --delay (burst stagger). -->
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-260px;--dy:-120px;--rot:-8deg;--delay:0.00s">
+           (final resting offset from center) and --delay (burst stagger).
+           AUDIT FIX: re-fanned from a full 360° spread to a rightward arc
+           (dx no lower than -90) — the old spread went as far as -270px
+           left, which used to be safely absorbed by an oversized 780px
+           zone. Now that the zone hugs the blob (340px, see styles.css),
+           that same -270px would land the badge on top of the avatar.
+           Bursting up/right/down away from Sofia reads better anyway. -->
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-70px;--dy:-270px;--rot:-8deg;--delay:0.00s">
         <span class="tool-swatch" style="background:#A259FF">Fi</span>
         <span class="tool-name">Figma</span>
         <span class="tool-tooltip" role="tooltip">UI Design · Design Systems · Prototyping</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-180px;--dy:-190px;--rot:6deg;--delay:0.035s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:40px;--dy:-300px;--rot:6deg;--delay:0.035s">
         <span class="tool-swatch" style="background:#FFC700">FJ</span>
         <span class="tool-name">FigJam</span>
         <span class="tool-tooltip" role="tooltip">Workshops · Ideation · Visual Collaboration</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-60px;--dy:-230px;--rot:-4deg;--delay:0.07s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:150px;--dy:-280px;--rot:-4deg;--delay:0.07s">
         <span class="tool-swatch" style="background:#FF9A00">Ai</span>
         <span class="tool-name">Illustrator</span>
         <span class="tool-tooltip" role="tooltip">Vector Art · Logos · Iconography</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:70px;--dy:-225px;--rot:5deg;--delay:0.105s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:250px;--dy:-220px;--rot:5deg;--delay:0.105s">
         <span class="tool-swatch" style="background:#31A8FF">Ps</span>
         <span class="tool-name">Photoshop</span>
         <span class="tool-tooltip" role="tooltip">Photo Editing · Compositing · Retouching</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:190px;--dy:-175px;--rot:-6deg;--delay:0.14s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:320px;--dy:-130px;--rot:-6deg;--delay:0.14s">
         <span class="tool-swatch" style="background:#9999FF">Ae</span>
         <span class="tool-name">After Effects</span>
         <span class="tool-tooltip" role="tooltip">Motion · Animation · Storytelling</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:270px;--dy:-90px;--rot:8deg;--delay:0.175s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:350px;--dy:-10px;--rot:8deg;--delay:0.175s">
         <span class="tool-swatch" style="background:#7C4DFF">Pr</span>
         <span class="tool-name">Premiere Pro</span>
         <span class="tool-tooltip" role="tooltip">Video Editing · Pacing · Post-Production</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:290px;--dy:40px;--rot:-5deg;--delay:0.21s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:330px;--dy:110px;--rot:-5deg;--delay:0.21s">
         <span class="tool-swatch" style="background:#EA7600">Bl</span>
         <span class="tool-name">Blender</span>
         <span class="tool-tooltip" role="tooltip">3D · Visual Experimentation</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:230px;--dy:150px;--rot:7deg;--delay:0.245s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:270px;--dy:220px;--rot:7deg;--delay:0.245s">
         <span class="tool-swatch" style="background:#00B4AA">Rv</span>
         <span class="tool-name">Rive</span>
         <span class="tool-tooltip" role="tooltip">Interactive Animation · Micro-interactions</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:110px;--dy:210px;--rot:-6deg;--delay:0.28s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:170px;--dy:290px;--rot:-6deg;--delay:0.28s">
         <span class="tool-swatch" style="background:#0055FF">Fr</span>
         <span class="tool-name">Framer</span>
         <span class="tool-tooltip" role="tooltip">Interactive Prototypes · Web Motion</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-30px;--dy:230px;--rot:4deg;--delay:0.315s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:50px;--dy:310px;--rot:4deg;--delay:0.315s">
         <span class="tool-swatch" style="background:#007ACC">Vs</span>
         <span class="tool-name">VS Code</span>
         <span class="tool-tooltip" role="tooltip">Front-End Craft · Building Ideas</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-160px;--dy:195px;--rot:-7deg;--delay:0.35s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-60px;--dy:260px;--rot:-7deg;--delay:0.35s">
         <span class="tool-swatch" style="background:#DA7756">Cl</span>
         <span class="tool-name">Claude</span>
         <span class="tool-tooltip" role="tooltip">AI-assisted workflows · Creative exploration</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-270px;--dy:90px;--rot:6deg;--delay:0.385s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-90px;--dy:130px;--rot:6deg;--delay:0.385s">
         <span class="tool-swatch" style="background:#10A37F">Ch</span>
         <span class="tool-name">ChatGPT</span>
         <span class="tool-tooltip" role="tooltip">Ideation · Research · Rapid Iteration</span>
       </button>
 
       <!-- Candy pieces (5) — decorative filler, no tooltip -->
-      <span class="toolkit-particle candy-piece candy-1" style="--dx:-140px;--dy:-40px;--rot:15deg;--delay:0.42s" aria-hidden="true"></span>
-      <span class="toolkit-particle candy-piece candy-2" style="--dx:140px;--dy:-30px;--rot:-12deg;--delay:0.455s" aria-hidden="true"></span>
-      <span class="toolkit-particle candy-piece candy-3" style="--dx:0px;--dy:140px;--rot:10deg;--delay:0.49s" aria-hidden="true"></span>
-      <span class="toolkit-particle candy-piece candy-4" style="--dx:-90px;--dy:60px;--rot:-18deg;--delay:0.525s" aria-hidden="true"></span>
-      <span class="toolkit-particle candy-piece candy-5" style="--dx:100px;--dy:90px;--rot:20deg;--delay:0.56s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-1" style="--dx:30px;--dy:-160px;--rot:15deg;--delay:0.42s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-2" style="--dx:200px;--dy:-70px;--rot:-12deg;--delay:0.455s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-3" style="--dx:200px;--dy:60px;--rot:10deg;--delay:0.49s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-4" style="--dx:20px;--dy:170px;--rot:-18deg;--delay:0.525s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-5" style="--dx:-30px;--dy:20px;--rot:20deg;--delay:0.56s" aria-hidden="true"></span>
 
       </div><!-- /pinata-zone -->
     </div>

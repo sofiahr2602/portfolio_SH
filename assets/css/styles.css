@@ -693,18 +693,26 @@ body { font-family: 'Inter', sans-serif; }
   .hero-avatar { width: clamp(140px, 36vw, 260px); margin: 0 auto; }
 }
 
-/* Short-viewport safety net — small phones, or any screen whose browser
-   chrome eats into the visible height. Must stay AFTER the hero rules
-   above: these carry the same specificity, so source order decides. */
+/* Short-viewport safety net.
+   BUG FOUND IN AUDIT: this used to override font-size unconditionally on
+   ANY short window, with no width guard — including a wide desktop
+   window that just happens to be short (e.g. 1650x660, a very ordinary
+   un-maximized browser size). That silently capped the headline at 40px
+   *regardless of the width-driven clamp above*, which is exactly what
+   made "make the text bigger" look like it was doing nothing, and made
+   the text-to-avatar gap look enormous (small text, but the avatar and
+   grid columns stayed full desktop size). Split in two:
+   - height-only: vertical breathing room, safe at any width.
+   - height+width: the actual "small phone" case gets the smaller type. */
 @media (max-height: 700px) {
   .hero-canvas { padding: 5rem 1.25rem 1.75rem; }
+  .hero-scroll { display: none; }
+}
+@media (max-height: 700px) and (max-width: 899px) {
   .hero-kicker { font-size: 14px; margin-bottom: 0.25rem; }
   .hero-statement { font-size: clamp(26px, 5vw, 40px); line-height: 1.14; margin-bottom: 0.9rem; }
   .hero-tags { font-size: 0.72rem; margin-bottom: 1rem; }
   .hero-ctas a { padding: 0.75rem 1.5rem !important; font-size: 14px !important; }
-  .hero-scroll { display: none; }
-}
-@media (max-height: 700px) and (max-width: 899px) {
   .hero-avatar { width: clamp(130px, 30vw, 190px); }
 }
 
@@ -779,24 +787,34 @@ html.pixel-cursor-on * {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(1.5rem, 6vw, 4.5rem);
+  /* Was clamp(1.5rem, 6vw, 4.5rem) — up to 72px, plus .pinata-zone below
+     used to be an oversized 780x620 box with the blob dead-centered in
+     it (sized for the post-burst scatter radius, ~290px in each
+     direction). That made sense for where particles land, but it meant
+     the *idle* 190px blob sat in the middle of a mostly-empty 780px-wide
+     box, reading as "floating far from the avatar" — audit finding. */
+  gap: clamp(1rem, 3vw, 2rem);
   width: 100%;
   max-width: 1020px;
   margin: 2rem auto 0;
   --toolkit-scale: 1;
 }
 .pinata-zone {
+  /* Shrunk from 780x620 to hug the idle blob closely. Nothing clips at
+     this size: the zone has no overflow:hidden, so burst particles
+     (--dx/--dy up to ~290px) still fly their full authored distance —
+     they just visually extend past this smaller box, which is fine. */
   position: relative;
-  width: 780px;
+  width: 340px;
+  height: 340px;
   max-width: 100%;
-  height: 620px;
   flex-shrink: 0;
 }
 @media (max-width: 900px) {
   .toolkit-stage { flex-direction: column; gap: 1.5rem; }
 }
 @media (max-width: 640px) {
-  .pinata-zone { height: 480px; --toolkit-scale: 0.56; }
+  .pinata-zone { height: 300px; --toolkit-scale: 0.56; }
 }
 
 /* ── Avatar — calm before the burst, no bounce/float/sway. A very slight

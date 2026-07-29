@@ -503,13 +503,18 @@ body { font-family: 'Inter', sans-serif; }
   inset: -45%;
   will-change: transform;
 }
+/* Fast, constant, ambient flow — this IS the "gradient", not a cursor
+   effect. Each layer's own translate+rotate+scale keyframe runs in
+   6-9s (was 22-31s, which read as almost static); the JS-driven cursor
+   translate on the parent .mesh-layer (main.js) rides on top of this as
+   an accent, not the whole show. */
 .mesh-layer::before {
   content: '';
   position: absolute;
   inset: 0;
   filter: blur(50px);
   mix-blend-mode: multiply;
-  animation: meshDrift 26s ease-in-out infinite;
+  animation: meshDrift 7s ease-in-out infinite;
 }
 .mesh-a::before {
   background:
@@ -522,7 +527,7 @@ body { font-family: 'Inter', sans-serif; }
     radial-gradient(ellipse 74% 64% at 80% 62%, var(--pastel-pink-strong) 0%, transparent 60%),
     radial-gradient(ellipse 62% 56% at 14% 68%, var(--lilac-light) 0%, transparent 60%),
     radial-gradient(ellipse 56% 52% at 58% 12%, var(--pastel-pink) 0%, transparent 60%);
-  animation-duration: 31s;
+  animation-duration: 9s;
   animation-direction: reverse;
 }
 .mesh-c::before {
@@ -530,33 +535,19 @@ body { font-family: 'Inter', sans-serif; }
     radial-gradient(ellipse 58% 52% at 40% 46%, var(--violet-light) 0%, transparent 58%),
     radial-gradient(ellipse 52% 48% at 88% 86%, var(--pastel-blue-strong) 0%, transparent 58%),
     radial-gradient(ellipse 50% 46% at 8% 14%, var(--pastel-pink-strong) 0%, transparent 58%);
-  animation-duration: 22s;
+  animation-duration: 6s;
   opacity: 0.85;
 }
 @keyframes meshDrift {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  50%      { transform: rotate(7deg) scale(1.1); }
+  0%   { transform: translate(0%, 0%)   rotate(0deg)  scale(1); }
+  25%  { transform: translate(5%, -6%)  rotate(6deg)  scale(1.12); }
+  50%  { transform: translate(-4%, 4%)  rotate(-5deg) scale(1.18); }
+  75%  { transform: translate(-6%, -3%) rotate(4deg)  scale(1.08); }
+  100% { transform: translate(0%, 0%)   rotate(0deg)  scale(1); }
 }
-
-/* Light pooling under the cursor — tracks the pointer with zero smoothing
-   so the connection between hand and surface is unmistakable. */
-.mesh-cursor {
-  position: absolute;
-  top: 0; left: 0;
-  width: 560px; height: 560px;
-  margin: -280px 0 0 -280px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.35) 38%, rgba(255,255,255,0) 66%);
-  filter: blur(26px);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  will-change: transform;
-}
-.mesh-cursor.active { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .mesh-layer::before { animation: none !important; }
-  .mesh-cursor { display: none; }
 }
 
 /* ── Hero: text left, avatar right ──────────────────────────

@@ -168,22 +168,22 @@
   });
 
   /* ── Hero: interactive gradient mesh ─────────────────────────
-     The three mesh layers are full-bleed multi-gradient washes, not
-     discrete blobs. Sliding them across each other at different rates
-     (and opposite signs) makes the colour field stretch and re-blend —
-     the surface behaves as one fluid, never as separate circles.
+     The gradient IS the hero background — a fast, constant, ambient
+     flow (see the 6-9s meshDrift keyframe in styles.css), not a cursor
+     effect. The cursor nudges that flow (this rAF loop), it doesn't
+     drive it — there's no separate cursor-attached spotlight anymore,
+     the whole canvas is the "live" surface.
 
      Only `transform` is written here, so the browser composites on the
      GPU without repainting the (blurred, expensive) gradients. The
-     autonomous rotate/scale drift lives on each layer's ::before in
-     styles.css, so the two channels never fight over one property.
+     autonomous drift lives on each layer's ::before in styles.css, so
+     the two channels never fight over one property.
 
-     Smoothing is deliberately light (0.55) and travel is large: the
+     Smoothing is deliberately light (0.7) and travel is large: the
      response has to read as immediate, like stirring liquid under glass.
   ─────────────────────────────────────────────────────────── */
   const heroSection   = document.getElementById('hero');
   const meshLayers    = document.querySelectorAll('[data-mesh]');
-  const meshCursor    = document.getElementById('mesh-cursor');
   const reduceMotion  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (heroSection && meshLayers.length && !reduceMotion) {
@@ -215,20 +215,11 @@
       const r = heroSection.getBoundingClientRect();
       targetX = ((e.clientX - r.left) / r.width  - 0.5) * TRAVEL;
       targetY = ((e.clientY - r.top)  / r.height - 0.5) * TRAVEL;
-      // The light pool tracks the pointer with no smoothing at all.
-      if (meshCursor) {
-        meshCursor.style.transform =
-          `translate3d(${e.clientX - r.left}px, ${e.clientY - r.top}px, 0)`;
-      }
       kick();
     }, { passive: true });
 
-    heroSection.addEventListener('mouseenter', () => {
-      if (meshCursor) meshCursor.classList.add('active');
-    });
     heroSection.addEventListener('mouseleave', () => {
       targetX = 0; targetY = 0;
-      if (meshCursor) meshCursor.classList.remove('active');
       kick();
     });
   }

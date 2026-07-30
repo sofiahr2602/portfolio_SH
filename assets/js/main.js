@@ -236,6 +236,13 @@
       targetX = 0; targetY = 0;
       kick();
     });
+
+    // Pause the (GPU-cheap but still not-free) mesh keyframes once the
+    // hero scrolls out of view — see #hero.is-offscreen in styles.css.
+    // Nothing to gain from animating a background nobody is looking at.
+    new IntersectionObserver(entries => {
+      heroSection.classList.toggle('is-offscreen', !entries[0].isIntersecting);
+    }).observe(heroSection);
   }
 
   /* ── Hero: pixel-art avatar — two-frame sprite loop ─────────────
@@ -252,17 +259,38 @@
   const avatarBtn   = document.getElementById('hero-avatar');
   const avatarFrame = document.getElementById('avatar-frame');
   const AVATAR_FRAMES = [
-    'assets/images/avatar/avatar-sentada-laptop-paz.svg',   // frame 1 — ✌️ + laptop
-    'assets/images/avatar/avatar-sentada-laptop-puno.svg'   // frame 2 — 👊 + laptop
+    'assets/images/avatar/avatar-sentada-laptop-paz.webp',   // frame 1 — ✌️ + laptop
+    'assets/images/avatar/avatar-sentada-laptop-puno.webp'   // frame 2 — 👊 + laptop
   ];
   const FRAME_IDLE_MS = 720, FRAME_FAST_MS = 220, EXCITED_MS = 1400;
 
   if (avatarFrame) {
     let frame = 0, frameTimer = null, currentMs = FRAME_IDLE_MS, excitedTimer = null;
 
+    // Both frames are large rasters (~1700px2 real pixels) — kept as live
+    // Image() objects (not thrown away after preload) so `.decode()` can
+    // be called again on every swap. Once a browser has decoded a bitmap
+    // it caches it, so a repeat `.decode()` on the same object resolves
+    // near-instantly — but AUDIT FIX: without it, re-assigning
+    // avatarFrame.src to a large image the browser hasn't got warm in its
+    // decode cache anymore (evicted under memory pressure, which does
+    // happen after enough cycles) forces a decode on the visible element
+    // itself, and `decoding="async"` explicitly permits the browser to
+    // show nothing for that frame — a visible blink. Decoding on the
+    // *offscreen* preloaded copy first, and only swapping `src` once that
+    // resolves, means the bitmap is already ready by the time it becomes
+    // visible.
+    const frameImages = AVATAR_FRAMES.map(src => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    });
     function step() {
-      frame = (frame + 1) % AVATAR_FRAMES.length;
-      avatarFrame.src = AVATAR_FRAMES[frame];
+      const next = (frame + 1) % AVATAR_FRAMES.length;
+      const swap = () => { frame = next; avatarFrame.src = AVATAR_FRAMES[next]; };
+      const img = frameImages[next];
+      if (img.decode) img.decode().then(swap, swap);
+      else swap();
     }
     function runAt(ms) {
       clearInterval(frameTimer);
@@ -270,12 +298,11 @@
       frameTimer = setInterval(step, ms);
     }
 
-    // Both frames are heavy SVG-wrapped rasters — decode them up front so
-    // the very first swap doesn't flash an empty box.
-    Promise.all(AVATAR_FRAMES.map(src => new Promise(resolve => {
-      const img = new Image();
-      img.onload = img.onerror = resolve;
-      img.src = src;
+    // Preload + decode both frames up front so the very first swap
+    // doesn't flash an empty box.
+    Promise.all(frameImages.map(img => new Promise(resolve => {
+      if (img.decode) img.decode().then(resolve, resolve);
+      else { img.onload = img.onerror = resolve; }
     }))).then(() => runAt(FRAME_IDLE_MS));
 
     if (avatarBtn) {
@@ -295,6 +322,16 @@
       if (document.hidden) clearInterval(frameTimer);
       else runAt(currentMs);
     });
+
+    // ...or while the hero itself has scrolled out of view.
+    if (heroSection) {
+      new IntersectionObserver(entries => {
+        if (!document.hidden) {
+          if (entries[0].isIntersecting) runAt(currentMs);
+          else clearInterval(frameTimer);
+        }
+      }).observe(heroSection);
+    }
   }
 
   /* ── Custom pixel-art cat cursor ──────────────────────────────

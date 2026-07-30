@@ -10,30 +10,98 @@
   const cursorCat     = document.getElementById('pixel-cursor');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Pause the piñata float/morph + avatar breathe keyframes once this
+  // section scrolls out of view — see #toolkit-stage.is-offscreen in
+  // styles.css. They run forever otherwise, even far down the page.
+  new IntersectionObserver(entries => {
+    stage.classList.toggle('is-offscreen', !entries[0].isIntersecting);
+    if (!entries[0].isIntersecting) stopIdle();
+    else if (!reacting) runIdle();
+  }).observe(stage);
+
   /* ── Avatar reaction — ONE <img>, src swapped between two existing
      poses. Never a second element, never a clone: exactly the same
      structural guarantee as the hero avatar fix (main.js). ── */
   const avatarEl    = document.getElementById('toolkit-avatar');
   const avatarFrame = document.getElementById('toolkit-avatar-frame');
   const speechEl    = document.getElementById('toolkit-speech-bubble');
-  const AVATAR_IDLE   = 'assets/images/avatar/avatar-base-sin-sonrisa.svg';
-  const AVATAR_REACT  = 'assets/images/avatar/avatar-brazos-arriba.svg';
-  const SPEECH_MS = 1800, AVATAR_REACT_MS = 2100;
-  let avatarTimer, speechTimer;
+  const AVATAR_REACT  = 'assets/images/avatar/avatar-brazos-arriba.webp';
 
+  /* Pre-burst idle: a two-frame loop ("Pointed frame 1/2") that never
+     stops, same mechanism as the hero avatar (main.js) — it's an
+     invitation to click the piñata, so it should always be moving, not
+     a single static pose. This only ever plays BEFORE the burst; once
+     .is-reacting is on (avatarReact, below), the loop is stopped and
+     this code never touches the avatar again until reset(). */
+  const IDLE_FRAMES = [
+    'assets/images/avatar/avatar-pointed-1.webp',
+    'assets/images/avatar/avatar-pointed-2.webp'
+  ];
+  const IDLE_MS = 720;
+  let idleFrame = 0, idleTimer = null, reacting = false;
+
+  // Live Image() copies kept around (not discarded after preload) so
+  // `.decode()` can run again on every swap — see the identical fix in
+  // main.js's hero avatar loop for why: without re-decoding the offscreen
+  // copy first, a `src` swap on the visible <img> can force a decode on
+  // the visible element itself and show nothing for a frame.
+  const idleImages = IDLE_FRAMES.map(src => {
+    const img = new Image();
+    img.src = src;
+    return img;
+  });
+  function idleStep() {
+    const next = (idleFrame + 1) % IDLE_FRAMES.length;
+    const swap = () => { idleFrame = next; if (avatarFrame) avatarFrame.src = IDLE_FRAMES[next]; };
+    const img = idleImages[next];
+    if (img.decode) img.decode().then(swap, swap);
+    else swap();
+  }
+  function runIdle() {
+    if (reacting || reduceMotion) return;
+    clearInterval(idleTimer);
+    idleTimer = setInterval(idleStep, IDLE_MS);
+  }
+  function stopIdle() {
+    clearInterval(idleTimer);
+  }
+
+  // Preload + decode both idle frames so the very first swap doesn't
+  // flash empty.
+  Promise.all(idleImages.map(img => new Promise(resolve => {
+    if (img.decode) img.decode().then(resolve, resolve);
+    else { img.onload = img.onerror = resolve; }
+  }))).then(() => {
+    idleFrame = 0;
+    if (avatarFrame) avatarFrame.src = IDLE_FRAMES[0];
+    runIdle();
+  });
+
+  // Don't burn swaps while the tab is in the background (mirrors the
+  // hero avatar's same guard in main.js).
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopIdle();
+    else if (!reacting) runIdle();
+  });
+
+  // Both the raised-hands pose and the "CHAAA!" bubble now hold until the
+  // user clicks "Break again" (reset()) — no auto-revert timer. Previously
+  // this settled back to idle on its own after ~2s, which read as the
+  // avatar "giving up" on the reaction while the tools were still out.
   function avatarReact() {
+    reacting = true;
+    stopIdle();
     if (!avatarFrame) return;
     avatarFrame.src = AVATAR_REACT;
     if (avatarEl) avatarEl.classList.add('is-reacting');
     if (speechEl) speechEl.classList.add('visible');
-    clearTimeout(speechTimer);
-    clearTimeout(avatarTimer);
-    speechTimer = setTimeout(() => { if (speechEl) speechEl.classList.remove('visible'); }, SPEECH_MS);
-    avatarTimer = setTimeout(avatarSettle, AVATAR_REACT_MS);
   }
   function avatarSettle() {
-    if (avatarFrame) avatarFrame.src = AVATAR_IDLE;
+    reacting = false;
+    idleFrame = 0;
+    if (avatarFrame) avatarFrame.src = IDLE_FRAMES[0];
     if (avatarEl) avatarEl.classList.remove('is-reacting');
+    runIdle();
   }
 
   /* ── Burst / reset ──
@@ -41,7 +109,12 @@
      actual burst, so the pop reads as one satisfying beat instead of an
      abrupt swap — see .is-anticipating in styles.css. */
   const ANTICIPATE_MS = reduceMotion ? 0 : 260;
-  let settleTimer, anticipateTimer;
+  // Longest particle drop finishes at its --delay (0.665s, the last
+  // lollipop) + the pinataDrop animation duration (0.85s, see styles.css)
+  // — this is when the idle side-to-side bounce should take over on the
+  // badges. Keep this in sync with the slowest --delay in index.html.
+  const SETTLE_MS = reduceMotion ? 250 : 1520;
+  let settleTimer, bounceTimer, anticipateTimer;
 
   function burst() {
     if (stage.classList.contains('is-burst') || stage.classList.contains('is-anticipating')) return;
@@ -52,17 +125,17 @@
       stage.classList.add('is-burst');
       avatarReact();
       clearTimeout(settleTimer);
-      const settleDelay = reduceMotion ? 250 : 1300;
-      settleTimer = setTimeout(() => replay.classList.add('visible'), settleDelay);
+      clearTimeout(bounceTimer);
+      settleTimer = setTimeout(() => replay.classList.add('visible'), SETTLE_MS);
+      bounceTimer = setTimeout(() => stage.classList.add('is-settled'), SETTLE_MS);
     }, ANTICIPATE_MS);
   }
   function reset() {
-    stage.classList.remove('is-burst', 'is-anticipating');
+    stage.classList.remove('is-burst', 'is-anticipating', 'is-settled');
     replay.classList.remove('visible');
     clearTimeout(settleTimer);
+    clearTimeout(bounceTimer);
     clearTimeout(anticipateTimer);
-    clearTimeout(avatarTimer);
-    clearTimeout(speechTimer);
     if (speechEl) speechEl.classList.remove('visible');
     avatarSettle();
   }

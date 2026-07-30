@@ -27,14 +27,19 @@
   --pastel-blue:   #EAF3FF;
   --pastel-violet-strong: #DDB8FF;
   --pastel-pink-strong:   #FFDDF6;
-  --pastel-blue-strong:   #D6E8FF;
+  /* Was a blue; per direction the palette stays pink/lilac/white — this
+     is now a pale lilac-white instead. Name kept for the variables that
+     already reference it (mesh-c gradient, piñata blob, candy-3). */
+  --pastel-blue-strong:   #EDE3FF;
   --ink-soft:      #2D2A45;
 
-  /* Ocean-wave hero background — brighter, more saturated pink/blue than
-     the rest of the palette on purpose (per direction: "a pesar de que
-     rompe un poco con la paleta"), used only for the flowing wave bands. */
+  /* Ocean-wave hero background — brighter, more saturated pink/lilac than
+     the rest of the palette on purpose, used only for the flowing wave
+     bands. `--wave-blue` keeps its name for backward compatibility with
+     the mesh-a/b/c rules below, but per direction ("quiero que se quede
+     rosado o lila y blanco") it now holds a pale lilac-white, not blue. */
   --wave-pink: #FFC2E8;
-  --wave-blue: #B8E6FF;
+  --wave-blue: #F5EFFF;
   --wave-lilac: #C9A6FF;
 
   --glass-bg:        rgba(255,255,255,0.55);
@@ -378,6 +383,14 @@ body { font-family: 'Inter', sans-serif; }
   padding: 1.5rem;
 }
 .project-card:hover .card-overlay { opacity: 1; }
+/* AUDIT FIX: on touch devices `:hover` never persists, so the title,
+   description and "Open project" button here were effectively invisible
+   — visitors only saw a bare image. `(hover: none)` targets touch/coarse
+   pointers specifically (fine-pointer devices, i.e. mice, still get the
+   hover-reveal treatment above). */
+@media (hover: none) {
+  .card-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.3) 60%, transparent 100%); }
+}
 
 .card-open-btn {
   display: inline-flex; align-items: center; gap: 6px;
@@ -512,13 +525,17 @@ body { font-family: 'Inter', sans-serif; }
 }
 /* Ocean waves, not a rotating blob: each layer is a set of thin,
    horizontally-elongated ellipses (wave "bands") on an oversized
-   background (180% x 180%) that sweeps via background-position — a
-   continuous current, not a pulse-in-place. `transform` still carries a
-   gentle vertical bob + scale for undulation, animated in the SAME
-   keyframe as background-position so both read as one flowing surface.
-   Fast on purpose (3.5-5.5s/cycle) — this is the background, it should
-   never look static. main.js adds `.is-warping` while the cursor is
-   actively moving, which shortens the duration further so the waves
+   background (180% x 180%). The current is carried entirely by
+   `transform` (translate + scale) — NOT `background-position`.
+   background-position can't be GPU-composited: animating it forces the
+   browser to repaint this element (already the most expensive one on
+   the page, thanks to the 48px blur + multiply blend) on every single
+   frame, which is what made scrolling/navigating the whole site janky.
+   transform is compositor-only: the blurred gradient is painted once
+   and then just panned/scaled as a bitmap, at effectively zero cost per
+   frame. Fast on purpose (3.5-5.5s/cycle) — this is the background, it
+   should never look static. main.js adds `.is-warping` while the cursor
+   is actively moving, which shortens the duration further so the waves
    visibly ripple harder under the pointer, on top of the constant flow. */
 .mesh-layer::before {
   content: '';
@@ -528,6 +545,7 @@ body { font-family: 'Inter', sans-serif; }
   filter: blur(48px);
   mix-blend-mode: multiply;
   animation: meshWave 4.5s ease-in-out infinite;
+  will-change: transform;
   transition: animation-duration 0.25s ease, filter 0.25s ease;
 }
 .mesh-layer.is-warping::before {
@@ -557,15 +575,24 @@ body { font-family: 'Inter', sans-serif; }
   opacity: 0.85;
 }
 @keyframes meshWave {
-  0%   { background-position: 0% 50%;   transform: translateY(0)     scale(1); }
-  25%  { background-position: 55% 40%;  transform: translateY(-3%)   scale(1.06); }
-  50%  { background-position: 100% 60%; transform: translateY(3%)    scale(1.1); }
-  75%  { background-position: 155% 45%; transform: translateY(-2%)   scale(1.05); }
-  100% { background-position: 200% 50%; transform: translateY(0)     scale(1); }
+  0%   { transform: translate(-13%, 0)    scale(1); }
+  25%  { transform: translate(-4%, -4%)   scale(1.06); }
+  50%  { transform: translate(9%, 4%)     scale(1.12); }
+  75%  { transform: translate(-2%, -3%)   scale(1.05); }
+  100% { transform: translate(-13%, 0)    scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .mesh-layer::before { animation: none !important; }
+}
+
+/* Off-screen pause: main.js adds `.is-offscreen` to #hero (via
+   IntersectionObserver) once it scrolls out of view. There's no reason
+   to keep compositing 3 full-bleed animated layers while the visitor is
+   reading the rest of the page — this is the other half of the "el giro
+   pesa mucho" fix (the first half was moving off background-position). */
+#hero.is-offscreen .mesh-layer::before {
+  animation-play-state: paused;
 }
 
 /* ── Hero: text left, avatar right ──────────────────────────
@@ -816,6 +843,14 @@ html.pixel-cursor-on * {
   max-width: 1020px;
   margin: 2rem auto 0;
   --toolkit-scale: 1;
+  /* The pile's --dx values skew right (avg ~+90px) on purpose in the
+     row layout, so it doesn't land on the avatar to its left. Once the
+     layout stacks (avatar above, zone below — see the 900px breakpoint
+     below), there's no avatar beside it to visually balance that skew
+     against, so the pile reads as off-center. --pile-offset-x corrects
+     for it (added to every particle's dx in styles below); 0 here means
+     row layout is untouched. */
+  --pile-offset-x: 0px;
 }
 .pinata-zone {
   /* Shrunk from 780x620 to hug the idle blob closely. Nothing clips at
@@ -829,10 +864,10 @@ html.pixel-cursor-on * {
   flex-shrink: 0;
 }
 @media (max-width: 900px) {
-  .toolkit-stage { flex-direction: column; gap: 1.5rem; }
+  .toolkit-stage { flex-direction: column; gap: 1.5rem; --pile-offset-x: -90px; }
 }
 @media (max-width: 640px) {
-  .pinata-zone { height: 300px; --toolkit-scale: 0.56; }
+  .pinata-zone { height: 300px; --toolkit-scale: 0.72; }
 }
 
 /* ── Avatar — calm before the burst, no bounce/float/sway. A very slight
@@ -840,7 +875,10 @@ html.pixel-cursor-on * {
    fully static without being distracting. ── */
 .toolkit-avatar {
   position: relative;
-  width: clamp(130px, 15vw, 210px);
+  /* Went 130->190->260->300 in earlier passes and still read as too
+     small against the blob's glow — clearly needed a bigger jump than
+     the glow math alone suggested. Pushed further. */
+  width: clamp(280px, 34vw, 380px);
   aspect-ratio: 864 / 1238;
   flex-shrink: 0;
 }
@@ -850,9 +888,21 @@ html.pixel-cursor-on * {
   object-fit: contain;
   display: block;
   filter: drop-shadow(0 16px 26px rgba(45,42,69,0.16));
-  animation: toolkitAvatarBreathe 4.5s ease-in-out infinite;
+  animation: toolkitAvatarBreatheIdle 4.5s ease-in-out infinite;
   transform-origin: 50% 100%;
 }
+/* AUDIT FIX: the pre-burst "Pointed" frames are much more square
+   (~0.9 width/height) than this box (864/1238 = ~0.698), so
+   object-fit:contain — which preserves the image's own ratio — was
+   constrained by width and left ~23% of the box's height empty above
+   and below the character. That's why it read as noticeably smaller
+   than the post-burst pose, even in the exact same box. This idle-only
+   keyframe bakes in a ~1.22x scale to compensate (box-height ÷
+   rendered-height ≈ 0.698 ÷ 0.902⁻¹ ≈ 1.22), so the idle character
+   fills roughly the same visual height as the post-burst one does. The
+   post-burst pose is untouched — .is-reacting still uses the original
+   toolkitAvatarBreathe at scale(1), since that pose already fills the
+   box correctly. */
 .toolkit-avatar.is-reacting img {
   animation: toolkitAvatarBreathe 4.5s ease-in-out infinite, avatarPop 0.5s ease;
 }
@@ -860,8 +910,18 @@ html.pixel-cursor-on * {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.018); }
 }
+@keyframes toolkitAvatarBreatheIdle {
+  0%, 100% { transform: scale(1.22); }
+  50%      { transform: scale(1.24); }
+}
 @media (prefers-reduced-motion: reduce) {
   .toolkit-avatar img { animation: none !important; }
+}
+/* Off-screen pause — see #hero.is-offscreen above; same idea, same
+   IntersectionObserver mechanism (main.js), applied to #toolkit-stage. */
+#toolkit-stage.is-offscreen .toolkit-avatar img,
+#toolkit-stage.is-offscreen.is-settled .tool-badge {
+  animation-play-state: paused;
 }
 
 /* Retro-game speech bubble — chunky border, small pointer tail toward the
@@ -994,29 +1054,95 @@ html.pixel-cursor-on * {
 @media (prefers-reduced-motion: reduce) {
   .pinata-blob-inner, .pinata-hint { animation: none !important; }
 }
+#toolkit-stage.is-offscreen .pinata-blob-inner,
+#toolkit-stage.is-offscreen .pinata-hint {
+  animation-play-state: paused;
+}
 
-/* Particles — collapsed at center until .is-burst, then spring out to
-   their --dx/--dy/--rot resting offset with a staggered --delay. */
+/* Particles — collapsed at center until .is-burst, then fall to their
+   --dx/--dy/--rot resting offset (below the blob, see the HTML comment
+   next to the badges) with a staggered --delay.
+   GRAVITY FIX: this used to be a single straight-line spring transition
+   from center to (dx,dy) — with dy pointing in every direction that read
+   as a circular "bomb" burst. Now it's a proper drop-with-bounce
+   keyframe animation: a brief upward pop (15%), an overshoot past the
+   resting spot as it falls (55%), a small bounce back up (75%), then it
+   settles exactly at rest (100%) — the shape of something falling under
+   gravity and landing, not exploding outward. */
 .toolkit-particle {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) translate(0, 0) scale(0.3) rotate(0deg);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
   z-index: 4;
 }
 .toolkit-stage.is-burst .toolkit-particle {
-  transform: translate(-50%, -50%) translate(calc(var(--dx) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale))) scale(1) rotate(var(--rot));
   opacity: 1;
   pointer-events: auto;
-  transition-delay: var(--delay);
+  animation: pinataDrop 0.85s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: var(--delay);
+}
+@keyframes pinataDrop {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(0.3) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    transform: translate(-50%, -50%)
+      translate(calc((var(--dx) + var(--pile-offset-x)) * var(--toolkit-scale) * 0.35), calc(var(--dy) * var(--toolkit-scale) * 0.15 - 26px))
+      scale(1.05) rotate(calc(var(--rot) * 0.4));
+    opacity: 1;
+  }
+  55% {
+    transform: translate(-50%, -50%)
+      translate(calc((var(--dx) + var(--pile-offset-x)) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale) * 1.08))
+      scale(1) rotate(var(--rot));
+  }
+  75% {
+    transform: translate(-50%, -50%)
+      translate(calc((var(--dx) + var(--pile-offset-x)) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale) * 0.94))
+      scale(1) rotate(var(--rot));
+  }
+  100% {
+    transform: translate(-50%, -50%)
+      translate(calc((var(--dx) + var(--pile-offset-x)) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale)))
+      scale(1) rotate(var(--rot));
+  }
+}
+/* Idle, in-place side-to-side bounce for the tool badges only (not the
+   candy) once they've landed — main.js/toolkit.js adds `.is-settled`
+   right after the drop animation finishes for the slowest particle, so
+   this never fights with `pinataDrop` on the same element.
+   BUG FIX: this used to carry `animation-delay: var(--delay)` too, copied
+   from the drop animation. But toolBadgeIdleBounce has no backwards/both
+   fill-mode, so during that per-badge delay window each badge would
+   render its plain (non-animated) base transform — the collapsed,
+   scale(0.3)-at-center state from .toolkit-particle — before the bounce
+   actually started. That looked exactly like the whole burst replaying
+   in a staggered sweep a second time. No reason for this one to be
+   staggered at all, so the delay is just gone. */
+.toolkit-stage.is-settled .tool-badge {
+  animation: toolBadgeIdleBounce 2.4s ease-in-out infinite;
+}
+@keyframes toolBadgeIdleBounce {
+  0%, 100% {
+    transform: translate(-50%, -50%)
+      translate(calc((var(--dx) + var(--pile-offset-x)) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale)))
+      scale(1) rotate(var(--rot));
+  }
+  50% {
+    transform: translate(-50%, -50%)
+      translate(calc((var(--dx) + var(--pile-offset-x)) * var(--toolkit-scale) + 7px), calc(var(--dy) * var(--toolkit-scale)))
+      scale(1) rotate(calc(var(--rot) + 3deg));
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .toolkit-particle { transition: opacity 0.25s ease !important; transition-delay: 0s !important; }
+  .toolkit-particle { transition: opacity 0.25s ease !important; animation: none !important; }
   .toolkit-stage.is-burst .toolkit-particle {
-    transform: translate(-50%, -50%) translate(calc(var(--dx) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale))) scale(1) rotate(var(--rot));
+    transform: translate(-50%, -50%) translate(calc((var(--dx) + var(--pile-offset-x)) * var(--toolkit-scale)), calc(var(--dy) * var(--toolkit-scale))) scale(1) rotate(var(--rot));
   }
+  .toolkit-stage.is-settled .tool-badge { animation: none !important; }
 }
 
 /* Tool badges */
@@ -1071,6 +1197,12 @@ html.pixel-cursor-on * {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+/* Same touch fix as .card-overlay above — tap already opens focus on a
+   <button>, so :focus-visible fires on tap in most browsers, but not
+   all. Show it plainly instead of relying on that. */
+@media (hover: none) {
+  .tool-tooltip { display: none; }
+}
 
 /* Candy pieces — decorative, wrapped-candy silhouette via pseudo-element
    twists, pastel gradient body with a soft inset shine. */
@@ -1100,6 +1232,56 @@ html.pixel-cursor-on * {
 .candy-4::before, .candy-4::after { border-right-color: var(--lilac-light); border-left-color: var(--lilac-light); }
 .candy-5 { background: var(--violet-light); }
 .candy-5::before, .candy-5::after { border-right-color: var(--violet-light); border-left-color: var(--violet-light); }
+
+/* Lollipop pieces — a round candy head on a thin stick, distinct
+   silhouette from the wrapped candies above. */
+.lollipop-piece {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  box-shadow: inset -3px -3px 5px rgba(0,0,0,0.1), inset 3px 3px 5px rgba(255,255,255,0.7);
+}
+.lollipop-piece::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 3px;
+  height: 18px;
+  background: #F0E9DC;
+  border-radius: 0 0 2px 2px;
+  transform: translateX(-50%);
+}
+.lollipop-1 { background: radial-gradient(circle at 35% 32%, #fff 0%, var(--wave-pink) 55%, var(--pastel-pink-strong) 100%); }
+.lollipop-2 { background: radial-gradient(circle at 35% 32%, #fff 0%, var(--wave-lilac) 55%, var(--pastel-violet-strong) 100%); }
+.lollipop-3 { background: radial-gradient(circle at 35% 32%, #fff 0%, var(--pastel-blue-strong) 55%, var(--wave-blue) 100%); }
+
+/* AUDIT FIX (mobile pile overlap): --toolkit-scale (see .pinata-zone
+   above) only shrinks each particle's *position* — the translate() calc
+   in the pinataDrop/idle-bounce keyframes — it never touched the pieces'
+   own physical size, which stayed full desktop-size. At the old 0.56
+   scale that meant full-size pills packed into a much smaller footprint
+   than they were designed for, so everything piled on top of everything
+   else and no name was readable. This has to come AFTER the base
+   .tool-badge/.tool-swatch/.tool-name/.candy-piece/.lollipop-piece rules
+   above — same selector specificity, so source order decides, and a
+   media-scoped rule earlier in the file was silently losing to the
+   unconditional one below it. */
+@media (max-width: 640px) {
+  .tool-badge {
+    padding: 0.3rem 0.6rem 0.3rem 0.3rem;
+    gap: 0.32rem;
+  }
+  .tool-swatch { width: 19px; height: 19px; font-size: 0.52rem; }
+  .tool-name { font-size: 0.62rem; }
+  .candy-piece { width: 24px; height: 13px; }
+  .candy-piece::before, .candy-piece::after {
+    border-top-width: 5px; border-bottom-width: 5px;
+  }
+  .candy-piece::before { left: -4px; border-right-width: 6px; }
+  .candy-piece::after  { right: -4px; border-left-width: 6px; }
+  .lollipop-piece { width: 17px; height: 17px; }
+  .lollipop-piece::before { height: 12px; width: 2px; }
+}
 
 /* Replay */
 .toolkit-replay-btn {

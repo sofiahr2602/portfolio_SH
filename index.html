@@ -145,7 +145,7 @@
 
         <div class="hero-avatar-col stagger-item delay-2">
           <button type="button" class="hero-avatar" id="hero-avatar" aria-label="Say hi to Sofia's character">
-            <img id="avatar-frame" src="assets/images/avatar/avatar-sentada-laptop-paz.svg"
+            <img id="avatar-frame" src="assets/images/avatar/avatar-sentada-laptop-paz.webp"
                  alt="Sofia, personaje pixel art" width="864" height="1238" fetchpriority="high" decoding="async">
           </button>
         </div>
@@ -178,7 +178,13 @@
      blob to burst it open — 12 tool badges + candy pieces scatter out
      with a spring-easing settle (see toolkit.js). "Break again" resets.
 ════════════════════════════════════════ -->
-<section id="toolkit" class="py-24 px-6 md:px-10 bg-white overflow-hidden">
+<!-- pb-8 instead of the site's usual py-24: the piñata scene's own idle
+     content sits high in its box (see the --dy audit notes above), so
+     stacking the standard bottom padding on top of that already-empty
+     lower area plus the collapsed (but layout-reserving) replay button
+     was creating a big dead gap before Projects. Top padding stays at
+     the usual 24 to match every other section transition. -->
+<section id="toolkit" class="pt-24 pb-8 px-6 md:px-10 bg-white overflow-hidden">
   <div class="max-w-7xl mx-auto">
 
     <div class="reveal mb-4 text-center">
@@ -197,8 +203,8 @@
            (see toolkit.js) — never more than one avatar instance. -->
       <div class="toolkit-avatar" id="toolkit-avatar">
         <div class="toolkit-speech-bubble" id="toolkit-speech-bubble" aria-hidden="true">CHAAA!</div>
-        <img id="toolkit-avatar-frame" src="assets/images/avatar/avatar-base-sin-sonrisa.svg"
-             alt="Sofia reacting to her toolkit" width="864" height="1238" loading="lazy" decoding="async">
+        <img id="toolkit-avatar-frame" src="assets/images/avatar/avatar-pointed-1.webp"
+             alt="Sofia reacting to her toolkit" width="693" height="768" loading="lazy" decoding="async">
       </div>
 
       <div class="pinata-zone" id="pinata-zone">
@@ -211,79 +217,93 @@
       <!-- Tool badges (12) — glass capsule, monogram swatch + name, tooltip
            on hover/focus. Positions are hand-authored via --dx/--dy/--rot
            (final resting offset from center) and --delay (burst stagger).
-           AUDIT FIX: re-fanned from a full 360° spread to a rightward arc
-           (dx no lower than -90) — the old spread went as far as -270px
-           left, which used to be safely absorbed by an oversized 780px
-           zone. Now that the zone hugs the blob (340px, see styles.css),
-           that same -270px would land the badge on top of the avatar.
-           Bursting up/right/down away from Sofia reads better anyway. -->
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-70px;--dy:-270px;--rot:-8deg;--delay:0.00s">
+           PILE LAYOUT, 3rd pass:
+           1) Shifted the whole pile up ~70-80px so it sits level with the
+              avatar's upper body/head, not its own vertical center.
+           2) The real fix for the overlap-hides-text problem: a straight
+              horizontal row can't fit these pill widths at a tight step
+              (the longest, "After Effects"/"Premiere Pro", are ~150px
+              wide — a same-row step under that WILL cover a neighbor's
+              text no matter what). So each row now zigzags — alternating
+              items sit ~35-40px higher/lower than their neighbor — which
+              gives enough diagonal clearance to read every name at a
+              tighter ~105-110px horizontal step, instead of needing a
+              much wider ~150px step on a flat line. dx still stays >= -90
+              (avoid the avatar). -->
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-90px;--dy:-115px;--rot:-8deg;--delay:0.00s">
         <span class="tool-swatch" style="background:#A259FF">Fi</span>
         <span class="tool-name">Figma</span>
         <span class="tool-tooltip" role="tooltip">UI Design · Design Systems · Prototyping</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:40px;--dy:-300px;--rot:6deg;--delay:0.035s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:15px;--dy:-75px;--rot:6deg;--delay:0.035s">
         <span class="tool-swatch" style="background:#FFC700">FJ</span>
         <span class="tool-name">FigJam</span>
         <span class="tool-tooltip" role="tooltip">Workshops · Ideation · Visual Collaboration</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:150px;--dy:-280px;--rot:-4deg;--delay:0.07s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:120px;--dy:-110px;--rot:-5deg;--delay:0.07s">
         <span class="tool-swatch" style="background:#FF9A00">Ai</span>
         <span class="tool-name">Illustrator</span>
         <span class="tool-tooltip" role="tooltip">Vector Art · Logos · Iconography</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:250px;--dy:-220px;--rot:5deg;--delay:0.105s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:225px;--dy:-80px;--rot:5deg;--delay:0.105s">
         <span class="tool-swatch" style="background:#31A8FF">Ps</span>
         <span class="tool-name">Photoshop</span>
         <span class="tool-tooltip" role="tooltip">Photo Editing · Compositing · Retouching</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:320px;--dy:-130px;--rot:-6deg;--delay:0.14s">
-        <span class="tool-swatch" style="background:#9999FF">Ae</span>
-        <span class="tool-name">After Effects</span>
-        <span class="tool-tooltip" role="tooltip">Motion · Animation · Storytelling</span>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-70px;--dy:-20px;--rot:-7deg;--delay:0.14s">
+        <span class="tool-swatch" style="background:#8957E5">Cp</span>
+        <span class="tool-name">Copilot</span>
+        <span class="tool-tooltip" role="tooltip">AI Pair Programming · Code Suggestions</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:350px;--dy:-10px;--rot:8deg;--delay:0.175s">
-        <span class="tool-swatch" style="background:#7C4DFF">Pr</span>
-        <span class="tool-name">Premiere Pro</span>
-        <span class="tool-tooltip" role="tooltip">Video Editing · Pacing · Post-Production</span>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:35px;--dy:20px;--rot:8deg;--delay:0.175s">
+        <span class="tool-swatch" style="background:#E34F26">H5</span>
+        <span class="tool-name">HTML</span>
+        <span class="tool-tooltip" role="tooltip">Markup · Semantic Structure</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:330px;--dy:110px;--rot:-5deg;--delay:0.21s">
-        <span class="tool-swatch" style="background:#EA7600">Bl</span>
-        <span class="tool-name">Blender</span>
-        <span class="tool-tooltip" role="tooltip">3D · Visual Experimentation</span>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:140px;--dy:-15px;--rot:-4deg;--delay:0.21s">
+        <span class="tool-swatch" style="background:#1572B6">C3</span>
+        <span class="tool-name">CSS</span>
+        <span class="tool-tooltip" role="tooltip">Styling · Responsive Layout</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:270px;--dy:220px;--rot:7deg;--delay:0.245s">
-        <span class="tool-swatch" style="background:#00B4AA">Rv</span>
-        <span class="tool-name">Rive</span>
-        <span class="tool-tooltip" role="tooltip">Interactive Animation · Micro-interactions</span>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:245px;--dy:15px;--rot:7deg;--delay:0.245s">
+        <span class="tool-swatch" style="background:#F0DB4F;color:#2d2a45">JS</span>
+        <span class="tool-name">JavaScript</span>
+        <span class="tool-tooltip" role="tooltip">Interactivity · DOM · Front-End Logic</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:170px;--dy:290px;--rot:-6deg;--delay:0.28s">
-        <span class="tool-swatch" style="background:#0055FF">Fr</span>
-        <span class="tool-name">Framer</span>
-        <span class="tool-tooltip" role="tooltip">Interactive Prototypes · Web Motion</span>
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:-50px;--dy:75px;--rot:-6deg;--delay:0.28s">
+        <span class="tool-swatch" style="background:#4285F4">Ge</span>
+        <span class="tool-name">Gemini</span>
+        <span class="tool-tooltip" role="tooltip">AI Research · Multimodal Assistance</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:50px;--dy:310px;--rot:4deg;--delay:0.315s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:55px;--dy:115px;--rot:4deg;--delay:0.315s">
         <span class="tool-swatch" style="background:#007ACC">Vs</span>
         <span class="tool-name">VS Code</span>
         <span class="tool-tooltip" role="tooltip">Front-End Craft · Building Ideas</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-60px;--dy:260px;--rot:-7deg;--delay:0.35s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:160px;--dy:80px;--rot:-8deg;--delay:0.35s">
         <span class="tool-swatch" style="background:#DA7756">Cl</span>
         <span class="tool-name">Claude</span>
         <span class="tool-tooltip" role="tooltip">AI-assisted workflows · Creative exploration</span>
       </button>
-      <button type="button" class="toolkit-particle tool-badge" style="--dx:-90px;--dy:130px;--rot:6deg;--delay:0.385s">
+      <button type="button" class="toolkit-particle tool-badge" style="--dx:265px;--dy:110px;--rot:6deg;--delay:0.385s">
         <span class="tool-swatch" style="background:#10A37F">Ch</span>
         <span class="tool-name">ChatGPT</span>
         <span class="tool-tooltip" role="tooltip">Ideation · Research · Rapid Iteration</span>
       </button>
 
-      <!-- Candy pieces (5) — decorative filler, no tooltip -->
-      <span class="toolkit-particle candy-piece candy-1" style="--dx:30px;--dy:-160px;--rot:15deg;--delay:0.42s" aria-hidden="true"></span>
-      <span class="toolkit-particle candy-piece candy-2" style="--dx:200px;--dy:-70px;--rot:-12deg;--delay:0.455s" aria-hidden="true"></span>
-      <span class="toolkit-particle candy-piece candy-3" style="--dx:200px;--dy:60px;--rot:10deg;--delay:0.49s" aria-hidden="true"></span>
-      <span class="toolkit-particle candy-piece candy-4" style="--dx:20px;--dy:170px;--rot:-18deg;--delay:0.525s" aria-hidden="true"></span>
-      <span class="toolkit-particle candy-piece candy-5" style="--dx:-30px;--dy:20px;--rot:20deg;--delay:0.56s" aria-hidden="true"></span>
+      <!-- Candy pieces (5) — decorative filler, no tooltip. Tucked into
+           the gaps between pile rows, same as the reference sketch. -->
+      <span class="toolkit-particle candy-piece candy-1" style="--dx:-30px;--dy:-95px;--rot:15deg;--delay:0.42s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-2" style="--dx:75px;--dy:-45px;--rot:-12deg;--delay:0.455s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-3" style="--dx:185px;--dy:-55px;--rot:10deg;--delay:0.49s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-4" style="--dx:90px;--dy:65px;--rot:-18deg;--delay:0.525s" aria-hidden="true"></span>
+      <span class="toolkit-particle candy-piece candy-5" style="--dx:205px;--dy:55px;--rot:20deg;--delay:0.56s" aria-hidden="true"></span>
+
+      <!-- Lollipops (3) — same decorative filler idea as the candy
+           pieces above, just a different silhouette (round head + stick). -->
+      <span class="toolkit-particle lollipop-piece lollipop-1" style="--dx:200px;--dy:80px;--rot:-10deg;--delay:0.595s" aria-hidden="true"></span>
+      <span class="toolkit-particle lollipop-piece lollipop-2" style="--dx:-25px;--dy:150px;--rot:15deg;--delay:0.63s" aria-hidden="true"></span>
+      <span class="toolkit-particle lollipop-piece lollipop-3" style="--dx:230px;--dy:145px;--rot:-8deg;--delay:0.665s" aria-hidden="true"></span>
 
       </div><!-- /pinata-zone -->
     </div>
@@ -319,10 +339,9 @@
       <!-- Category sidebar — hover previews on desktop, click/tap locks it in -->
       <div class="reveal category-sidebar" id="filter-bar" role="group" aria-label="Filter projects by category">
         <button class="category-item active" data-filter="all">All</button>
-        <button class="category-item" data-filter="uxdev">UX · UI</button>
-        <button class="category-item" data-filter="graphic">Brand</button>
-        <button class="category-item" data-filter="motion">Motion</button>
-        <button class="category-item" data-filter="social">Social</button>
+        <button class="category-item" data-filter="uxdev">UX/UI + Front-End</button>
+        <button class="category-item" data-filter="brand">Brand &amp; Social Media</button>
+        <button class="category-item" data-filter="motion">Motion &amp; Video</button>
       </div>
 
       <div>
@@ -330,7 +349,8 @@
         HOW TO ADD A PROJECT:
         1. Add a new <div class="project-item" data-category="uxdev"> block below
         2. Set data-url to: an external URL (https://behance.net/...), or a local file (projects/my-project.html)
-        3. Set data-category to one or more of: uxdev, graphic, social, video, motion
+        3. Set data-category to exactly one of: uxdev (UX/UI + Front-End),
+           brand (Brand & Social Media), motion (Motion & Video)
         4. Add data-featured="true" if it should be one of the 4 default cards under "All"
         5. Replace the img src with your project image
       -->
@@ -342,7 +362,7 @@
       <div class="project-item" data-category="uxdev" data-featured="true"
            data-url="projects/alcancia-consciente/alcancia-consciente-case-study.html" data-title="Alcancía Consciente — Interbank (concepto)">
         <div class="project-card bg-gray-100">
-          <img src="projects/images/alcancia-consciente/cover.jpg" loading="lazy" decoding="async"
+          <img src="projects/images/alcancia-consciente/thumbnail-card.webp" loading="lazy" decoding="async"
                alt="Alcancía Consciente — Interbank (concepto)" style="object-position: center 38%">
           <div class="card-overlay">
             <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI · Frontend</span>
@@ -360,7 +380,7 @@
       </div>
 
       <!-- ② CATMI — Social Media Content (Carla) -->
-      <div class="project-item" data-category="graphic social"
+      <div class="project-item" data-category="brand"
            data-url="projects/catmi-social.html" data-title="CATMI — Contenido para Instagram">
         <div class="project-card bg-gray-100">
           <img src="projects/images/catmi/post-3-hi-im-carla.png" loading="lazy" decoding="async"
@@ -386,7 +406,7 @@
       <div class="project-item" data-category="uxdev" data-featured="true"
            data-url="projects/amazon-redesign-case-study.html" data-title="Amazon — Home Redesign">
         <div class="project-card bg-gray-100">
-          <img src="projects/images/amazon-redesign/hero-banner.jpg" loading="lazy" decoding="async"
+          <img src="projects/images/amazon-redesign/thumbnail-card.svg" loading="lazy" decoding="async"
                alt="Amazon — Home Redesign" style="object-position: 35% 15%">
           <div class="card-overlay">
             <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI</span>
@@ -404,7 +424,7 @@
       </div>
 
       <!-- ④ Attitude — Journals Social Media Content -->
-      <div class="project-item" data-category="graphic social"
+      <div class="project-item" data-category="brand"
            data-url="projects/attitude-social.html" data-title="Attitude — Contenido para Instagram">
         <div class="project-card bg-gray-100">
           <img src="projects/images/attitude/brand-application-journal-charms.png" loading="lazy" decoding="async"
@@ -430,7 +450,7 @@
       <div class="project-item" data-category="uxdev" data-featured="true"
            data-url="projects/angie-case-study.html" data-title="Angie — Nutritionist Website">
         <div class="project-card bg-gray-100">
-          <img src="projects/images/angie-hamasaki.webp" loading="lazy" decoding="async"
+          <img src="projects/images/thumbnail-card-angie.svg" loading="lazy" decoding="async"
                alt="Angie — Nutritionist Website" style="object-position: center 22%">
           <div class="card-overlay">
             <span class="text-xs font-semibold tracking-widest uppercase mb-1" style="color:var(--lilac-light)">UX · UI</span>
@@ -448,7 +468,7 @@
       </div>
 
       <!-- ⑥ CATMI — Catsitter Brandbook — Graphic -->
-      <div class="project-item" data-category="graphic" data-featured="true"
+      <div class="project-item" data-category="brand" data-featured="true"
            data-url="projects/catmi-brandbook.html" data-title="CATMI — Catsitter Brandbook">
         <div class="project-card bg-gray-100">
           <img src="projects/images/catmi/catmi-01.webp" loading="lazy" decoding="async"
@@ -470,7 +490,7 @@
       </div>
 
       <!-- ⑦ GymStyle — Social Media Content -->
-      <div class="project-item" data-category="social"
+      <div class="project-item" data-category="brand"
            data-url="projects/gymstyle-social.html" data-title="GymStyle — Contenido para Instagram">
         <div class="project-card bg-gray-100">
           <img src="projects/images/gymstyle/post-1-hoy-entrenas.png" loading="lazy" decoding="async"
@@ -493,7 +513,7 @@
 
       <!-- ⑧ Hero Reel — Motion / Video (showcase card: no data-url,
            plays inline instead of linking out — same clip used as the hero background) -->
-      <div class="project-item" data-category="video motion" data-title="Hero Reel — Motion Video">
+      <div class="project-item" data-category="motion" data-title="Hero Reel — Motion Video">
         <div class="project-card bg-gray-100">
           <video class="project-card-video" src="assets/videos/video-hero-background.mp4" poster="assets/videos/hero-poster.jpg"
                  muted loop playsinline preload="metadata"></video>
@@ -682,7 +702,7 @@
         </div>
         <div class="absolute -bottom-4 -left-4 glass rounded-2xl shadow-xl px-5 py-4 flex items-center gap-3">
           <div class="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0" style="background:var(--lilac-pale)">
-            <img src="assets/images/avatar/avatar-sentada-laptop-sonriendo.svg" alt="" aria-hidden="true" class="w-full h-full object-contain" loading="lazy">
+            <img src="assets/images/avatar/avatar-sentada-laptop-sonriendo.webp" alt="" aria-hidden="true" class="w-full h-full object-contain" loading="lazy">
           </div>
           <div>
             <div class="text-xs text-gray-500">Available for</div>

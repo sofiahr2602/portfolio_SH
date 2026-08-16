@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 <title>Attitude — Contenido para Instagram</title>
 <meta name="description" content="Diseño de contenido para Instagram de Attitude: feed, identidad visual y aplicaciones de marca para journals en cuero genuino. Case study de social media por Sofia Hualpa.">
+<!-- Share preview. og:image is intentionally omitted: it must be an
+     absolute https:// URL to work, which depends on the final domain. Once the
+     site has one, add: <meta property="og:image" content="https://DOMAIN/assets/videos/hero-poster.jpg"> -->
+<meta property="og:title" content="Attitude — Contenido para Instagram">
+<meta property="og:description" content="Diseño de contenido para Instagram de Attitude: feed, identidad visual y aplicaciones de marca para journals en cuero genuino. Case study de social media por Sofia Hualpa.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -129,7 +137,7 @@
   }
 
   /* ── Reveal on scroll ── */
-  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal{ opacity:0; transform:translate3d(0,22px,0); transition:opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1); }
   .reveal.visible{ opacity:1; transform:none; }
 
   #identidad-visual, #aplicaciones{ scroll-margin-top:100px; }
@@ -219,6 +227,19 @@
     background:var(--att-dark);
     transform:scale(1.04);
     box-shadow:0 10px 30px rgba(20,46,120,0.32);
+  }
+
+  /* ── Reduced motion ──
+     Respects the OS "reduce motion" setting: content still appears, it just
+     arrives without travel, and looping animations stop. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
   }
 </style>
 </head>
@@ -325,23 +346,23 @@
 
         <div class="feed-grid mt-6" id="feed-grid" style="position:relative;">
           <div class="hint-badge" id="hint-badge">Pasa el cursor o haz clic ↗</div>
-          <div class="feed-thumb active" data-index="0"><img src="images/attitude/post-1-ideas-journaling.png" alt="5 ideas to start journaling"></div>
-          <div class="feed-thumb" data-index="1"><img src="images/attitude/post-2-process.png" alt="Process"></div>
-          <div class="feed-thumb" data-index="2"><img src="images/attitude/post-3-new-drop.png" alt="New drop"></div>
-          <div class="feed-thumb" data-index="3"><img src="images/attitude/post-4-journey.png" alt="Journey"></div>
-          <div class="feed-thumb" data-index="4"><img src="images/attitude/post-5-zodiac-journal.png" alt="Your zodiac sign as a journal"></div>
-          <div class="feed-thumb" data-index="5"><img src="images/attitude/post-6-where-magic-happens.png" alt="Where magic happens"></div>
+          <div class="feed-thumb active" data-index="0"><img src="images/attitude/post-1-ideas-journaling.webp" alt="5 ideas to start journaling" decoding="async"></div>
+          <div class="feed-thumb" data-index="1"><img src="images/attitude/post-2-process.webp" alt="Process" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="2"><img src="images/attitude/post-3-new-drop.webp" alt="New drop" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="3"><img src="images/attitude/post-4-journey.webp" alt="Journey" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="4"><img src="images/attitude/post-5-zodiac-journal.webp" alt="Your zodiac sign as a journal" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="5"><img src="images/attitude/post-6-where-magic-happens.webp" alt="Where magic happens" loading="lazy" decoding="async"></div>
         </div>
       </div>
 
       <!-- Floating card stack -->
       <div class="stack-wrap reveal" id="stack-wrap">
-        <div class="stack-card" data-index="0"><div class="stack-card-inner"><img src="images/attitude/post-1-ideas-journaling.png" alt="5 ideas to start journaling"></div></div>
-        <div class="stack-card" data-index="1"><div class="stack-card-inner"><img src="images/attitude/post-2-process.png" alt="Process"></div></div>
-        <div class="stack-card" data-index="2"><div class="stack-card-inner"><img src="images/attitude/post-3-new-drop.png" alt="New drop"></div></div>
-        <div class="stack-card" data-index="3"><div class="stack-card-inner"><img src="images/attitude/post-4-journey.png" alt="Journey"></div></div>
-        <div class="stack-card" data-index="4"><div class="stack-card-inner"><img src="images/attitude/post-5-zodiac-journal.png" alt="Your zodiac sign as a journal"></div></div>
-        <div class="stack-card" data-index="5"><div class="stack-card-inner"><img src="images/attitude/post-6-where-magic-happens.png" alt="Where magic happens"></div></div>
+        <div class="stack-card" data-index="0"><div class="stack-card-inner"><img src="images/attitude/post-1-ideas-journaling.webp" alt="5 ideas to start journaling" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="1"><div class="stack-card-inner"><img src="images/attitude/post-2-process.webp" alt="Process" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="2"><div class="stack-card-inner"><img src="images/attitude/post-3-new-drop.webp" alt="New drop" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="3"><div class="stack-card-inner"><img src="images/attitude/post-4-journey.webp" alt="Journey" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="4"><div class="stack-card-inner"><img src="images/attitude/post-5-zodiac-journal.webp" alt="Your zodiac sign as a journal" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="5"><div class="stack-card-inner"><img src="images/attitude/post-6-where-magic-happens.webp" alt="Where magic happens" loading="lazy" decoding="async"></div></div>
       </div>
     </div>
   </section>
@@ -355,15 +376,15 @@
     </div>
     <div class="space-y-8">
       <div class="reveal">
-        <div class="brand-app-card aspect-[1408/768]"><img src="images/attitude/brand-application-journal-charms.png" alt="Journal Attitude con dijes plateados"></div>
+        <div class="brand-app-card aspect-[1408/768]"><img src="images/attitude/brand-application-journal-charms.webp" alt="Journal Attitude con dijes plateados" loading="lazy" decoding="async"></div>
         <p class="text-center text-sm text-gray-500 mt-3">Journal grabado a presión con dijes plateados</p>
       </div>
       <div class="reveal">
-        <div class="brand-app-card aspect-[1136/941]"><img src="images/attitude/brand-application-packaging.png" alt="Empaque Attitude"></div>
+        <div class="brand-app-card aspect-[1136/941]"><img src="images/attitude/brand-application-packaging.webp" alt="Empaque Attitude" loading="lazy" decoding="async"></div>
         <p class="text-center text-sm text-gray-500 mt-3">Empaque</p>
       </div>
       <div class="reveal">
-        <div class="brand-app-card aspect-[1344/796]"><img src="images/attitude/brand-application-tote-bag.png" alt="Tote bag Attitude"></div>
+        <div class="brand-app-card aspect-[1344/796]"><img src="images/attitude/brand-application-tote-bag.webp" alt="Tote bag Attitude" loading="lazy" decoding="async"></div>
         <p class="text-center text-sm text-gray-500 mt-3">Tote bag</p>
       </div>
     </div>
@@ -395,8 +416,12 @@
   // Reveal on scroll
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.15 });
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px 120px 0px' });
   revealEls.forEach(el => io.observe(el));
 
   // Scroll-spy: highlight active nav item

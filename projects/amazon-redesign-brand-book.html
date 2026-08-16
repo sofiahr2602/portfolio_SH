@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 <title>Amazon Redesign — Brand Book</title>
 <meta name="description" content="Lineamientos de marca del rediseño conceptual del home de Amazon: logo, paleta, tipografía, tono de voz e imaginería. Case study de UX/UI por Sofia Hualpa.">
+<!-- Share preview. og:image is intentionally omitted: it must be an
+     absolute https:// URL to work, which depends on the final domain. Once the
+     site has one, add: <meta property="og:image" content="https://DOMAIN/assets/videos/hero-poster.jpg"> -->
+<meta property="og:title" content="Amazon Redesign — Brand Book">
+<meta property="og:description" content="Lineamientos de marca del rediseño conceptual del home de Amazon: logo, paleta, tipografía, tono de voz e imaginería. Case study de UX/UI por Sofia Hualpa.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="noindex, nofollow">
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -45,10 +53,10 @@
     <h2 class="text-xl font-bold mb-6">Logo &amp; uso</h2>
     <div class="flex flex-wrap gap-6 items-center">
       <div class="bg-[var(--az-navy)] rounded-2xl p-10 flex items-center justify-center" style="width:280px;">
-        <img src="images/amazon-redesign/logo.png" alt="Logo Amazon" class="h-10">
+        <img src="images/amazon-redesign/logo.png" alt="Logo Amazon" class="h-10" decoding="async">
       </div>
       <div class="border border-gray-200 rounded-2xl p-10 flex items-center justify-center" style="width:280px;">
-        <img src="images/amazon-redesign/logo.png" alt="Logo Amazon" class="h-10">
+        <img src="images/amazon-redesign/logo.png" alt="Logo Amazon" class="h-10" loading="lazy" decoding="async">
       </div>
     </div>
     <ul class="text-sm text-gray-600 mt-5 space-y-1.5 list-disc pl-5">
@@ -112,10 +120,10 @@
   <section class="mb-16">
     <h2 class="text-xl font-bold mb-6">Imaginería</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-      <img src="images/amazon-redesign/producto-1-crop.jpg" class="rounded-xl aspect-square object-cover" alt="Producto">
-      <img src="images/amazon-redesign/producto-5-crop.jpg" class="rounded-xl aspect-square object-cover" alt="Producto">
-      <img src="images/amazon-redesign/producto-6.jpg" class="rounded-xl aspect-square object-cover" alt="Producto">
-      <img src="images/amazon-redesign/hero-banner.jpg" class="rounded-xl aspect-square object-cover" alt="Banner">
+      <img src="images/amazon-redesign/producto-1-crop.jpg" class="rounded-xl aspect-square object-cover" alt="Producto" loading="lazy" decoding="async">
+      <img src="images/amazon-redesign/producto-5-crop.jpg" class="rounded-xl aspect-square object-cover" alt="Producto" loading="lazy" decoding="async">
+      <img src="images/amazon-redesign/producto-6.webp" class="rounded-xl aspect-square object-cover" alt="Producto" loading="lazy" decoding="async">
+      <img src="images/amazon-redesign/hero-banner.webp" class="rounded-xl aspect-square object-cover" alt="Banner" loading="lazy" decoding="async">
     </div>
     <p class="text-sm text-gray-500 max-w-2xl">Fotografía de producto sobre fondo neutro, mismo encuadre y proporción 1:1 en todo el grid. Fotografía de personas siempre en contexto real de uso (nunca stock genérico posando a cámara).</p>
   </section>

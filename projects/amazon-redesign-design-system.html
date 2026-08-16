@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 <title>Design System — Amazon Redesign</title>
 <meta name="description" content="Documento de referencia visual del design system creado para el rediseño del home de Amazon: colores, tipografía, espaciado, componentes y tokens CSS. Case study de UX/UI por Sofia Hualpa.">
+<!-- Share preview. og:image is intentionally omitted: it must be an
+     absolute https:// URL to work, which depends on the final domain. Once the
+     site has one, add: <meta property="og:image" content="https://DOMAIN/assets/videos/hero-poster.jpg"> -->
+<meta property="og:title" content="Design System — Amazon Redesign">
+<meta property="og:description" content="Documento de referencia visual del design system creado para el rediseño del home de Amazon: colores, tipografía, espaciado, componentes y tokens CSS. Case study de UX/UI por Sofia Hualpa.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -205,6 +213,19 @@
   .gov-item strong { display: block; font-size: 14px; margin-bottom: 4px; }
   .gov-item p { font-size: 13px; color: var(--az-text-mid); line-height: 1.6; }
   .gov-item code { font-family: monospace; background: var(--az-blue-pale); color: var(--az-blue); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+
+  /* ── Reduced motion ──
+     Respects the OS "reduce motion" setting: content still appears, it just
+     arrives without travel, and looping animations stop. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -495,7 +516,7 @@
     <h2 class="ds-section-title">Product Card</h2>
     <p class="ds-section-desc">Componente base de todo el grid de productos: imagen 1:1, categoría, título, rating, precio y CTA.</p>
     <div class="demo-card">
-      <img src="images/amazon-redesign/producto-1-crop.jpg" alt="Air Pods Prox Max">
+      <img src="images/amazon-redesign/producto-1-crop.jpg" alt="Air Pods Prox Max" decoding="async">
       <div class="demo-card-body">
         <p class="demo-cat">Tecnología, Auriculares</p>
         <h3>Air Pods Prox Max</h3>

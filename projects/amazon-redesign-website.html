@@ -4,8 +4,16 @@
 <meta charset="UTF-8">
 <script>document.documentElement.className += ' js';</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 <title>Amazon Redesign — Case Study | Sofia</title>
 <meta name="description" content="Rediseño conceptual del home de Amazon: una versión simplificada y más clara del e-commerce más cargado del mercado.">
+<!-- Share preview. og:image is intentionally omitted: it must be an
+     absolute https:// URL to work, which depends on the final domain. Once the
+     site has one, add: <meta property="og:image" content="https://DOMAIN/assets/videos/hero-poster.jpg"> -->
+<meta property="og:title" content="Amazon Redesign — Case Study | Sofia">
+<meta property="og:description" content="Rediseño conceptual del home de Amazon: una versión simplificada y más clara del e-commerce más cargado del mercado.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="noindex, nofollow">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -586,7 +594,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 <header class="az-header">
   <div class="az-topbar">
     <div class="az-topbar-inner">
-      <a class="az-logo" href="#top"><img src="images/amazon-redesign/logo.png" alt="Amazon"></a>
+      <a class="az-logo" href="#top"><img src="images/amazon-redesign/logo.png" alt="Amazon" decoding="async"></a>
 
       <div class="az-ship-to">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
@@ -651,13 +659,13 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 <section class="az-hero" id="top">
   <div class="az-hero-banner" id="azHeroBanner">
     <div class="az-hero-slide active">
-      <img src="images/amazon-redesign/hero-banner.jpg" alt="Mujer sonriendo con bolsas de compras">
+      <img src="images/amazon-redesign/hero-banner.webp" alt="Mujer sonriendo con bolsas de compras" loading="lazy" decoding="async">
     </div>
     <div class="az-hero-slide">
-      <img src="images/amazon-redesign/ads-1.jpg" alt="Nuevas cremas cítricas">
+      <img src="images/amazon-redesign/ads-1.jpg" alt="Nuevas cremas cítricas" loading="lazy" decoding="async">
     </div>
     <div class="az-hero-slide">
-      <img src="images/amazon-redesign/ads-2.jpg" alt="Belleza y accesorios">
+      <img src="images/amazon-redesign/ads-2.webp" alt="Belleza y accesorios" loading="lazy" decoding="async">
     </div>
     <div class="az-hero-scrim" aria-hidden="true"></div>
     <h1 class="az-hero-title" id="azHeroTitle"><span class="blue">Todo</span> lo que necesitas en <span class="blue">un solo lugar</span></h1>
@@ -790,7 +798,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller new" data-category="Tecnología" data-brand="Apple" data-price="99" data-rating="4.8">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-1-crop.jpg" alt="Air Pods Prox Max">
+        <img src="images/amazon-redesign/producto-1-crop.jpg" alt="Air Pods Prox Max" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -804,7 +812,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller deal" data-category="Tecnología" data-brand="Apple" data-price="89" data-rating="4.9">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-2-crop.jpg" alt="Iphone 16">
+        <img src="images/amazon-redesign/producto-2-crop.webp" alt="Iphone 16" loading="lazy" decoding="async">
         <span class="az-deal-badge">-18%</span>
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
@@ -819,7 +827,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="new peru" data-category="Deporte" data-brand="Nilson" data-price="99" data-rating="4.6">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-3-crop.jpg" alt="Zapatillas Nilson">
+        <img src="images/amazon-redesign/producto-3-crop.jpg" alt="Zapatillas Nilson" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -833,7 +841,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="peru" data-category="Mascotas" data-brand="PetCare" data-price="99" data-rating="4.7">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-4-crop.jpg" alt="Arnés para gato">
+        <img src="images/amazon-redesign/producto-4-crop.jpg" alt="Arnés para gato" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -847,7 +855,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="deal peru" data-category="Skin care" data-brand="Natura" data-price="20" data-rating="4.5">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-5-crop.jpg" alt="Crema Hidro Natura">
+        <img src="images/amazon-redesign/producto-5-crop.jpg" alt="Crema Hidro Natura" loading="lazy" decoding="async">
         <span class="az-deal-badge">-29%</span>
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
@@ -862,7 +870,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller" data-category="Tecnología" data-brand="Asus" data-price="300" data-rating="5.0">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-6.jpg" alt="Laptop Rog Zephirus">
+        <img src="images/amazon-redesign/producto-6.webp" alt="Laptop Rog Zephirus" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -876,7 +884,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="deal bestseller" data-category="Tecnología" data-brand="Apple" data-price="94.50" data-rating="4.8">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-7.jpg" alt="Iphone 12 Pro Max 512 GB">
+        <img src="images/amazon-redesign/producto-7.jpg" alt="Iphone 12 Pro Max 512 GB" loading="lazy" decoding="async">
         <span class="az-deal-badge">-21%</span>
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
@@ -891,7 +899,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="new peru" data-category="Carteras" data-brand="CYM" data-price="50" data-rating="4.6">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-8-crop.jpg" alt="Cartera Negra CYM">
+        <img src="images/amazon-redesign/producto-8-crop.jpg" alt="Cartera Negra CYM" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -905,7 +913,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller new" data-category="Tecnología" data-brand="GoPro" data-price="349" data-rating="4.8">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-9.jpg" alt="GoPro Hero 13 Black">
+        <img src="images/amazon-redesign/producto-9.jpg" alt="GoPro Hero 13 Black" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -919,7 +927,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller" data-category="Tecnología" data-brand="Logi" data-price="59.90" data-rating="4.6">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-10.jpg" alt="Combo Teclado y Mouse Logi Pop">
+        <img src="images/amazon-redesign/producto-10.webp" alt="Combo Teclado y Mouse Logi Pop" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -933,7 +941,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="deal bestseller" data-category="Tecnología" data-brand="JBL" data-price="79" data-rating="4.7">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-11.jpg" alt="Audífonos JBL Tune 760BT">
+        <img src="images/amazon-redesign/producto-11.jpg" alt="Audífonos JBL Tune 760BT" loading="lazy" decoding="async">
         <span class="az-deal-badge">-20%</span>
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
@@ -948,7 +956,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="new bestseller" data-category="Tecnología" data-brand="Gigabyte" data-price="459" data-rating="4.9">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-12.jpg" alt="Tarjeta Gráfica Gigabyte RTX">
+        <img src="images/amazon-redesign/producto-12.jpg" alt="Tarjeta Gráfica Gigabyte RTX" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -962,7 +970,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="peru" data-category="Mascotas" data-brand="Impact" data-price="18.50" data-rating="4.5">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-13.jpg" alt="Removedor de Manchas y Olores">
+        <img src="images/amazon-redesign/producto-13.jpg" alt="Removedor de Manchas y Olores" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -976,7 +984,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="new" data-category="Mascotas" data-brand="Impact" data-price="15" data-rating="4.4">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-14.jpg" alt="Spray Anti-Mordidas para Mascotas">
+        <img src="images/amazon-redesign/producto-14.jpg" alt="Spray Anti-Mordidas para Mascotas" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -990,7 +998,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller deal" data-category="Mascotas" data-brand="Nutikausid" data-price="89" data-rating="4.8">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-15.jpg" alt="Comedero Automático Inteligente">
+        <img src="images/amazon-redesign/producto-15.webp" alt="Comedero Automático Inteligente" loading="lazy" decoding="async">
         <span class="az-deal-badge">-18%</span>
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
@@ -1005,7 +1013,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="new peru" data-category="Mascotas" data-brand="PetCare" data-price="24.90" data-rating="4.7">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-16.jpg" alt="Arnés Ajustable para Perro">
+        <img src="images/amazon-redesign/producto-16.webp" alt="Arnés Ajustable para Perro" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1019,7 +1027,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="peru" data-category="Mascotas" data-brand="Impact" data-price="12" data-rating="4.3">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-17.jpg" alt="Limpiador Multiusos Pet-Friendly">
+        <img src="images/amazon-redesign/producto-17.jpg" alt="Limpiador Multiusos Pet-Friendly" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1033,7 +1041,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller" data-category="Skin care" data-brand="Misolo" data-price="22" data-rating="4.8">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-18.jpg" alt="Mascarilla Purificante Misolo">
+        <img src="images/amazon-redesign/producto-18.jpg" alt="Mascarilla Purificante Misolo" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1047,7 +1055,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller new" data-category="Skin care" data-brand="Sesderma" data-price="34" data-rating="4.9">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-19.jpg" alt="Crema Espumosa Salises">
+        <img src="images/amazon-redesign/producto-19.jpg" alt="Crema Espumosa Salises" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1061,7 +1069,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="deal bestseller" data-category="Skin care" data-brand="Bioderma" data-price="39.90" data-rating="4.9">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-20.jpg" alt="Hydrabio Crème Hidratante">
+        <img src="images/amazon-redesign/producto-20.jpg" alt="Hydrabio Crème Hidratante" loading="lazy" decoding="async">
         <span class="az-deal-badge">-11%</span>
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
@@ -1076,7 +1084,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="new" data-category="Skin care" data-brand="Misolo" data-price="19" data-rating="4.6">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-21.jpg" alt="Limpiador Bifásico Misolo">
+        <img src="images/amazon-redesign/producto-21.jpg" alt="Limpiador Bifásico Misolo" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1090,7 +1098,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="peru" data-category="Skin care" data-brand="Smerola" data-price="16.50" data-rating="4.5">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-22.jpg" alt="Hidratante Corporal Firmeza">
+        <img src="images/amazon-redesign/producto-22.jpg" alt="Hidratante Corporal Firmeza" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1104,7 +1112,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="new peru" data-category="Skin care" data-brand="Milk" data-price="28" data-rating="4.7">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-23.jpg" alt="Set Ultra Hidratante Milk">
+        <img src="images/amazon-redesign/producto-23.jpg" alt="Set Ultra Hidratante Milk" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1118,7 +1126,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller peru" data-category="Skin care" data-brand="Ésika" data-price="9.90" data-rating="4.4">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-24.jpg" alt="Labial Mate Rojo Clásico">
+        <img src="images/amazon-redesign/producto-24.jpg" alt="Labial Mate Rojo Clásico" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1132,7 +1140,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="new" data-category="Skin care" data-brand="The Green Brand" data-price="42" data-rating="4.6">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-25.jpg" alt="Aceite CBD 20% Relajante">
+        <img src="images/amazon-redesign/producto-25.webp" alt="Aceite CBD 20% Relajante" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1146,7 +1154,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="bestseller" data-category="Deporte" data-brand="Nike" data-price="129" data-rating="4.9">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-26.jpg" alt="Nike Air Force 1 Aniversario">
+        <img src="images/amazon-redesign/producto-26.webp" alt="Nike Air Force 1 Aniversario" loading="lazy" decoding="async">
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
       <div class="az-product-info">
@@ -1160,7 +1168,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-product-card az-reveal" data-tags="deal new" data-category="Deporte" data-brand="Loco Loco" data-price="189" data-rating="4.8">
       <div class="az-product-img">
-        <img src="images/amazon-redesign/producto-27.jpg" alt="Tabla de Surf Loco Loco Beach">
+        <img src="images/amazon-redesign/producto-27.webp" alt="Tabla de Surf Loco Loco Beach" loading="lazy" decoding="async">
         <span class="az-deal-badge">-14%</span>
         <button class="az-icon-btn" aria-label="Agregar a lista de deseos" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.2 2 4.5 5.6 4a5 5 0 0 1 6.4 2.6A5 5 0 0 1 18.4 4c3.6.5 5.2 4.2 3.6 7.7C19.5 16.3 12 21 12 21Z"/></svg></button>
       </div>
@@ -1216,7 +1224,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
   <div class="az-testimonial-cards" id="azTestimonialCards">
     <article class="az-testimonial-card az-reveal">
       <div class="az-testimonial-head">
-        <img src="images/amazon-redesign/testimonial-avatar-1.jpg" alt="Valentina Cruz">
+        <img src="images/amazon-redesign/testimonial-avatar-1.jpg" alt="Valentina Cruz" loading="lazy" decoding="async">
         <div class="az-testimonial-who"><strong>Valentina Cruz</strong><span>Lima, Perú</span></div>
       </div>
       <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 5.0</div>
@@ -1225,7 +1233,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-testimonial-card az-reveal">
       <div class="az-testimonial-head">
-        <img src="images/amazon-redesign/testimonial-avatar-2.jpg" alt="Marco Silva">
+        <img src="images/amazon-redesign/testimonial-avatar-2.jpg" alt="Marco Silva" loading="lazy" decoding="async">
         <div class="az-testimonial-who"><strong>Marco Silva</strong><span>São Paulo, Brasil</span></div>
       </div>
       <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.8</div>
@@ -1234,7 +1242,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
     <article class="az-testimonial-card az-reveal">
       <div class="az-testimonial-head">
-        <img src="images/amazon-redesign/testimonial-avatar-3.jpg" alt="Renata Flores">
+        <img src="images/amazon-redesign/testimonial-avatar-3.jpg" alt="Renata Flores" loading="lazy" decoding="async">
         <div class="az-testimonial-who"><strong>Renata Flores</strong><span>Bogotá, Colombia</span></div>
       </div>
       <div class="az-rating"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1L12 2z"/></svg> 4.9</div>
@@ -1265,7 +1273,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 <footer class="az-footer">
   <div class="az-footer-top">
     <div class="az-footer-brand">
-      <img src="images/amazon-redesign/logo.png" alt="Amazon">
+      <img src="images/amazon-redesign/logo.png" alt="Amazon" loading="lazy" decoding="async">
       <p>Amazon evoluciona contigo: entendemos tus gustos, tus necesidades y te ofrecemos una experiencia hecha a tu medida.</p>
       <div class="az-social">
         <a href="#" aria-label="Facebook"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>

@@ -8,7 +8,7 @@
     let html = '';
     for (let i = 0; i < 2; i++) {
       items.forEach(label => {
-        html += `<span class="px-8 text-sm font-semibold tracking-widest text-gray-400 uppercase whitespace-nowrap">${label}</span>`;
+        html += `<span class="px-8 text-sm font-semibold tracking-widest text-gray-500 uppercase whitespace-nowrap">${label}</span>`;
         html += `<span style="width:6px;height:6px;border-radius:50%;background:#d1d5db;display:inline-block;flex-shrink:0;margin:0 4px;align-self:center;"></span>`;
       });
     }

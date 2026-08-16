@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 <title>CATMI — Contenido para Instagram</title>
 <meta name="description" content="Diseño de contenido para Instagram de CATMI: feed e identidad visual para un servicio de catsitter. Case study de social media por Sofia Hualpa.">
+<!-- Share preview. og:image is intentionally omitted: it must be an
+     absolute https:// URL to work, which depends on the final domain. Once the
+     site has one, add: <meta property="og:image" content="https://DOMAIN/assets/videos/hero-poster.jpg"> -->
+<meta property="og:title" content="CATMI — Contenido para Instagram">
+<meta property="og:description" content="Diseño de contenido para Instagram de CATMI: feed e identidad visual para un servicio de catsitter. Case study de social media por Sofia Hualpa.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -119,7 +127,7 @@
   }
 
   /* ── Reveal on scroll ── */
-  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal{ opacity:0; transform:translate3d(0,22px,0); transition:opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1); }
   .reveal.visible{ opacity:1; transform:none; }
 
   #identidad-visual{ scroll-margin-top:100px; }
@@ -202,6 +210,19 @@
     transform:scale(1.04);
     box-shadow:0 10px 30px rgba(42,75,255,0.32);
   }
+
+  /* ── Reduced motion ──
+     Respects the OS "reduce motion" setting: content still appears, it just
+     arrives without travel, and looping animations stop. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -219,7 +240,7 @@
 
 <!-- ── Hero: full-screen brand logo ── -->
 <section id="hero" class="hero-section">
-  <img class="hero-logo" src="images/catmi/logo-catmi.png" alt="CATMI">
+  <img class="hero-logo" src="images/catmi/logo-catmi.png" alt="CATMI" decoding="async">
   <a href="#objetivo" class="scroll-cue" aria-label="Bajar a la siguiente sección">
     <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
       <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
@@ -305,23 +326,23 @@
 
         <div class="feed-grid mt-6" id="feed-grid" style="position:relative;">
           <div class="hint-badge" id="hint-badge">Pasa el cursor o haz clic ↗</div>
-          <div class="feed-thumb active" data-index="0"><img src="images/catmi/post-1-traveling-soon.png" alt="Traveling soon and no clue who to leave your cat with?"></div>
-          <div class="feed-thumb" data-index="1"><img src="images/catmi/post-2-4-mistakes.png" alt="4 mistakes you make when traveling with your cat"></div>
-          <div class="feed-thumb" data-index="2"><img src="images/catmi/post-3-hi-im-carla.png" alt="Hi! I'm Carla, your favorite catsitter"></div>
-          <div class="feed-thumb" data-index="3"><img src="images/catmi/post-4-3-signs.png" alt="3 signs you need a catsitter"></div>
-          <div class="feed-thumb" data-index="4"><img src="images/catmi/post-5-what-i-do.png" alt="What I do for your kitty"></div>
-          <div class="feed-thumb" data-index="5"><img src="images/catmi/post-6-travel-checklist.png" alt="Cat Mom's Travel Checklist"></div>
+          <div class="feed-thumb active" data-index="0"><img src="images/catmi/post-1-traveling-soon.webp" alt="Traveling soon and no clue who to leave your cat with?" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="1"><img src="images/catmi/post-2-4-mistakes.webp" alt="4 mistakes you make when traveling with your cat" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="2"><img src="images/catmi/post-3-hi-im-carla.webp" alt="Hi! I'm Carla, your favorite catsitter" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="3"><img src="images/catmi/post-4-3-signs.webp" alt="3 signs you need a catsitter" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="4"><img src="images/catmi/post-5-what-i-do.webp" alt="What I do for your kitty" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="5"><img src="images/catmi/post-6-travel-checklist.webp" alt="Cat Mom's Travel Checklist" loading="lazy" decoding="async"></div>
         </div>
       </div>
 
       <!-- Floating card stack -->
       <div class="stack-wrap reveal" id="stack-wrap">
-        <div class="stack-card" data-index="0"><div class="stack-card-inner"><img src="images/catmi/post-1-traveling-soon.png" alt="Traveling soon and no clue who to leave your cat with?"></div></div>
-        <div class="stack-card" data-index="1"><div class="stack-card-inner"><img src="images/catmi/post-2-4-mistakes.png" alt="4 mistakes you make when traveling with your cat"></div></div>
-        <div class="stack-card" data-index="2"><div class="stack-card-inner"><img src="images/catmi/post-3-hi-im-carla.png" alt="Hi! I'm Carla, your favorite catsitter"></div></div>
-        <div class="stack-card" data-index="3"><div class="stack-card-inner"><img src="images/catmi/post-4-3-signs.png" alt="3 signs you need a catsitter"></div></div>
-        <div class="stack-card" data-index="4"><div class="stack-card-inner"><img src="images/catmi/post-5-what-i-do.png" alt="What I do for your kitty"></div></div>
-        <div class="stack-card" data-index="5"><div class="stack-card-inner"><img src="images/catmi/post-6-travel-checklist.png" alt="Cat Mom's Travel Checklist"></div></div>
+        <div class="stack-card" data-index="0"><div class="stack-card-inner"><img src="images/catmi/post-1-traveling-soon.webp" alt="Traveling soon and no clue who to leave your cat with?" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="1"><div class="stack-card-inner"><img src="images/catmi/post-2-4-mistakes.webp" alt="4 mistakes you make when traveling with your cat" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="2"><div class="stack-card-inner"><img src="images/catmi/post-3-hi-im-carla.webp" alt="Hi! I'm Carla, your favorite catsitter" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="3"><div class="stack-card-inner"><img src="images/catmi/post-4-3-signs.webp" alt="3 signs you need a catsitter" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="4"><div class="stack-card-inner"><img src="images/catmi/post-5-what-i-do.webp" alt="What I do for your kitty" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="5"><div class="stack-card-inner"><img src="images/catmi/post-6-travel-checklist.webp" alt="Cat Mom's Travel Checklist" loading="lazy" decoding="async"></div></div>
       </div>
     </div>
   </section>
@@ -352,8 +373,12 @@
   // Reveal on scroll
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.15 });
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px 120px 0px' });
   revealEls.forEach(el => io.observe(el));
 
   // Scroll-spy: highlight active nav item

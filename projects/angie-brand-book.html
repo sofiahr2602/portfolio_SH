@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 <title>Angie Hamasaki — Brand Book</title>
 <meta name="description" content="Identidad de marca de Angie Hamasaki, nutricionista clínica. Colores, tipografía, voz y aplicaciones. Case study de branding por Sofia Hualpa.">
+<!-- Share preview. og:image is intentionally omitted: it must be an
+     absolute https:// URL to work, which depends on the final domain. Once the
+     site has one, add: <meta property="og:image" content="https://DOMAIN/assets/videos/hero-poster.jpg"> -->
+<meta property="og:title" content="Angie Hamasaki — Brand Book">
+<meta property="og:description" content="Identidad de marca de Angie Hamasaki, nutricionista clínica. Colores, tipografía, voz y aplicaciones. Case study de branding por Sofia Hualpa.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -284,6 +292,19 @@
     .bb-voice-grid { grid-template-columns: 1fr; }
     .bb-decision { grid-template-columns: 1fr; }
     .bb-type-block { padding: 28px 24px; }
+  }
+
+  /* ── Reduced motion ──
+     Respects the OS "reduce motion" setting: content still appears, it just
+     arrives without travel, and looping animations stop. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
   }
 </style>
 </head>

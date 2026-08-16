@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
 <title>GymStyle — Contenido para Instagram</title>
 <meta name="description" content="Diseño de contenido para Instagram de GymStyle: feed, identidad visual y aplicaciones de marca. Case study de social media por Sofia Hualpa.">
+<!-- Share preview. og:image is intentionally omitted: it must be an
+     absolute https:// URL to work, which depends on the final domain. Once the
+     site has one, add: <meta property="og:image" content="https://DOMAIN/assets/videos/hero-poster.jpg"> -->
+<meta property="og:title" content="GymStyle — Contenido para Instagram">
+<meta property="og:description" content="Diseño de contenido para Instagram de GymStyle: feed, identidad visual y aplicaciones de marca. Case study de social media por Sofia Hualpa.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -127,7 +135,7 @@
   .wave-divider svg{ display:block; width:100%; height:64px; }
 
   /* ── Reveal on scroll ── */
-  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal{ opacity:0; transform:translate3d(0,22px,0); transition:opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1); }
   .reveal.visible{ opacity:1; transform:none; }
 
   #identidad-visual, #aplicaciones{ scroll-margin-top:100px; }
@@ -216,6 +224,19 @@
     transform:scale(1.04);
     box-shadow:0 10px 30px rgba(78,23,53,0.3);
   }
+
+  /* ── Reduced motion ──
+     Respects the OS "reduce motion" setting: content still appears, it just
+     arrives without travel, and looping animations stop. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -292,42 +313,42 @@
 
         <div class="flex gap-4 mt-5 overflow-x-auto">
           <div class="flex flex-col items-center gap-1.5">
-            <div class="highlight-icon"><img src="images/gymstyle/highlight-envios.png" alt="Envíos"></div>
+            <div class="highlight-icon"><img src="images/gymstyle/highlight-envios.png" alt="Envíos" decoding="async"></div>
             <span class="text-[11px] text-gray-500">Envíos</span>
           </div>
           <div class="flex flex-col items-center gap-1.5">
-            <div class="highlight-icon"><img src="images/gymstyle/highlight-clientes.png" alt="Clientes"></div>
+            <div class="highlight-icon"><img src="images/gymstyle/highlight-clientes.png" alt="Clientes" loading="lazy" decoding="async"></div>
             <span class="text-[11px] text-gray-500">Clientes</span>
           </div>
           <div class="flex flex-col items-center gap-1.5">
-            <div class="highlight-icon"><img src="images/gymstyle/highlight-faq.png" alt="FAQ"></div>
+            <div class="highlight-icon"><img src="images/gymstyle/highlight-faq.png" alt="FAQ" loading="lazy" decoding="async"></div>
             <span class="text-[11px] text-gray-500">FAQ</span>
           </div>
           <div class="flex flex-col items-center gap-1.5">
-            <div class="highlight-icon"><img src="images/gymstyle/highlight-catalogo.png" alt="Catálogo"></div>
+            <div class="highlight-icon"><img src="images/gymstyle/highlight-catalogo.png" alt="Catálogo" loading="lazy" decoding="async"></div>
             <span class="text-[11px] text-gray-500">Catálogo</span>
           </div>
         </div>
 
         <div class="feed-grid mt-6" id="feed-grid" style="position:relative;">
           <div class="hint-badge" id="hint-badge">Pasa el cursor o haz clic ↗</div>
-          <div class="feed-thumb active" data-index="0"><img src="images/gymstyle/post-1-hoy-entrenas.png" alt="Hoy entrenas"></div>
-          <div class="feed-thumb" data-index="1"><img src="images/gymstyle/post-2-top-short-melisa.png" alt="Top y short Melisa"></div>
-          <div class="feed-thumb" data-index="2"><img src="images/gymstyle/post-3-lo-mas-comodo.png" alt="Lo más cómodo de tu día"></div>
-          <div class="feed-thumb" data-index="3"><img src="images/gymstyle/post-4-llego-mi-pedido.png" alt="Llegó mi pedido de GymStyle"></div>
-          <div class="feed-thumb" data-index="4"><img src="images/gymstyle/post-5-nuevo-lanzamiento.png" alt="Nuevo lanzamiento de conjuntos"></div>
-          <div class="feed-thumb" data-index="5"><img src="images/gymstyle/post-6-esenciales-outfit.png" alt="Esenciales para tu outfit"></div>
+          <div class="feed-thumb active" data-index="0"><img src="images/gymstyle/post-1-hoy-entrenas.webp" alt="Hoy entrenas" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="1"><img src="images/gymstyle/post-2-top-short-melisa.webp" alt="Top y short Melisa" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="2"><img src="images/gymstyle/post-3-lo-mas-comodo.png" alt="Lo más cómodo de tu día" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="3"><img src="images/gymstyle/post-4-llego-mi-pedido.webp" alt="Llegó mi pedido de GymStyle" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="4"><img src="images/gymstyle/post-5-nuevo-lanzamiento.png" alt="Nuevo lanzamiento de conjuntos" loading="lazy" decoding="async"></div>
+          <div class="feed-thumb" data-index="5"><img src="images/gymstyle/post-6-esenciales-outfit.webp" alt="Esenciales para tu outfit" loading="lazy" decoding="async"></div>
         </div>
       </div>
 
       <!-- Floating card stack -->
       <div class="stack-wrap reveal" id="stack-wrap">
-        <div class="stack-card" data-index="0"><div class="stack-card-inner"><img src="images/gymstyle/post-1-hoy-entrenas.png" alt="Hoy entrenas"></div></div>
-        <div class="stack-card" data-index="1"><div class="stack-card-inner"><img src="images/gymstyle/post-2-top-short-melisa.png" alt="Top y short Melisa"></div></div>
-        <div class="stack-card" data-index="2"><div class="stack-card-inner"><img src="images/gymstyle/post-3-lo-mas-comodo.png" alt="Lo más cómodo de tu día"></div></div>
-        <div class="stack-card" data-index="3"><div class="stack-card-inner"><img src="images/gymstyle/post-4-llego-mi-pedido.png" alt="Llegó mi pedido de GymStyle"></div></div>
-        <div class="stack-card" data-index="4"><div class="stack-card-inner"><img src="images/gymstyle/post-5-nuevo-lanzamiento.png" alt="Nuevo lanzamiento de conjuntos"></div></div>
-        <div class="stack-card" data-index="5"><div class="stack-card-inner"><img src="images/gymstyle/post-6-esenciales-outfit.png" alt="Esenciales para tu outfit"></div></div>
+        <div class="stack-card" data-index="0"><div class="stack-card-inner"><img src="images/gymstyle/post-1-hoy-entrenas.webp" alt="Hoy entrenas" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="1"><div class="stack-card-inner"><img src="images/gymstyle/post-2-top-short-melisa.webp" alt="Top y short Melisa" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="2"><div class="stack-card-inner"><img src="images/gymstyle/post-3-lo-mas-comodo.png" alt="Lo más cómodo de tu día" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="3"><div class="stack-card-inner"><img src="images/gymstyle/post-4-llego-mi-pedido.webp" alt="Llegó mi pedido de GymStyle" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="4"><div class="stack-card-inner"><img src="images/gymstyle/post-5-nuevo-lanzamiento.png" alt="Nuevo lanzamiento de conjuntos" loading="lazy" decoding="async"></div></div>
+        <div class="stack-card" data-index="5"><div class="stack-card-inner"><img src="images/gymstyle/post-6-esenciales-outfit.webp" alt="Esenciales para tu outfit" loading="lazy" decoding="async"></div></div>
       </div>
     </div>
   </section>
@@ -341,15 +362,15 @@
     </div>
     <div class="space-y-8">
       <div class="reveal">
-        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-packaging.png" alt="Empaque GymStyle"></div>
+        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-packaging.webp" alt="Empaque GymStyle" loading="lazy" decoding="async"></div>
         <p class="text-center text-sm text-gray-500 mt-3">Empaque</p>
       </div>
       <div class="reveal">
-        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-tote-bags.png" alt="Bolsas GymStyle"></div>
+        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-tote-bags.webp" alt="Bolsas GymStyle" loading="lazy" decoding="async"></div>
         <p class="text-center text-sm text-gray-500 mt-3">Bolsas tote</p>
       </div>
       <div class="reveal">
-        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-bands.png" alt="Bandas de resistencia GymStyle"></div>
+        <div class="brand-app-card aspect-[1312/811]"><img src="images/gymstyle/brand-application-bands.webp" alt="Bandas de resistencia GymStyle" loading="lazy" decoding="async"></div>
         <p class="text-center text-sm text-gray-500 mt-3">Bandas de resistencia</p>
       </div>
     </div>
@@ -381,8 +402,12 @@
   // Reveal on scroll
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.15 });
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px 120px 0px' });
   revealEls.forEach(el => io.observe(el));
 
   // Scroll-spy: highlight active nav item

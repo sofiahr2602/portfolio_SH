@@ -8,6 +8,10 @@
   --lilac-light: #C4A8E8;
   --lilac-pale:  #F3EDFF;
   --lilac-dark:  #7C4FA8;
+  /* #9B6FCC only reaches 3.79:1 against white — fine for dots, rules and
+     icons (3:1), short of the 4.5:1 that text needs. Anything carrying text
+     uses --lilac-dark; --lilac-deep is its hover step. */
+  --lilac-deep:  #653C8C;
 
   /* Playful Future palette — glass system (nav, cards, contact CTA) */
   --violet-mid:   #9B6CF2;
@@ -67,6 +71,35 @@
 html { scroll-behavior: smooth; }
 body { font-family: 'Inter', sans-serif; }
 
+/* ── Focus ring ──
+   Every interactive element needs a visible keyboard target. :focus-visible
+   (not :focus) means mouse users never see it, so it costs nothing visually. */
+:focus-visible {
+  outline: 3px solid var(--lilac-dark);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* On dark grounds the darker lilac disappears — use the light one there. */
+footer :focus-visible,
+.cta-band :focus-visible { outline-color: var(--lilac-light); }
+
+/* ── Skip link ── off-screen until it receives focus. */
+.skip-link {
+  position: fixed;
+  top: 0; left: 50%;
+  transform: translate(-50%, -120%);
+  z-index: 200;
+  background: var(--lilac-dark);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 0.75rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.skip-link:focus-visible { transform: translate(-50%, 0); }
+
 /* ── Animations ── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
@@ -87,15 +120,20 @@ body { font-family: 'Inter', sans-serif; }
 .delay-3 { animation-delay: 2.2s; }
 .delay-4 { animation-delay: 2.8s; }
 
-/* ── Scroll reveal ── */
-.reveal {
+/* ── Scroll reveal ──
+   Scoped to .js (set by an inline script in <head>) on purpose: these rules
+   hide content at opacity 0 and rely on JS to reveal it. Without the guard,
+   a script error or a blocked/failed main.js would leave every section below
+   the hero permanently invisible. With it, a no-JS visitor gets the whole
+   page — just without the entrance motion. */
+.js .reveal {
   opacity: 0;
   transform: translateY(36px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .reveal.visible { opacity: 1; transform: none; }
 
-.reveal-left {
+.js .reveal-left {
   opacity: 0;
   transform: translateX(-36px);
   transition: opacity 0.7s ease, transform 0.7s ease;
@@ -194,7 +232,7 @@ body { font-family: 'Inter', sans-serif; }
   background: var(--lilac);
   transition: width 0.25s ease;
 }
-.nav-link:hover { color: var(--lilac); }
+.nav-link:hover { color: var(--lilac-dark); }
 .nav-link:hover::after { width: 100%; }
 
 .mobile-menu { transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s; }
@@ -209,25 +247,25 @@ body { font-family: 'Inter', sans-serif; }
 
 /* ── Buttons ── */
 .btn-lilac {
-  background: var(--lilac);
+  background: var(--lilac-dark);
   color: white;
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .btn-lilac:hover {
-  background: var(--lilac-dark);
+  background: var(--lilac-deep);
   transform: scale(1.04);
   box-shadow: 0 8px 32px rgba(155,111,204,0.35);
 }
 .btn-lilac:active { transform: scale(0.98); }
 
 .btn-outline {
-  border: 2px solid var(--lilac);
-  color: var(--lilac);
+  border: 2px solid var(--lilac-dark);
+  color: var(--lilac-dark);
   background: transparent;
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 .btn-outline:hover {
-  background: var(--lilac);
+  background: var(--lilac-dark);
   color: white;
   transform: scale(1.04);
 }
@@ -294,14 +332,16 @@ body { font-family: 'Inter', sans-serif; }
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #9ca3af;
+  /* #9ca3af sat at 2.54:1 on white — the category list is navigation, so it
+     has to be readable in its resting state, not only once hovered. */
+  color: #6b7280;
   border: none;
   background: transparent;
   cursor: pointer;
   white-space: nowrap;
   transition: color 0.2s ease, background 0.2s ease;
 }
-.category-item:hover  { color: var(--lilac); background: var(--lilac-pale); }
+.category-item:hover  { color: var(--lilac-dark); background: var(--lilac-pale); }
 .category-item.active { color: var(--lilac-dark); background: var(--lilac-pale); }
 
 /* ── Project grid ── fewer, bigger cards ("less projects, more presence") */
@@ -394,13 +434,13 @@ body { font-family: 'Inter', sans-serif; }
 
 .card-open-btn {
   display: inline-flex; align-items: center; gap: 6px;
-  background: var(--lilac); color: white;
+  background: var(--lilac-dark); color: white;
   font-size: 0.78rem; font-weight: 600;
   padding: 0.4rem 0.9rem; border-radius: 9999px;
   margin-top: 0.6rem; width: fit-content;
   transition: background 0.2s;
 }
-.card-open-btn:hover { background: var(--lilac-dark); }
+.card-open-btn:hover { background: var(--lilac-deep); }
 
 /* ── Multi-link project card (UX/UI case studies with sub-pages) ──
    Standard for UX/UI projects: omit data-url on .project-item and add
@@ -421,13 +461,13 @@ body { font-family: 'Inter', sans-serif; }
   font-weight: 600;
   padding: 0.55rem 0.75rem;
   border-radius: 9999px;
-  border: 1.5px solid var(--lilac);
-  color: var(--lilac);
+  border: 1.5px solid var(--lilac-dark);
+  color: var(--lilac-dark);
   background: transparent;
   white-space: nowrap;
   transition: background 0.2s, color 0.2s;
 }
-.project-link-btn:hover { background: var(--lilac); color: white; }
+.project-link-btn:hover { background: var(--lilac-dark); color: white; }
 
 /* ── Testimonials ── */
 .testimonial-card {
@@ -451,8 +491,8 @@ body { font-family: 'Inter', sans-serif; }
   transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
 }
 .social-icon:hover {
-  border-color: var(--lilac);
-  color: var(--lilac);
+  border-color: var(--lilac-dark);
+  color: var(--lilac-dark);
   background: var(--lilac-pale);
   transform: translateY(-3px);
 }
@@ -475,7 +515,7 @@ body { font-family: 'Inter', sans-serif; }
   z-index: 40;
   width: 52px; height: 52px;
   border-radius: 50%;
-  background: var(--lilac);
+  background: var(--lilac-dark);
   color: white;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 6px 20px rgba(155,111,204,0.35);
@@ -1291,8 +1331,8 @@ html.pixel-cursor-on * {
   padding: 0.7rem 1.5rem;
   border-radius: 9999px;
   background: transparent;
-  border: 1.5px solid var(--lilac);
-  color: var(--lilac);
+  border: 1.5px solid var(--lilac-dark);
+  color: var(--lilac-dark);
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
@@ -1302,7 +1342,7 @@ html.pixel-cursor-on * {
   transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease, color 0.2s ease;
 }
 .toolkit-replay-btn.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
-.toolkit-replay-btn:hover { background: var(--lilac); color: white; }
+.toolkit-replay-btn:hover { background: var(--lilac-dark); color: white; }
 
 /* Cat-cursor claw swipe — triggered on blob click (see toolkit.js). Only
    ever visible when the custom cursor is active (fine-pointer devices). */
